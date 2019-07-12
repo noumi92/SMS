@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="4dp">
+
+    <TextView android:id="@+id/label_gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/gender_filter_label" />
+
+    <RadioGroup android:id="@+id/gender_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/label_gender"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/male_students"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/male_radio_button_label" />
+
+        <RadioButton
+            android:id="@+id/female_students"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/female_radio_button_label" />
+    </RadioGroup>
+    <View android:id="@+id/gender_filter_seperator"
+        android:layout_below="@id/gender_radio_group"
+        style="@style/horizontal_seperator"/>
+
+    <TextView android:id="@+id/label_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/gender_filter_seperator"
+        android:text="@string/city_spinner_label_text" />
+    <Spinner android:id="@+id/student_city_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/label_city"
+        android:entries="@array/students_cities" />
+    <View android:id="@+id/city_filter_seperator"
+        android:layout_below="@id/student_city_spinner"
+        style="@style/horizontal_seperator"/>
+
+    <Button
+        android:id="@+id/button_clear_filters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/clear_filters_button_label" />
+
+    <Button
+        android:id="@+id/button_apply_filters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/button_clear_filters"
+        android:text="@string/apply_filters_button_label" />
+</RelativeLayout>

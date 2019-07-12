@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">FindMyTutor</string>
+    <string name="openDrawer">Open Drawer</string>
+    <string name="closeDrawer">Close Drawer</string>
+    <string name="user_created">User created</string>
+    <string name="forgot_password_activity_subtitle">(Forgot Password)</string>
+    <string name="email_hint">Email</string>
+    <string name="reset_password_hint">Reset Password</string>
+    <string name="login_view_link_text">To Login Click</string>
+    <string name="login_view_link">Here</string>
+    <string name="student_login_activity_subtitle">(Student Login)</string>
+    <string name="password_hint">Password</string>
+    <string name="login_hint">Login</string>
+    <string name="signup_activity_link_pertext">New to FindMyTutor? </string>
+    <string name="signup_activity_link_text"> Register Here</string>
+    <string name="forgot_password_activity_link_pretext">Forgot Password? </string>
+    <string name="forgot_password_activity_link_text"> Reset Here</string>
+    <string name="student_registration_activity_subtitle">(Student Registration)</string>
+    <string name="username_hint">Username</string>
+    <string name="confirm_password_hint">Confirm Password</string>
+    <string name="gender_spinner_lable">Gender:</string>
+    <string name="city_spinner_label">City:</string>
+    <string name="signup_button_label">SignUp</string>
+    <string name="login_activity_link_pretext">Already Registered? </string>
+    <string name="login_activity_link_text"> Login Here</string>
+    <string name="gender_filter_label">Select Gender:</string>
+    <string name="male_radio_button_label">Male</string>
+    <string name="female_radio_button_label">Female</string>
+    <string name="city_spinner_label_text">Select Location:</string>
+    <string name="clear_filters_button_label">Clear Filters</string>
+    <string name="apply_filters_button_label">Apply Filters</string>
+</resources>

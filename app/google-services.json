@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "433754915881",
+    "firebase_url": "https://sms-app-27aa0.firebaseio.com",
+    "project_id": "sms-app-27aa0",
+    "storage_bucket": "sms-app-27aa0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433754915881:android:3b1e9eb9fccf4ce7",
+        "android_client_info": {
+          "package_name": "com.noumi.sms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "433754915881-iako68ehqcmqsc9fcrsn58vht2poqhee.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noumi.sms",
+            "certificate_hash": "c293d4547b0743f45396dfbcd0a477fd4444bdbb"
+          }
+        },
+        {
+          "client_id": "433754915881-gvn957mjv2aii70gt4nnlgvidtotdu8s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNfwvOHeGet_LeVGs6zdeecuR5e0ThuH4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "433754915881-gvn957mjv2aii70gt4nnlgvidtotdu8s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
