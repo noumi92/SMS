@@ -9,7 +9,5 @@ public interface StudentListPresenterInterface {
     void loadStudents();
     void onDataLoadComplete(List<Student> students);
     void logoutUser();
-    void getStudentsByGender(String gender);
-    void getStudentsByCity(String city);
-    void getstudentsByCityAndGender(String city, String gender);
+    void getFilteredStudents(String city, String gender, int filter);
 }

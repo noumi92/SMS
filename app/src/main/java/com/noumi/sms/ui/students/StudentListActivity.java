@@ -3,12 +3,11 @@ package com.noumi.sms.ui.students;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -17,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -25,40 +23,55 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.noumi.sms.R;
-import com.noumi.sms.data.DatabaseHandler;
 import com.noumi.sms.data.model.Student;
 import com.noumi.sms.ui.login.LoginActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class StudentListActivity extends AppCompatActivity implements StudentListViewInterface{
+    private static final String FILTER_STATE_FLAG_KEY = "filter_selection";
+    private static final String SELECTED_CITY_KEY = "selected_city";
+    private static final String SELECTED_GENDER_KEY = "selected_gender";
+    private String TAG = "com.noumi.sms.custom.log";
     private StudentListPresenter mStudentListPresenter;
     private RecyclerView mStudentsRecyclerView;
     private StudentAdapter mStudentAdapter;
-    private String TAG = "com.noumi.sms.custom.log";
     private RadioGroup mGenderRadioGroup;
-    private RadioButton mGenderRadioButton;
     private Spinner mCitySpinner;
     private Button mApplyFilters;
     private Button mClearFilters;
     private DrawerLayout mDrawerLayout;
+    private int mFilterStateFlag;
+    private String mSelectedCity;
+    private String mSelectedGender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_list);
 
+        //check instance state
+        if(savedInstanceState != null){
+            super.onRestoreInstanceState(savedInstanceState);
+            mFilterStateFlag = savedInstanceState.getInt(FILTER_STATE_FLAG_KEY);
+            mSelectedCity = savedInstanceState.getString(SELECTED_CITY_KEY);
+            mSelectedGender = savedInstanceState.getString(SELECTED_GENDER_KEY);
+            mStudentListPresenter.getFilteredStudents(mSelectedCity, mSelectedGender, mFilterStateFlag);
+        }
+        //get references of views
         mStudentsRecyclerView = (RecyclerView) findViewById(R.id.student_recycler_view);
-        mStudentsRecyclerView.setHasFixedSize(true);
-        mStudentsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        Drawable divider = ContextCompat.getDrawable(this, R.drawable.list_item_seperator);
-        mStudentsRecyclerView.addItemDecoration(new ListDivider(divider));
         mGenderRadioGroup = (RadioGroup) findViewById(R.id.gender_radio_group);
         mCitySpinner = (Spinner) findViewById(R.id.student_city_spinner);
         mApplyFilters = (Button) findViewById(R.id.button_apply_filters);
         mClearFilters = (Button) findViewById(R.id.button_clear_filters);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        //setup adapter here
+        mStudentsRecyclerView.setHasFixedSize(true);
+        mStudentsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        Drawable divider = ContextCompat.getDrawable(this, R.drawable.list_item_seperator);
+        mStudentsRecyclerView.addItemDecoration(new ListDivider(divider));
+        // 0  means no filter applied
+        mFilterStateFlag = 0;
         //setting up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         if(toolbar!=null){
@@ -70,21 +83,26 @@ public class StudentListActivity extends AppCompatActivity implements StudentLis
             @Override
             public void onClick(View view) {
                 //get selection for gender
-                int genderSelectedid = mGenderRadioGroup.getCheckedRadioButtonId();
+                int genderRadioButtonId = mGenderRadioGroup.getCheckedRadioButtonId();
                 //get selection for city
-                String city = mCitySpinner.getSelectedItem().toString();
-                if(genderSelectedid != -1 && !city.isEmpty()){
+                mSelectedCity = mCitySpinner.getSelectedItem().toString();
+                //get selection of filtera and set filter type flags
+                //FILTER_FLAGS-> 1=city, 2=gender, 3=city&gender, 0=no filter applied
+                if(genderRadioButtonId != -1 && !mSelectedCity.isEmpty()){
                     //this block runs when both gender and city filters are selected
-                    mGenderRadioButton = (RadioButton) findViewById(genderSelectedid);
-                    mStudentListPresenter.getstudentsByCityAndGender(city, mGenderRadioButton.getText().toString());
-                }else if(!city.isEmpty()){
+                    mFilterStateFlag = 3;
+                    RadioButton button = (RadioButton) findViewById(genderRadioButtonId);
+                    mSelectedGender = button.getText().toString();
+                }else if(!mSelectedCity.isEmpty()){
                     //this block runs when only city filter is selected
-                    mStudentListPresenter.getStudentsByCity(city);
-                }else if(genderSelectedid != -1){
+                    mFilterStateFlag = 1;
+                }else if(genderRadioButtonId != -1){
                     //this block runs when onle gender filter is selected for data
-                    mGenderRadioButton = (RadioButton) findViewById(genderSelectedid);
-                    mStudentListPresenter.getStudentsByGender(mGenderRadioButton.getText().toString());
+                    mFilterStateFlag = 2;
+                    RadioButton button = (RadioButton) findViewById(genderRadioButtonId);
+                    mSelectedGender = button.getText().toString();
                 }
+                mStudentListPresenter.getFilteredStudents(mSelectedCity, mSelectedGender, mFilterStateFlag);
                 //close filter navigation menu
                 mDrawerLayout.closeDrawers();
             }
@@ -103,11 +121,31 @@ public class StudentListActivity extends AppCompatActivity implements StudentLis
     //initial code to run onn startup
     @Override
     protected void onStart() {
-        super.onStart();
         if(mStudentListPresenter == null){
             mStudentListPresenter = new StudentListPresenter(StudentListActivity.this);
         }
-        mStudentListPresenter.loadStudents();
+        //initial loading of all students
+        if(mFilterStateFlag == 0){
+            mStudentListPresenter.loadStudents();
+        }
+        super.onStart();
+    }
+    //save search preferences data
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(FILTER_STATE_FLAG_KEY, mFilterStateFlag);
+        outState.putString(SELECTED_CITY_KEY, mSelectedCity);
+        outState.putString(SELECTED_GENDER_KEY, mSelectedGender);
+        super.onSaveInstanceState(outState);
+    }
+    //call when restoring activity
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mFilterStateFlag = savedInstanceState.getInt(FILTER_STATE_FLAG_KEY);
+        mSelectedCity = savedInstanceState.getString(SELECTED_CITY_KEY);
+        mSelectedGender = savedInstanceState.getString(SELECTED_GENDER_KEY);
+        mStudentListPresenter.getFilteredStudents(mSelectedCity, mSelectedGender, mFilterStateFlag);
     }
     //this method is called when database handler completes data fetchinn
     @Override
@@ -142,9 +180,14 @@ public class StudentListActivity extends AppCompatActivity implements StudentLis
         return true;
     }
     //exit app on back pressed
+    //code updated in version 1.0.1 now app exit properly
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent homeScreenIntent = new Intent(Intent.ACTION_MAIN);
+        homeScreenIntent.addCategory(Intent.CATEGORY_HOME);
+        homeScreenIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(homeScreenIntent);
         this.finish();
     }
     //inner class to provide horizontal seperator after every lis item

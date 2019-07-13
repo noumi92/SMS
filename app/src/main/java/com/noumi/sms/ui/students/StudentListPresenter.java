@@ -6,6 +6,7 @@ package com.noumi.sms.ui.students;
 import com.noumi.sms.data.DatabaseHandler;
 import com.noumi.sms.data.model.Student;
 import com.noumi.sms.ui.base.BasePresenter;
+
 import java.util.List;
 
 public class StudentListPresenter extends BasePresenter implements StudentListPresenterInterface {
@@ -36,19 +37,21 @@ public class StudentListPresenter extends BasePresenter implements StudentListPr
     public void onQueryResult(String result) {
         mListViewInterface.onResult(result);
     }
-    //fetch students filtered by gender
+    //get student based on selected filters
     @Override
-    public void getStudentsByGender(String gender) {
-        mDatabaseHandler.getStudentsByGender(gender, this);
-    }
-    //fetch students filtered by city
-    @Override
-    public void getStudentsByCity(String city) {
-        mDatabaseHandler.getStudentsByCity(city, this);
-    }
-    //fetch students filtered by gender and city both
-    @Override
-    public void getstudentsByCityAndGender(String city, String gender) {
-        mDatabaseHandler.getStudentsByCityAndGender(city, gender, this);
+    public void getFilteredStudents(String city, String gender, int filter) {
+        switch (filter){
+            case 1:
+                mDatabaseHandler.getStudentsByCity(city, this);
+                break;
+            case 2:
+                mDatabaseHandler.getStudentsByGender(gender, this);
+                break;
+            case 3:
+                mDatabaseHandler.getStudentsByCityAndGender(city, gender, this);
+                break;
+            default:
+                mDatabaseHandler.getStudents(this);
+        }
     }
 }
