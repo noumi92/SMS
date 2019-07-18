@@ -12,7 +12,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements ForgotP
     //fields
     private EditText mEmailTextView;
     private Button mPasswordResetButton;
-    private ForgotPasswordPresenter mForgotPasswordPresenter;
+    private ForgotPasswordPresenterInterface mForgotPasswordPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

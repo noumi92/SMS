@@ -19,7 +19,7 @@ import com.noumi.sms.ui.login.LoginActivity;
 public class SignupActivity extends AppCompatActivity implements SignupViewInterface{
     //fields
     private String TAG = "com.noumi.sms.custom.log"; //tag for debugging
-    private SignupPresenter mSignupPresenter;
+    private SignupPresenterInterface mSignupPresenter;
     private EditText mUsernameView;
     private EditText mEmailView;
     private EditText mPasswordView;

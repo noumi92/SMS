@@ -4,11 +4,12 @@ package com.noumi.sms.ui.login;
 //feedback to user
 
 import com.noumi.sms.data.DatabaseHandler;
+import com.noumi.sms.data.DatabaseInterface;
 import com.noumi.sms.ui.base.BasePresenter;
 
 public class LoginPresenter extends BasePresenter implements LoginPresenterInterface {
     private String TAG = "com.noumi.sms.custom.log";
-    private DatabaseHandler mDatabaseHandler;
+    private DatabaseInterface mDatabaseHandler;
     private LoginViewInterface mLoginViewInterface;
 
     public LoginPresenter(LoginViewInterface view) {

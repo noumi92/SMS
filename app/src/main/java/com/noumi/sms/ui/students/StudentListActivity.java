@@ -33,7 +33,7 @@ public class StudentListActivity extends AppCompatActivity implements StudentLis
     private static final String SELECTED_CITY_KEY = "selected_city";
     private static final String SELECTED_GENDER_KEY = "selected_gender";
     private String TAG = "com.noumi.sms.custom.log";
-    private StudentListPresenter mStudentListPresenter;
+    private StudentListPresenterInterface mStudentListPresenter;
     private RecyclerView mStudentsRecyclerView;
     private StudentAdapter mStudentAdapter;
     private RadioGroup mGenderRadioGroup;

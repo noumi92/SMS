@@ -18,7 +18,7 @@ import com.noumi.sms.ui.students.StudentListActivity;
 public class LoginActivity extends AppCompatActivity implements LoginViewInterface{
     //fields
     private String TAG = "com.noumi.sms.custom.log";
-    private LoginPresenter mLoginPresenter;
+    private LoginPresenterInterface mLoginPresenter;
     private EditText mEmailView;
     private EditText mPasswordView;
     private Button mLoginButton;
