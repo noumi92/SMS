@@ -44,6 +44,7 @@ public class StudentListActivity extends AppCompatActivity implements StudentLis
     private int mFilterStateFlag;
     private String mSelectedCity;
     private String mSelectedGender;
+    private ListDivider mListDivider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,8 @@ public class StudentListActivity extends AppCompatActivity implements StudentLis
         mStudentsRecyclerView.setHasFixedSize(true);
         mStudentsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         Drawable divider = ContextCompat.getDrawable(this, R.drawable.list_item_seperator);
-        mStudentsRecyclerView.addItemDecoration(new ListDivider(divider));
+        mListDivider = new ListDivider(divider);
+        mStudentsRecyclerView.addItemDecoration(mListDivider);
         // 0  means no filter applied
         mFilterStateFlag = 0;
         //setting up toolbar
