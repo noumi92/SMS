@@ -6,9 +6,8 @@ package com.noumi.sms.ui.signup;
 import com.noumi.sms.data.DatabaseHandler;
 import com.noumi.sms.data.DatabaseInterface;
 import com.noumi.sms.data.model.Student;
-import com.noumi.sms.ui.base.BasePresenter;
 
-public class SignupPresenter extends BasePresenter implements SignupPresenterInterface {
+public class SignupPresenter implements SignupPresenterInterface {
     //fields
     private String TAG = "com.noumi.sms.custom.log"; // tag for debugging
     private DatabaseInterface mDBHandler;

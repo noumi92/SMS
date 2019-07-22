@@ -4,4 +4,5 @@ package com.noumi.sms.ui.forgotpassword;
 
 public interface ForgotPasswordPresenterInterface {
     void resetPassword(String email);
+    void onQueryResult(String result);
 }

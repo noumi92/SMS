@@ -3,9 +3,8 @@ package com.noumi.sms.ui.forgotpassword;
 //feedback to user
 import com.noumi.sms.data.DatabaseHandler;
 import com.noumi.sms.data.DatabaseInterface;
-import com.noumi.sms.ui.base.BasePresenter;
 
-public class ForgotPasswordPresenter extends BasePresenter implements ForgotPasswordPresenterInterface {
+public class ForgotPasswordPresenter implements ForgotPasswordPresenterInterface {
     private DatabaseInterface mDatabaseHandler;
     private ForgotPasswordViewInterface mForgotPasswordViewInterface;
 

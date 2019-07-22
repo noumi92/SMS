@@ -6,11 +6,10 @@ package com.noumi.sms.ui.students;
 import com.noumi.sms.data.DatabaseHandler;
 import com.noumi.sms.data.DatabaseInterface;
 import com.noumi.sms.data.model.Student;
-import com.noumi.sms.ui.base.BasePresenter;
 
 import java.util.List;
 
-public class StudentListPresenter extends BasePresenter implements StudentListPresenterInterface {
+public class StudentListPresenter implements StudentListPresenterInterface {
     private DatabaseInterface mDatabaseHandler;
     private StudentListViewInterface mListViewInterface;
 

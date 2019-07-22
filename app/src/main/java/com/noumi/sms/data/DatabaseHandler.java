@@ -15,10 +15,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.data.model.Student;
-import com.noumi.sms.ui.forgotpassword.ForgotPasswordPresenter;
-import com.noumi.sms.ui.login.LoginPresenter;
-import com.noumi.sms.ui.signup.SignupPresenter;
-import com.noumi.sms.ui.students.StudentListPresenter;
+import com.noumi.sms.ui.forgotpassword.ForgotPasswordPresenterInterface;
+import com.noumi.sms.ui.login.LoginPresenterInterface;
+import com.noumi.sms.ui.signup.SignupPresenterInterface;
+import com.noumi.sms.ui.students.StudentListPresenterInterface;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class DatabaseHandler implements DatabaseInterface {
     //public methods which are defined in databaseinterface and implemented in handler class
     //method to register new student
     @Override
-    public void signupStudent(final Student student, String password, final SignupPresenter signupPresenter){
+    public void signupStudent(final Student student, String password, final SignupPresenterInterface signupPresenter){
         mAuth.createUserWithEmailAndPassword(student.getStudentEmail(), password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
@@ -67,7 +68,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
     //on application startup this method checks if user is previously logged in or not.
     @Override
-    public void checkLogin(LoginPresenter loginPresenter) {
+    public void checkLogin(LoginPresenterInterface loginPresenter) {
         if(mAuth.getCurrentUser() != null){
             mUser = mAuth.getCurrentUser();
             if(mUser.isEmailVerified()) {
@@ -80,7 +81,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
     //method to perform firebase authentication to login user
     @Override
-    public void LoginUser(String email, String password, final LoginPresenter loginPresenter) {
+    public void LoginUser(String email, String password, final LoginPresenterInterface loginPresenter) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -111,7 +112,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
     //method to fetch all students from firestore database
     @Override
-    public void getStudents(final StudentListPresenter listPresenter) {
+    public void getStudents(final StudentListPresenterInterface listPresenter) {
         mStudents.clear();
         mDatabase.collection("students").get()
            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -129,7 +130,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
     //method to fetch students by gender
     @Override
-    public void getStudentsByGender(String gender, final StudentListPresenter studentListPresenter) {
+    public void getStudentsByGender(String gender, final StudentListPresenterInterface studentListPresenter) {
         mStudents.clear();
         mDatabase.collection("students").whereEqualTo("studentGender", gender).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -147,7 +148,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
     //method to get students from firestore filtered by gender
     @Override
-    public void getStudentsByCity(String city, final StudentListPresenter studentListPresenter) {
+    public void getStudentsByCity(String city, final StudentListPresenterInterface studentListPresenter) {
         mStudents.clear();
         mDatabase.collection("students").whereEqualTo("studentCity", city).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -165,7 +166,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
     //method to fetch students by city and gender. this method performs a composite query by logically AND on two fields
     @Override
-    public void getStudentsByCityAndGender(String city, String gender, final StudentListPresenter studentListPresenter) {
+    public void getStudentsByCityAndGender(String city, String gender, final StudentListPresenterInterface studentListPresenter) {
         mStudents.clear();
         mDatabase.collection("students").whereEqualTo("studentGender", gender).whereEqualTo("studentCity", city).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -183,13 +184,13 @@ public class DatabaseHandler implements DatabaseInterface {
     }
     //method to logout user
     @Override
-    public void logoutUser(StudentListPresenter listPresenter) {
+    public void logoutUser(StudentListPresenterInterface listPresenter) {
         mAuth.signOut();
         listPresenter.onQueryResult("Logout Successful...");
     }
     //method to reset email for password reset
     @Override
-    public void resetPassword(String email, final ForgotPasswordPresenter forgotPasswordPresenter) {
+    public void resetPassword(String email, final ForgotPasswordPresenterInterface forgotPasswordPresenter) {
         mAuth.sendPasswordResetEmail(email)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -207,7 +208,7 @@ public class DatabaseHandler implements DatabaseInterface {
 
     //private utility methods
     //utility method to insert student into database after user is created
-    private void insertStudent(Student student, final SignupPresenter signupPresenter) {
+    private void insertStudent(Student student, final SignupPresenterInterface signupPresenter) {
         String userId = student.getStudentId();
         Log.d(TAG, "userId in insertStudent() " + userId);
         mDatabase.collection("students").document(userId).set(student)

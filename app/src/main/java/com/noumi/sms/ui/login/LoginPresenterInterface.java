@@ -6,4 +6,5 @@ public interface LoginPresenterInterface {
     void loginUser(String email, String password);
     void checkLogin();
     void onLoginSuccess();
+    void onQueryResult(String result);
 }

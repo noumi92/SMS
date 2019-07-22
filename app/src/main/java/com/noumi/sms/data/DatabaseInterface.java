@@ -1,19 +1,19 @@
 package com.noumi.sms.data;
 //this interface defines the contract for DatabaseHandler class
 import com.noumi.sms.data.model.Student;
-import com.noumi.sms.ui.forgotpassword.ForgotPasswordPresenter;
-import com.noumi.sms.ui.login.LoginPresenter;
-import com.noumi.sms.ui.signup.SignupPresenter;
-import com.noumi.sms.ui.students.StudentListPresenter;
+import com.noumi.sms.ui.forgotpassword.ForgotPasswordPresenterInterface;
+import com.noumi.sms.ui.login.LoginPresenterInterface;
+import com.noumi.sms.ui.signup.SignupPresenterInterface;
+import com.noumi.sms.ui.students.StudentListPresenterInterface;
 
 public interface DatabaseInterface {
-    void signupStudent(Student student, String password, SignupPresenter signupPresenter);
-    void LoginUser(String email, String password, LoginPresenter loginPresenter);
-    void checkLogin(LoginPresenter loginPresenter);
-    void getStudents(StudentListPresenter listPresenter);
-    void logoutUser(StudentListPresenter listPresenter);
-    void resetPassword(String email, ForgotPasswordPresenter forgotPasswordPresenter);
-    void getStudentsByGender(String gender, StudentListPresenter studentListPresenter);
-    void getStudentsByCity(String city, StudentListPresenter studentListPresenter);
-    void getStudentsByCityAndGender(String city, String gender, StudentListPresenter studentListPresenter);
+    void signupStudent(Student student, String password, SignupPresenterInterface signupPresenter);
+    void LoginUser(String email, String password, LoginPresenterInterface loginPresenter);
+    void checkLogin(LoginPresenterInterface loginPresenter);
+    void getStudents(StudentListPresenterInterface listPresenter);
+    void logoutUser(StudentListPresenterInterface listPresenter);
+    void resetPassword(String email, ForgotPasswordPresenterInterface forgotPasswordPresenter);
+    void getStudentsByGender(String gender, StudentListPresenterInterface studentListPresenter);
+    void getStudentsByCity(String city, StudentListPresenterInterface studentListPresenter);
+    void getStudentsByCityAndGender(String city, String gender, StudentListPresenterInterface studentListPresenter);
 }
