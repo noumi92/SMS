@@ -9,11 +9,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.Student;
+import com.noumi.sms.data.model.Tutor;
 import com.noumi.sms.ui.login.LoginActivity;
 
 public class SignupActivity extends AppCompatActivity implements SignupViewInterface{
@@ -29,6 +32,10 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInter
     private Button mSignupButton;
     private TextView mLoginView;
     private Student mStudent;
+    private Tutor mTutor;
+    private RadioGroup mUserTypeRadioGroup;
+    private RadioButton mStudentRadioButton;
+    private RadioButton mTutorRadioButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,9 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInter
         mCitySpinner = (Spinner) findViewById(R.id.city_spinner);
         mSignupButton = (Button) findViewById(R.id.signup_button);
         mLoginView = (TextView) findViewById(R.id.login_view);
+        mUserTypeRadioGroup = (RadioGroup) findViewById(R.id.user_type_radio);
+        mStudentRadioButton = (RadioButton) findViewById(R.id.user_type_student);
+        mTutorRadioButton = (RadioButton) findViewById(R.id.user_type_tutor);
         //click event response to signup user
         mSignupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,9 +63,15 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInter
                 String confirmPassword = mConfirmPasswordView.getText().toString();
                 String gender = mGenderSpinner.getSelectedItem().toString();
                 String city = mCitySpinner.getSelectedItem().toString();
-                if (validateInput(username, email, password, confirmPassword, gender, city)){
-                    mStudent = new Student("123", email, username,city, gender);
-                    mSignupPresenter.signupStudent(mStudent, password);
+                String userType = getUserType();
+                if (validateInput(username, email, password, confirmPassword, gender, city, userType)){
+                    if(userType.equals("student")) {
+                        mStudent = new Student("123", email, username, city, gender);
+                        mSignupPresenter.signupStudent(mStudent, password);
+                    }else if(userType.equals("tutor")){
+                        mTutor = new Tutor(username, email, city, gender);
+                        mSignupPresenter.signupTutor(mTutor, password);
+                    }
                 }
             }
         });
@@ -82,7 +98,7 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInter
         }
     }
     //utility method to validate input fields
-    private boolean validateInput(String username, String email, String password, String confirmPassword, String gender, String city) {
+    private boolean validateInput(String username, String email, String password, String confirmPassword, String gender, String city, String userType) {
         if (username.isEmpty()){
             mUsernameView.setError("Please enter username.");
             mUsernameView.requestFocus();
@@ -108,6 +124,20 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInter
             mConfirmPasswordView.requestFocus();
             return false;
         }
+        if(userType == null){
+            Toast.makeText(SignupActivity.this, "Please Set a User Type:", Toast.LENGTH_LONG).show();
+            return false;
+        }
         return true;
+    }
+    private String getUserType() {
+        int type = mUserTypeRadioGroup.getCheckedRadioButtonId();
+        if (type == mStudentRadioButton.getId()){
+            return "student";
+        }else if(type == mTutorRadioButton.getId()){
+            return "tutor";
+        }else{
+            return null;
+        }
     }
 }

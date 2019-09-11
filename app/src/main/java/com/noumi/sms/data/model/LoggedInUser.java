@@ -6,6 +6,16 @@ public class LoggedInUser {
     private static LoggedInUser sLoggedInUser;
     private String userId;
     private String userEmail;
+    private String userType;
+
+    private LoggedInUser() {}
+
+    public static LoggedInUser getLoggedInUser(){
+        if(sLoggedInUser == null){
+            sLoggedInUser = new LoggedInUser();
+        }
+        return sLoggedInUser;
+    }
 
     public String getUserId() {
         return userId;
@@ -23,12 +33,11 @@ public class LoggedInUser {
         this.userEmail = userEmail;
     }
 
-    private LoggedInUser() {}
+    public String getUserType() {
+        return userType;
+    }
 
-    public static LoggedInUser getLoggedInUser(){
-        if(sLoggedInUser == null){
-            sLoggedInUser = new LoggedInUser();
-        }
-        return sLoggedInUser;
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 }

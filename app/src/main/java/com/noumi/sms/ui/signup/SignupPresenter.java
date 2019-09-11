@@ -6,6 +6,7 @@ package com.noumi.sms.ui.signup;
 import com.noumi.sms.data.DatabaseHandler;
 import com.noumi.sms.data.DatabaseInterface;
 import com.noumi.sms.data.model.Student;
+import com.noumi.sms.data.model.Tutor;
 
 public class SignupPresenter implements SignupPresenterInterface {
     //fields
@@ -21,6 +22,11 @@ public class SignupPresenter implements SignupPresenterInterface {
     @Override
     public void signupStudent(Student student, String password) {
         mDBHandler.signupStudent(student, password, this);
+    }
+    //method to signup tutor
+    @Override
+    public void signupTutor(Tutor tutor, String password) {
+        mDBHandler.signupTutor(tutor, password, this);
     }
     //method to get feedback from database handler and pass to SignupActivity
     @Override

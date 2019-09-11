@@ -35,6 +35,23 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:hint="@string/password_hint" />
+    <RadioGroup
+        android:id="@+id/user_type_radio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+        <RadioButton
+            android:id="@+id/user_type_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Student"/>
+        <RadioButton
+            android:id="@+id/user_type_tutor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tutor"/>
+    </RadioGroup>
     <Button
         android:id="@+id/login_button"
         android:layout_width="wrap_content"

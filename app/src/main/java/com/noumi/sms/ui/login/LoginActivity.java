@@ -3,17 +3,23 @@ package com.noumi.sms.ui.login;
 //this class provides the functionality to login a user into the system
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.noumi.sms.R;
+import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.ui.forgotpassword.ForgotPasswordActivity;
 import com.noumi.sms.ui.signup.SignupActivity;
-import com.noumi.sms.ui.students.StudentListActivity;
+import com.noumi.sms.ui.tutors.list.TutorListActivity;
+import com.noumi.sms.ui.tutors.profile.TutorProfileActivity;
 
 public class LoginActivity extends AppCompatActivity implements LoginViewInterface{
     //fields
@@ -24,6 +30,9 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInterfa
     private Button mLoginButton;
     private TextView mRegisterView;
     private TextView mForgotPasswordView;
+    private RadioGroup mUserTypeRadioGroup;
+    private RadioButton mStudentRadioButton;
+    private RadioButton mTutorRadioButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +43,9 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInterfa
         mPasswordView = (EditText) findViewById(R.id.password_view);
         mLoginButton = (Button) findViewById(R.id.login_button);
         mRegisterView = (TextView) findViewById(R.id.register_view);
+        mUserTypeRadioGroup = (RadioGroup) findViewById(R.id.user_type_radio);
+        mTutorRadioButton = (RadioButton) findViewById(R.id.user_type_tutor);
+        mStudentRadioButton = (RadioButton) findViewById(R.id.user_type_student);
         mForgotPasswordView = (TextView) findViewById(R.id.forgot_password_view);
         mLoginPresenter = new LoginPresenter(LoginActivity.this);
         //login functionality: when user clicks on login this listener validate input fields and login user into the system
@@ -42,8 +54,10 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInterfa
             public void onClick(View view) {
                 String email = mEmailView.getText().toString().trim();
                 String password = mPasswordView.getText().toString();
-                if(validateInput(email, password)) {
-                    mLoginPresenter.loginUser(email, password);
+                String userType = getUserType();
+                Log.d(TAG, "Usertype = " + userType);
+                if(validateInput(email, password, userType)) {
+                    mLoginPresenter.loginUser(email, password, userType);
                 }
             }
         });
@@ -78,12 +92,18 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInterfa
     }
     //call on successful login
     @Override
-    public void onLoginSuccess() {
-        Intent intent = new Intent(LoginActivity.this, StudentListActivity.class);
-        startActivity(intent);
+    public void onLoginSuccess(String userType) {
+        if(userType.equals("student")) {
+            Intent intent = new Intent(LoginActivity.this, TutorListActivity.class);
+            startActivity(intent);
+        }else if(userType.equals("tutor")){
+            Intent tutorIntent = new Intent(LoginActivity.this, TutorProfileActivity.class);
+            tutorIntent.putExtra("tutorId", LoggedInUser.getLoggedInUser().getUserId());
+            startActivity(tutorIntent);
+        }
     }
     //utility method to validate input fields
-    private boolean validateInput(String email, String password) {
+    private boolean validateInput(String email, String password, String userType) {
         if(email.isEmpty()){
             mEmailView.setError("Please enter email address");
             mEmailView.requestFocus();
@@ -94,6 +114,20 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInterfa
             mPasswordView.requestFocus();
             return false;
         }
+        if(userType == null){
+            Toast.makeText(LoginActivity.this, "Please Set a User Type:", Toast.LENGTH_LONG).show();
+            return false;
+        }
         return true;
+    }
+    private String getUserType() {
+        int type = mUserTypeRadioGroup.getCheckedRadioButtonId();
+        if (type == mStudentRadioButton.getId()){
+            return "student";
+        }else if(type == mTutorRadioButton.getId()){
+            return "tutor";
+        }else{
+            return null;
+        }
     }
 }

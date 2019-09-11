@@ -4,5 +4,5 @@ package com.noumi.sms.ui.login;
 
 public interface LoginViewInterface {
     void onResult(String message);
-    void onLoginSuccess();
+    void onLoginSuccess(String userType);
 }

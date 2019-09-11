@@ -22,8 +22,8 @@ public class LoginPresenter implements LoginPresenterInterface {
     }
     //login user into system
     @Override
-    public void loginUser(String email, String password) {
-        mDatabaseHandler.LoginUser(email, password, this);
+    public void loginUser(String email, String password, String userType) {
+        mDatabaseHandler.LoginUser(email, password, userType, this);
     }
     //method to get feedback from database handler and pass to LoginActivity
     @Override
@@ -32,7 +32,7 @@ public class LoginPresenter implements LoginPresenterInterface {
     }
     //method to get feedback from database handler on successful login and pass to LoginActivity
     @Override
-    public void onLoginSuccess() {
-        mLoginViewInterface.onLoginSuccess();
+    public void onLoginSuccess(String userType) {
+        mLoginViewInterface.onLoginSuccess(userType);
     }
 }

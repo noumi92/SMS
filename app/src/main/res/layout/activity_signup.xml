@@ -86,6 +86,23 @@
             android:entries="@array/students_cities">
         </Spinner>
     </LinearLayout>
+    <RadioGroup
+        android:id="@+id/user_type_radio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+        <RadioButton
+            android:id="@+id/user_type_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Student"/>
+        <RadioButton
+            android:id="@+id/user_type_tutor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tutor"/>
+    </RadioGroup>
     <Button
         android:id="@+id/signup_button"
         android:layout_width="wrap_content"

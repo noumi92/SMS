@@ -17,13 +17,13 @@
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/male_students"
+            android:id="@+id/male_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/male_radio_button_label" />
 
         <RadioButton
-            android:id="@+id/female_students"
+            android:id="@+id/female_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/female_radio_button_label" />
@@ -37,13 +37,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/gender_filter_seperator"
         android:text="@string/city_spinner_label_text" />
-    <Spinner android:id="@+id/student_city_spinner"
+    <Spinner android:id="@+id/city_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/label_city"
         android:entries="@array/students_cities" />
     <View android:id="@+id/city_filter_seperator"
-        android:layout_below="@id/student_city_spinner"
+        android:layout_below="@id/city_spinner"
         style="@style/horizontal_seperator"/>
 
     <Button
