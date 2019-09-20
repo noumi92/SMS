@@ -3,8 +3,8 @@ package com.noumi.sms.ui.students.list;
 //this class connects StudentListActivity to database and passes feedbacks from database to StudentListActivity to update views and
 //feedback to user
 
-import com.noumi.sms.data.DatabaseHandler;
-import com.noumi.sms.data.DatabaseInterface;
+import com.noumi.sms.data.database.DatabaseHandler;
+import com.noumi.sms.data.database.DatabaseInterface;
 import com.noumi.sms.data.model.Student;
 
 import java.util.List;

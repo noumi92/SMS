@@ -13,31 +13,35 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.chat.room.ChatRoomActivity"></activity>
         <activity
             android:name=".ui.tutors.detail.TutorDetailActivity"
+            android:label="Tutor Details"
             android:parentActivityName=".ui.tutors.list.TutorListActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.tuition.TuitionActivity" />
-        <activity
-            android:name=".ui.tutors.profile.TutorProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.students.profile.StudentProfileActivity"
+            android:name=".ui.tutors.profile.TutorProfileActivity"
+            android:label="Tutor Profile"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.forgotpassword.ForgotPasswordActivity"
+            android:label="Reset Password"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.students.list.StudentListActivity"
+            android:label="Browse Students"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.tutors.list.TutorListActivity"
+            android:label="Browse Tutors"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.signup.SignupActivity"
+            android:label="Signup FindMyTutor"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.login.LoginActivity"
+            android:label="Login FindMyTutor"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,6 +49,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.tuition.list.TuitionsListActivity" />
+        <activity android:name=".ui.students.profile.StudentProfileActivity" />
+        <activity android:name=".ui.tuition.detail.TuitionDetailActivity" />
+        <activity android:name=".ui.chat.list.ChatListActivity" />
     </application>
 
 </manifest>

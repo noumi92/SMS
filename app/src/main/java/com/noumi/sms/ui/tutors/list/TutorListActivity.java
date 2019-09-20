@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,6 +27,7 @@ import android.widget.Toast;
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.Tutor;
 import com.noumi.sms.ui.login.LoginActivity;
+import com.noumi.sms.utils.NavigationUtils;
 
 import java.util.List;
 
@@ -45,6 +48,7 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
     private String mSelectedCity;
     private String mSelectedGender;
     private ListDivider mListDivider;
+    private NavigationView mNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +69,7 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
         mApplyFilters = (Button) findViewById(R.id.button_apply_filters);
         mClearFilters = (Button) findViewById(R.id.button_clear_filters);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_menu_view);
         //setup adapter here
         mTutorRecyclerView.setHasFixedSize(true);
         mTutorRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -79,6 +84,7 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
             toolbar.setTitle(R.string.app_name);
             setSupportActionBar(toolbar);
         }
+        NavigationUtils.startStudentNaigation(this, mNavigationView);
         //apply filter button when any filter selected app calls appropriate method to fetch required data from database
         mApplyFilters.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +121,7 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
                 mGenderRadioGroup.clearCheck();
                 mCitySpinner.setSelected(false);
                 mTutorListPresenter.loadTutors();
-                mDrawerLayout.closeDrawers();
+                mDrawerLayout.closeDrawer(Gravity.END);
             }
         });
     }

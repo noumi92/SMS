@@ -1,7 +1,8 @@
 package com.noumi.sms.ui.tutors.detail;
 
-import com.noumi.sms.data.DatabaseHandler;
-import com.noumi.sms.data.DatabaseInterface;
+import com.noumi.sms.data.database.DatabaseHandler;
+import com.noumi.sms.data.database.DatabaseInterface;
+import com.noumi.sms.data.model.Chat;
 import com.noumi.sms.data.model.Tuition;
 import com.noumi.sms.data.model.Tutor;
 
@@ -21,6 +22,11 @@ public class TutorDetailPresenter implements TutorDetailPresenterInterface {
     @Override
     public void addTuition(Tuition tuition) {
         mDatabaseHandler.addTuition(tuition, this);
+    }
+
+    @Override
+    public void addChat(Chat chat) {
+        mDatabaseHandler.addChat(chat, this);
     }
 
     @Override

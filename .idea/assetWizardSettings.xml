@@ -24,6 +24,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
+                                                <entry key="opacityPercent" value="60" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -34,7 +35,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/E:/Development/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_face_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/E:/Development/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_school_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -44,7 +45,7 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="profile_female" />
+                                      <entry key="outputName" value="thumb_tuition" />
                                       <entry key="themeColor" value="ffffff" />
                                     </map>
                                   </option>
@@ -71,8 +72,6 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="backgroundLayerName" value="ic_launcher_background" />
-                                      <entry key="foregroundLayerName" value="ic_launcher_foreground" />
                                       <entry key="outputName" value="profile_male" />
                                     </map>
                                   </option>

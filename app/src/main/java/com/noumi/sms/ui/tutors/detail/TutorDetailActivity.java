@@ -14,11 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noumi.sms.R;
+import com.noumi.sms.data.model.Chat;
 import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.data.model.Tuition;
 import com.noumi.sms.data.model.Tutor;
 import com.noumi.sms.ui.login.LoginActivity;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class TutorDetailActivity extends AppCompatActivity implements TutorDetailViewInterface{
@@ -48,6 +51,7 @@ public class TutorDetailActivity extends AppCompatActivity implements TutorDetai
     private long mTutorFee;
     private String mTutorAboutMe;
     private Button mApplyTuition;
+    private Button mCreateChat;
 
 
     @Override
@@ -65,6 +69,7 @@ public class TutorDetailActivity extends AppCompatActivity implements TutorDetai
         mTutorAboutMeView = (EditText) findViewById(R.id.about_me_text);
         mTutorQualificationView = (EditText) findViewById(R.id.qualification_text);
         mApplyTuition = (Button) findViewById(R.id.apply_tuition);
+        mCreateChat = (Button) findViewById(R.id.apply_chat);
         //setting up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         if(toolbar!=null){
@@ -82,8 +87,24 @@ public class TutorDetailActivity extends AppCompatActivity implements TutorDetai
                 sb.append("#");
                 sb.append(studentId);
                 String tuitionId = sb.toString();
-                Tuition tuition = new Tuition(tuitionId, tutorId, studentId, false, false);
+                Date requestedDate = Calendar.getInstance().getTime();
+                Tuition tuition = new Tuition(tuitionId, tutorId, studentId, requestedDate, false, false);
                 mTutorDetailPresenter.addTuition(tuition);
+            }
+        });
+        mCreateChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String tutorId = mTutor.getTutorId();
+                String studentId = LoggedInUser.getLoggedInUser().getUserId();
+                StringBuilder sb = new StringBuilder();
+                sb.append(tutorId);
+                sb.append("#");
+                sb.append(studentId);
+                String chatId = sb.toString();
+                Date chatTime = Calendar.getInstance().getTime();
+                Chat chat = new Chat(chatId, chatTime, tutorId, studentId);
+                mTutorDetailPresenter.addChat(chat);
             }
         });
     }

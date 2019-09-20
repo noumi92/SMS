@@ -3,8 +3,8 @@ package com.noumi.sms.ui.signup;
 //this class connects SignupActivity to database and passes feedbacks from database to SignupActivity to update views and
 //feedback to user
 
-import com.noumi.sms.data.DatabaseHandler;
-import com.noumi.sms.data.DatabaseInterface;
+import com.noumi.sms.data.database.DatabaseHandler;
+import com.noumi.sms.data.database.DatabaseInterface;
 import com.noumi.sms.data.model.Student;
 import com.noumi.sms.data.model.Tutor;
 

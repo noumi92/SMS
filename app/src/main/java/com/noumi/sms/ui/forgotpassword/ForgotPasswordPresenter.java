@@ -1,8 +1,8 @@
 package com.noumi.sms.ui.forgotpassword;
 //this class connects ForgotPasswordActivity to database and passes feedbacks from database to ForgotPasswordActivity to update views and
 //feedback to user
-import com.noumi.sms.data.DatabaseHandler;
-import com.noumi.sms.data.DatabaseInterface;
+import com.noumi.sms.data.database.DatabaseHandler;
+import com.noumi.sms.data.database.DatabaseInterface;
 
 public class ForgotPasswordPresenter implements ForgotPasswordPresenterInterface {
     private DatabaseInterface mDatabaseHandler;

@@ -2,6 +2,7 @@ package com.noumi.sms.ui.tutors.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.Tutor;
 import com.noumi.sms.ui.login.LoginActivity;
+import com.noumi.sms.utils.NavigationUtils;
 
 import java.util.List;
 
@@ -42,7 +44,7 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
     private String mTutorLocation;
     private long mTutorFee;
     private String mTutorAboutMe;
-
+    private NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
         mTutorFeeView = (EditText) findViewById(R.id.fee_text);
         mTutorAboutMeView = (EditText) findViewById(R.id.about_me_text);
         mTutorQualificationView = (EditText) findViewById(R.id.qualification_text);
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_menu_view);
         //setting up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         if(toolbar!=null){
@@ -65,6 +68,7 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
             setSupportActionBar(toolbar);
         }
         getTutorIntent();
+        NavigationUtils.startTutorNaigation(this, mNavigationView);
     }
 
     @Override

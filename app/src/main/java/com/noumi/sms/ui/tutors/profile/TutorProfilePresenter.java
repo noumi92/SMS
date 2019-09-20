@@ -1,7 +1,7 @@
 package com.noumi.sms.ui.tutors.profile;
 
-import com.noumi.sms.data.DatabaseHandler;
-import com.noumi.sms.data.DatabaseInterface;
+import com.noumi.sms.data.database.DatabaseHandler;
+import com.noumi.sms.data.database.DatabaseInterface;
 import com.noumi.sms.data.model.Tutor;
 
 public class TutorProfilePresenter implements TutorProfilePresenterInterface {

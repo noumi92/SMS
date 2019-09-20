@@ -29,4 +29,6 @@
     <string name="city_spinner_label_text">Select Location:</string>
     <string name="clear_filters_button_label">Clear Filters</string>
     <string name="apply_filters_button_label">Apply Filters</string>
+    <string name="title_item_list">Items</string>
+    <string name="title_item_detail">Item Detail</string>
 </resources>

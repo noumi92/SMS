@@ -1,6 +1,6 @@
 package com.noumi.sms.ui.tutors.list;
 
-//this class defines contract for TutorListPresenter and these methods are implemented in TutorListPresenter
+//this class defines contract for TuitionListPresenter and these methods are implemented in TuitionListPresenter
 
 import com.noumi.sms.data.model.Tutor;
 

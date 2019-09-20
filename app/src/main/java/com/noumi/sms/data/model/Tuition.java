@@ -1,21 +1,31 @@
 package com.noumi.sms.data.model;
 
+import java.util.Date;
+
 public class Tuition {
     private String mTuitionId;
     private String mTutorId;
     private String mStudentId;
+    private Date mRequestedDate;
+    private Date mAcceptedDate;
     private boolean mActive;
     private boolean mAccepted;
+    private int mRating;
+    private String mComments;
 
     public Tuition() {
     }
 
-    public Tuition(String tuitionId, String tutorId, String studentId, boolean active, boolean accepted) {
+    public Tuition(String tuitionId, String tutorId, String studentId, Date requestedDate, boolean active, boolean accepted) {
         mTuitionId = tuitionId;
         mTutorId = tutorId;
         mStudentId = studentId;
+        mRequestedDate = requestedDate;
+        mAcceptedDate = null;
         mActive = active;
         mAccepted = accepted;
+        mRating = 0;
+        mComments = "";
     }
 
     public String getTuitionId() {
@@ -42,6 +52,22 @@ public class Tuition {
         mStudentId = studentId;
     }
 
+    public Date getRequestedDate() {
+        return mRequestedDate;
+    }
+
+    public void setRequestedDate(Date requestedDate) {
+        mRequestedDate = requestedDate;
+    }
+
+    public Date getAcceptedDate() {
+        return mAcceptedDate;
+    }
+
+    public void setAcceptedDate(Date acceptedDate) {
+        mAcceptedDate = acceptedDate;
+    }
+
     public boolean isActive() {
         return mActive;
     }
@@ -56,5 +82,21 @@ public class Tuition {
 
     public void setAccepted(boolean accepted) {
         mAccepted = accepted;
+    }
+
+    public long getRating() {
+        return mRating;
+    }
+
+    public void setRating(int rating) {
+        mRating = rating;
+    }
+
+    public String getComments() {
+        return mComments;
+    }
+
+    public void setComments(String comments) {
+        mComments = comments;
     }
 }

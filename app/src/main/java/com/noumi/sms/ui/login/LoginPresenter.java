@@ -3,8 +3,8 @@ package com.noumi.sms.ui.login;
 //this class connects LoginActivity to database and passes feedbacks from database to LoginActivity to update views and
 //feedback to user
 
-import com.noumi.sms.data.DatabaseHandler;
-import com.noumi.sms.data.DatabaseInterface;
+import com.noumi.sms.data.database.DatabaseHandler;
+import com.noumi.sms.data.database.DatabaseInterface;
 
 public class LoginPresenter implements LoginPresenterInterface {
     private String TAG = "com.noumi.sms.custom.log";

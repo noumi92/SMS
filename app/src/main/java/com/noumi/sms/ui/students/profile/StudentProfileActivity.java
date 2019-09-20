@@ -2,6 +2,8 @@ package com.noumi.sms.ui.students.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.Student;
 import com.noumi.sms.ui.login.LoginActivity;
+import com.noumi.sms.utils.NavigationUtils;
 
 public class StudentProfileActivity extends AppCompatActivity implements StudentProfileViewInterface {
     private String TAG = "com.noumi.sms.custom.log";
@@ -30,6 +33,8 @@ public class StudentProfileActivity extends AppCompatActivity implements Student
     private String mStudentCity;
     private String mStudentGender;
     private StudentProfilePresenterInterface mStudentDetailPresenter;
+    private DrawerLayout mDrawerLayout;
+    private NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,8 @@ public class StudentProfileActivity extends AppCompatActivity implements Student
         mStudentEmailView = (EditText) findViewById(R.id.email_text);
         mStudentCityView = (EditText) findViewById(R.id.city_text);
         mStudentGenderView = (EditText) findViewById(R.id.gender_text);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_menu_view);
 
         //setting up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -56,6 +63,7 @@ public class StudentProfileActivity extends AppCompatActivity implements Student
             setSupportActionBar(toolbar);
         }
 
+        NavigationUtils.startStudentNaigation(this,mNavigationView);
         getStudentIntent();
 
     }
