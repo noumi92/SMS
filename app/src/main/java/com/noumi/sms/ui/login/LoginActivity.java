@@ -102,6 +102,12 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInterfa
             startActivity(tutorIntent);
         }
     }
+
+    @Override
+    public void onLoginFailure() {
+
+    }
+
     //utility method to validate input fields
     private boolean validateInput(String email, String password, String userType) {
         if(email.isEmpty()){

@@ -35,4 +35,9 @@ public class LoginPresenter implements LoginPresenterInterface {
     public void onLoginSuccess(String userType) {
         mLoginViewInterface.onLoginSuccess(userType);
     }
+
+    @Override
+    public void onLoginFailure() {
+        mLoginViewInterface.onLoginFailure();
+    }
 }

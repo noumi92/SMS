@@ -58,7 +58,7 @@ public class ChatListActivity extends AppCompatActivity implements ChatListViewI
         //setting up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         if(toolbar!=null){
-            toolbar.setTitle(this.getTitle());
+            toolbar.setTitle("My Chats");
             setSupportActionBar(toolbar);
         }
         if(mUserType.equals("student")){

@@ -55,7 +55,7 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomViewI
         //setting up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         if(toolbar!=null){
-            toolbar.setTitle(this.getTitle());
+            toolbar.setTitle("Chat Room");
             setSupportActionBar(toolbar);
         }
         NavigationUtils.startStudentNaigation(this, mNavigationView);

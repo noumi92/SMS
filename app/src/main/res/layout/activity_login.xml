@@ -8,31 +8,33 @@
     android:layout_marginStart="8dp"
     android:layout_marginEnd="8dp"
     tools:context=".ui.login.LoginActivity">
-
     <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+    android:textColor="@color/colorPrimary"
     android:gravity="center_horizontal"
     android:text="@string/app_name"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/colorPrimary"
         android:layout_marginBottom="32dp"
         android:gravity="center_horizontal"
         android:text="@string/student_login_activity_subtitle"/>
-
     <EditText
         android:id="@+id/email_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/row_primary_color"
         android:inputType="textEmailAddress"
         android:hint="@string/email_hint"/>
     <EditText
         android:id="@+id/password_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/row_primary_color"
         android:inputType="textPassword"
         android:hint="@string/password_hint" />
     <RadioGroup
@@ -54,8 +56,9 @@
     </RadioGroup>
     <Button
         android:id="@+id/login_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/row_primary_color.button"
         android:layout_gravity="center_horizontal"
         android:text="@string/login_hint"/>
     <LinearLayout
@@ -68,14 +71,14 @@
             android:id="@+id/result"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            style="@style/label_text"
             android:text="@string/signup_activity_link_pertext"/>
         <TextView
             android:id="@+id/register_view"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:clickable="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            style="@style/link_text"
             android:text="@string/signup_activity_link_text"
             android:focusable="true" />
     </LinearLayout>
@@ -88,16 +91,15 @@
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            style="@style/label_text"
             android:text="@string/forgot_password_activity_link_pretext"/>
         <TextView
             android:id="@+id/forgot_password_view"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:clickable="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            style="@style/link_text"
             android:text="@string/forgot_password_activity_link_text"
             android:focusable="true" />
     </LinearLayout>
-
 </LinearLayout>

@@ -29,15 +29,15 @@ public class TutorDetailActivity extends AppCompatActivity implements TutorDetai
     private String TAG = "com.noumi.sms.custom.log";
     private TutorDetailPresenterInterface mTutorDetailPresenter;
     private TextView mTutorNameView;
-    private EditText mTutorEmailView;
-    private EditText mTutorCityView;
-    private EditText mTutorGenderView;
-    private EditText mTutorQualificationView;
-    private EditText mTutorSubjectsView;
-    private EditText mTutorRatingView;
-    private EditText mTutorLocationView;
-    private EditText mTutorFeeView;
-    private EditText mTutorAboutMeView;
+    private TextView mTutorEmailView;
+    private TextView mTutorCityView;
+    private TextView mTutorGenderView;
+    private TextView mTutorQualificationView;
+    private TextView mTutorSubjectsView;
+    private TextView mTutorRatingView;
+    private TextView mTutorLocationView;
+    private TextView mTutorFeeView;
+    private TextView mTutorAboutMeView;
     private Tutor mTutor;
     private String mTutorName;
     private String mTutorEmail;
@@ -59,21 +59,21 @@ public class TutorDetailActivity extends AppCompatActivity implements TutorDetai
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_detail);
         mTutorNameView = (TextView) findViewById(R.id.tutor_name_text);
-        mTutorEmailView = (EditText) findViewById(R.id.email_text);
-        mTutorCityView = (EditText) findViewById(R.id.city_text);
-        mTutorGenderView = (EditText) findViewById(R.id.gender_text);
-        mTutorSubjectsView = (EditText) findViewById(R.id.subjects_text);
-        mTutorLocationView = (EditText) findViewById(R.id.location_text);
-        mTutorRatingView = (EditText) findViewById(R.id.rating_text);
-        mTutorFeeView = (EditText) findViewById(R.id.fee_text);
-        mTutorAboutMeView = (EditText) findViewById(R.id.about_me_text);
-        mTutorQualificationView = (EditText) findViewById(R.id.qualification_text);
+        mTutorEmailView = (TextView) findViewById(R.id.email_text);
+        mTutorCityView = (TextView) findViewById(R.id.city_text);
+        mTutorGenderView = (TextView) findViewById(R.id.gender_text);
+        mTutorSubjectsView = (TextView) findViewById(R.id.subjects_text);
+        mTutorLocationView = (TextView) findViewById(R.id.location_text);
+        mTutorRatingView = (TextView) findViewById(R.id.rating_text);
+        mTutorFeeView = (TextView) findViewById(R.id.fee_text);
+        mTutorAboutMeView = (TextView) findViewById(R.id.about_me_text);
+        mTutorQualificationView = (TextView) findViewById(R.id.qualification_text);
         mApplyTuition = (Button) findViewById(R.id.apply_tuition);
         mCreateChat = (Button) findViewById(R.id.apply_chat);
         //setting up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         if(toolbar!=null){
-            toolbar.setTitle(R.string.app_name);
+            toolbar.setTitle("Tutor Details");
             setSupportActionBar(toolbar);
         }
         getTutorIntent();

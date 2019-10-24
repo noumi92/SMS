@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "433754915881-jfa72jurc5731ievqbgbe3j6qel8eu06.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noumi.sms",
+            "certificate_hash": "1863e4cdf9400ea18b6e9fc6df2a5a4798bb7590"
+          }
+        },
+        {
           "client_id": "433754915881-iako68ehqcmqsc9fcrsn58vht2poqhee.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

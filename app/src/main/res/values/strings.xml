@@ -8,14 +8,14 @@
     <string name="reset_password_hint">Reset Password</string>
     <string name="login_view_link_text">To Login Click</string>
     <string name="login_view_link">Here</string>
-    <string name="student_login_activity_subtitle">(Student Login)</string>
+    <string name="student_login_activity_subtitle">(Login to System)</string>
     <string name="password_hint">Password</string>
     <string name="login_hint">Login</string>
     <string name="signup_activity_link_pertext">New to FindMyTutor? </string>
     <string name="signup_activity_link_text"> Register Here</string>
     <string name="forgot_password_activity_link_pretext">Forgot Password? </string>
     <string name="forgot_password_activity_link_text"> Reset Here</string>
-    <string name="student_registration_activity_subtitle">(Student Registration)</string>
+    <string name="student_registration_activity_subtitle">(New User Registration)</string>
     <string name="username_hint">Username</string>
     <string name="confirm_password_hint">Confirm Password</string>
     <string name="gender_spinner_lable">Gender:</string>

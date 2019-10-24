@@ -26,7 +26,6 @@ public class TuitionDetailActivity extends AppCompatActivity implements TuitionD
     private TextView mTuitionActiveTextView;
     private TextView mTutorRatingTextView;
     private EditText mCommentsView;
-    private Button mChatButton;
     private Button mUpdateRatingButton;
     private Button mLeaveTuitionButton;
     private Tuition mTuition;
@@ -44,13 +43,12 @@ public class TuitionDetailActivity extends AppCompatActivity implements TuitionD
         mTuitionActiveTextView = (TextView) findViewById(R.id.tuition_active_view);
         mTutorRatingTextView = (TextView) findViewById(R.id.tuition_rating_view);
         mCommentsView = (EditText) findViewById(R.id.tuition_comments_view);
-        mChatButton = (Button) findViewById(R.id.tuition_chat_button);
         mUpdateRatingButton = (Button) findViewById(R.id.update_tuition_rating_button);
         mLeaveTuitionButton = (Button) findViewById(R.id.leave_tuition_button);
         //setting up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         if(toolbar!=null){
-            toolbar.setTitle(R.string.app_name);
+            toolbar.setTitle("Tuition Details");
             setSupportActionBar(toolbar);
         }
         getTuitionIntent();

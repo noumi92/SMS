@@ -41,6 +41,7 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        this.setTitle("Signup Account");
         //get references of views
         mUsernameView = (EditText) findViewById(R.id.name_view);
         mEmailView = (EditText) findViewById(R.id.email_view);

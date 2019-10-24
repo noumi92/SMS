@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.firebase:firebase-auth:16.0.5@aar">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../../.gradle/caches/transforms-2/files-2.1/257aa978af7b98d8dce91ff4a88e5a35/res" />
-      <root url="jar://$PROJECT_DIR$/../../.gradle/caches/transforms-2/files-2.1/257aa978af7b98d8dce91ff4a88e5a35/jars/classes.jar!/" />
+      <root url="jar://D:/Users/noumi/.gradle/caches/transforms-2/files-2.1/79c7178bf961606e5969f134a25f729e/firebase-auth-16.0.5/jars/classes.jar!/" />
+      <root url="file://D:/Users/noumi/.gradle/caches/transforms-2/files-2.1/79c7178bf961606e5969f134a25f729e/firebase-auth-16.0.5/res" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/../../.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-auth/16.0.5/a52a62631987728ed029b753a4585dae04425b9a/firebase-auth-16.0.5-javadoc.jar!/" />
+      <root url="jar://D:/Users/noumi/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-auth/16.0.5/a52a62631987728ed029b753a4585dae04425b9a/firebase-auth-16.0.5-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES />
   </library>

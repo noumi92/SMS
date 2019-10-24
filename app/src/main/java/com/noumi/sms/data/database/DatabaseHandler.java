@@ -204,6 +204,7 @@ public class DatabaseHandler implements DatabaseInterface {
                                                             LoggedInUser.getLoggedInUser().setUserEmail("");
                                                             LoggedInUser.getLoggedInUser().setUserId("");
                                                             mAuth.signOut();
+                                                            loginPresenter.onLoginFailure();
                                                             Log.d(TAG, "user type validation failed ");
                                                         }
                                                     }
@@ -225,6 +226,7 @@ public class DatabaseHandler implements DatabaseInterface {
                                                             LoggedInUser.getLoggedInUser().setUserEmail("");
                                                             LoggedInUser.getLoggedInUser().setUserId("");
                                                             mAuth.signOut();
+                                                            loginPresenter.onLoginFailure();
                                                             Log.d(TAG, "user type validation failed ");
                                                         }
                                                     }
@@ -235,14 +237,18 @@ public class DatabaseHandler implements DatabaseInterface {
                                     LoggedInUser.getLoggedInUser().setUserId("");
                                     mAuth.signOut();
                                     loginPresenter.onQueryResult("Email not verified...");
+                                    loginPresenter.onLoginFailure();
+                                    loginPresenter.onLoginFailure();
                                     Log.d(TAG, "Email not verified");
                                 }
                             } else {
                                 loginPresenter.onQueryResult("User is empty..");
+                                loginPresenter.onLoginFailure();
                                 Log.d(TAG, "User is empty" + mUser.getEmail());
                             }
                         } else {
                             loginPresenter.onQueryResult("Error signing in: " + task.getException().getMessage());
+                            loginPresenter.onLoginFailure();
                             Log.d(TAG, "Error signing in: " + task.getException().getMessage());
                         }
                     }

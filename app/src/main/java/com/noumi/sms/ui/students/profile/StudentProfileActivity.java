@@ -25,9 +25,9 @@ public class StudentProfileActivity extends AppCompatActivity implements Student
     private static final String STUDENT_CITY_KEY = "student_city";
     private static final String STUDENT_GENDER_KEY = "student_gender";
     private TextView mStudentNameView;
-    private EditText mStudentEmailView;
-    private EditText mStudentCityView;
-    private EditText mStudentGenderView;
+    private TextView mStudentEmailView;
+    private TextView mStudentCityView;
+    private TextView mStudentGenderView;
     private String mStudentName;
     private String mStudentEmail;
     private String mStudentCity;
@@ -50,16 +50,16 @@ public class StudentProfileActivity extends AppCompatActivity implements Student
         }
 
         mStudentNameView = (TextView) findViewById(R.id.student_name_text);
-        mStudentEmailView = (EditText) findViewById(R.id.email_text);
-        mStudentCityView = (EditText) findViewById(R.id.city_text);
-        mStudentGenderView = (EditText) findViewById(R.id.gender_text);
+        mStudentEmailView = (TextView) findViewById(R.id.email_text);
+        mStudentCityView = (TextView) findViewById(R.id.city_text);
+        mStudentGenderView = (TextView) findViewById(R.id.gender_text);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_menu_view);
 
         //setting up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         if(toolbar!=null){
-            toolbar.setTitle(R.string.app_name);
+            toolbar.setTitle("My Profile");
             setSupportActionBar(toolbar);
         }
 

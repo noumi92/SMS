@@ -18,6 +18,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements ForgotP
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
+        this.setTitle("Reset Password");
         //get view references here
         mEmailTextView = (EditText) findViewById(R.id.email_view);
         mPasswordResetButton = (Button) findViewById(R.id.reset_password_button);
