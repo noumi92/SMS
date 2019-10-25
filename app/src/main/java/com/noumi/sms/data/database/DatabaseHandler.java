@@ -19,6 +19,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.noumi.sms.data.model.Chat;
 import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.data.model.Message;
+import com.noumi.sms.data.model.Rating;
 import com.noumi.sms.data.model.Student;
 import com.noumi.sms.data.model.Tuition;
 import com.noumi.sms.data.model.Tutor;
@@ -31,12 +32,14 @@ import com.noumi.sms.ui.signup.SignupPresenterInterface;
 import com.noumi.sms.ui.students.list.StudentListPresenterInterface;
 import com.noumi.sms.ui.students.profile.StudentProfilePresenterInterface;
 import com.noumi.sms.ui.tuition.detail.TuitionDetailPresenter;
+import com.noumi.sms.ui.tuition.detail.TuitionDetailPresenterInterface;
 import com.noumi.sms.ui.tuition.list.TuitionListPresenterInterface;
 import com.noumi.sms.ui.tutors.detail.TutorDetailPresenterInterface;
 import com.noumi.sms.ui.tutors.list.TutorListPresenterInterface;
 import com.noumi.sms.ui.tutors.profile.TutorProfilePresenterInterface;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class DatabaseHandler implements DatabaseInterface {
@@ -147,6 +150,7 @@ public class DatabaseHandler implements DatabaseInterface {
                                         }
                                     } else {
                                         Log.d(TAG, task.getException().getMessage());
+                                        loginPresenter.onLoginFailure();
                                     }
                                 }
                             });
@@ -166,11 +170,14 @@ public class DatabaseHandler implements DatabaseInterface {
                                         }
                                     } else {
                                         Log.d(TAG, task.getException().getMessage());
+                                        loginPresenter.onLoginFailure();
                                     }
                                 }
                             });
                 }
             }
+        }else{
+            loginPresenter.onLoginFailure();
         }
     }
     //method to perform firebase authentication to login user
@@ -376,6 +383,7 @@ public class DatabaseHandler implements DatabaseInterface {
                             DocumentSnapshot document = task.getResult();
                             if(document.exists()){
                                 Student student = document.toObject(Student.class);
+                                LoggedInUser.getLoggedInUser().setUserName(student.getStudentName());
                                 studentProfilePresenterInterface.onDataLoad(student);
                             }
                             studentProfilePresenterInterface.onQueryResult("load student successful");
@@ -408,6 +416,7 @@ public class DatabaseHandler implements DatabaseInterface {
                                 tutor.setTutorSubjects(subjects);
                                 tutor.setTutorDegreeName(document.getString("tutorDegreeName"));
                                 tutor.setTutorDegreeSubject(document.getString("tutorDegreeSubject"));
+                                LoggedInUser.getLoggedInUser().setUserName(tutor.getTutorName());
                                 tutorProfilePresenterInterface.onDataLoad(tutor);
                                 tutorProfilePresenterInterface.onQueryResult("load tutor successful");
                             }
@@ -457,26 +466,38 @@ public class DatabaseHandler implements DatabaseInterface {
         mDatabase.collection("tuitions").document(tuition.getTuitionId()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()){
-                            DocumentSnapshot document = task.getResult();
+                    public void onComplete(@NonNull Task<DocumentSnapshot> checExixtingTask) {
+                        if(checExixtingTask.isSuccessful()){
+                            DocumentSnapshot document = checExixtingTask.getResult();
                             if(document.exists()){
                                 tutorDetailPresenterInterface.onQueryResult("Record already exist");
+                                tutorDetailPresenterInterface.onApplyTuitionSuccess(tuition.getTuitionId());
                             }else{
                                 mDatabase.collection("tuitions").document(tuition.getTuitionId()).set(tuition)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if(task.isSuccessful()){
-                                                    tutorDetailPresenterInterface.onQueryResult("tuition inserted....");
+                                            public void onComplete(@NonNull Task<Void> addTuitiontask) {
+                                                if(addTuitiontask.isSuccessful()){
+                                                    Rating rating = new Rating(tuition.getTuitionId(), tuition.getTutorId(), tuition.getStudentId());
+                                                    mDatabase.collection("ratings").document(tuition.getTuitionId()).set(rating)
+                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> addRatingtask) {
+                                                                    if(addRatingtask.isSuccessful()){
+                                                                        tutorDetailPresenterInterface.onApplyTuitionSuccess(tuition.getTuitionId());
+                                                                    }else{
+                                                                        tutorDetailPresenterInterface.onQueryResult("rating insertion failed..." + addRatingtask.getException().getMessage());
+                                                                    }
+                                                                }
+                                                            });
                                                 }else{
-                                                    tutorDetailPresenterInterface.onQueryResult("tuition insertion failed..." + task.getException().getMessage());
+                                                    tutorDetailPresenterInterface.onQueryResult("tuition insertion failed..." + addTuitiontask.getException().getMessage());
                                                 }
                                             }
                                         });
                             }
                         }else{
-                            tutorDetailPresenterInterface.onQueryResult("tuition insertion failed" + task.getException().getMessage());
+                            tutorDetailPresenterInterface.onQueryResult("tuition insertion failed" + checExixtingTask.getException().getMessage());
                         }
                     }
                 });
@@ -493,6 +514,7 @@ public class DatabaseHandler implements DatabaseInterface {
                             DocumentSnapshot document = task.getResult();
                             if(document.exists()){
                                 tutorDetailPresenterInterface.onQueryResult("Record already exist");
+                                tutorDetailPresenterInterface.onAddChatSuccess(chat.getChatId());
                             }else{
                                 mDatabase.collection("chats").document(chat.getChatId()).set(chat)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -500,6 +522,7 @@ public class DatabaseHandler implements DatabaseInterface {
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if(task.isSuccessful()){
                                                     tutorDetailPresenterInterface.onQueryResult("chat room created....");
+                                                    tutorDetailPresenterInterface.onAddChatSuccess(chat.getChatId());
                                                 }else{
                                                     tutorDetailPresenterInterface.onQueryResult("chat insertion failed..." + task.getException().getMessage());
                                                 }
@@ -665,7 +688,7 @@ public class DatabaseHandler implements DatabaseInterface {
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                 mTutors.add(task.getResult().toObject(Tutor.class));
-                                                chatListPresenter.onDataLoadComplete(mChats, mTutors);
+                                                chatListPresenter.onChatsLoadByStudentId(mChats, mTutors);
                                             }
                                         });
                             }
@@ -677,7 +700,7 @@ public class DatabaseHandler implements DatabaseInterface {
     @Override
     public void getChatsByTutorId(String tutorId, final ChatListPresenter chatListPresenter) {
         mChats.clear();
-        mTutors.clear();
+        mStudents.clear();
         mDatabase.collection("chats").whereEqualTo("tutorId",tutorId).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -686,12 +709,12 @@ public class DatabaseHandler implements DatabaseInterface {
                             for(QueryDocumentSnapshot document: task.getResult()){
                                 Chat chat = document.toObject(Chat.class);
                                 mChats.add(chat);
-                                mDatabase.collection("tutors").document(chat.getTutorId()).get()
+                                mDatabase.collection("students").document(chat.getStudentId()).get()
                                         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                mTutors.add(task.getResult().toObject(Tutor.class));
-                                                chatListPresenter.onDataLoadComplete(mChats, mTutors);
+                                                mStudents.add(task.getResult().toObject(Student.class));
+                                                chatListPresenter.onChatsLoadByTutorId(mChats, mStudents);
                                             }
                                         });
                             }
@@ -770,6 +793,52 @@ public class DatabaseHandler implements DatabaseInterface {
                     public void onFailure(@NonNull Exception e) {
                         signupPresenter.onQueryResult("Error: " + e.getMessage());
                         Log.d(TAG, "Error inserting tutor in database: " + e.getMessage());
+                    }
+                });
+    }
+
+    @Override
+    public void loadRating(String ratingId, final TuitionDetailPresenterInterface tuitionDetailPresenter) {
+        mDatabase.collection("ratings").document(ratingId).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            Rating rating = task.getResult().toObject(Rating.class);
+                            tuitionDetailPresenter.onRatingLoad(rating);
+                        }else{
+                            tuitionDetailPresenter.onQueryResult("Rating load failed" + task.getException().getMessage());
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void updateStudent(final StudentProfilePresenterInterface studentProfilePresenter, Student student) {
+        mDatabase.collection("students").document(student.getStudentId()).set(student)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            studentProfilePresenter.onUpdateStudentSuccess();
+                        } else{
+                            studentProfilePresenter.onQueryResult("Update Error: " + task.getException().getMessage());
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void updateTutor(Tutor tutor, final TutorProfilePresenterInterface tutorProfilePresenter) {
+        mDatabase.collection("tutors").document(tutor.getTutorId()).set(tutor)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            tutorProfilePresenter.onUpdateTutorSuccess();
+                        } else{
+                            tutorProfilePresenter.onQueryResult("Update Error: " + task.getException().getMessage());
+                        }
                     }
                 });
     }

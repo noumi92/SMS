@@ -119,6 +119,7 @@ public class StudentListActivity extends AppCompatActivity implements StudentLis
                 mDrawerLayout.closeDrawers();
             }
         });
+
     }
     //initial code to run onn startup
     @Override

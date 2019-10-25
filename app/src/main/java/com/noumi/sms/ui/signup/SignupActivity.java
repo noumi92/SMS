@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -36,6 +37,7 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInter
     private RadioGroup mUserTypeRadioGroup;
     private RadioButton mStudentRadioButton;
     private RadioButton mTutorRadioButton;
+    private LinearLayout mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInter
         mUserTypeRadioGroup = (RadioGroup) findViewById(R.id.user_type_radio);
         mStudentRadioButton = (RadioButton) findViewById(R.id.user_type_student);
         mTutorRadioButton = (RadioButton) findViewById(R.id.user_type_tutor);
+        mProgressBar = (LinearLayout) findViewById(R.id.progressbar);
         //click event response to signup user
         mSignupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,8 +71,10 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInter
                 if (validateInput(username, email, password, confirmPassword, gender, city, userType)){
                     if(userType.equals("student")) {
                         mStudent = new Student("123", email, username, city, gender);
+                        mProgressBar.setVisibility(View.VISIBLE);
                         mSignupPresenter.signupStudent(mStudent, password);
                     }else if(userType.equals("tutor")){
+                        mProgressBar.setVisibility(View.VISIBLE);
                         mTutor = new Tutor(username, email, city, gender);
                         mSignupPresenter.signupTutor(mTutor, password);
                     }
@@ -88,6 +93,7 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInter
     //method to display result to user signup action
     @Override
     public void onResult(String message) {
+        mProgressBar.setVisibility(View.GONE);
         Toast.makeText(SignupActivity.this, message, Toast.LENGTH_LONG).show();
     }
     //method to perform initial initializations on start of activity

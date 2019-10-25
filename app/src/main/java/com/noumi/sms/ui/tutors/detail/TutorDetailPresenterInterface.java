@@ -11,4 +11,6 @@ public interface TutorDetailPresenterInterface {
     void loadTutor(String tutorId);
     void addTuition(Tuition tuition);
     void addChat(Chat chat);
+    void onApplyTuitionSuccess(String tuitionId);
+    void onAddChatSuccess(String chatId);
 }

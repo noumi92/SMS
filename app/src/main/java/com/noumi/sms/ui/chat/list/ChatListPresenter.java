@@ -6,6 +6,7 @@ package com.noumi.sms.ui.chat.list;
 import com.noumi.sms.data.database.DatabaseHandler;
 import com.noumi.sms.data.database.DatabaseInterface;
 import com.noumi.sms.data.model.Chat;
+import com.noumi.sms.data.model.Student;
 import com.noumi.sms.data.model.Tutor;
 
 import java.util.List;
@@ -36,8 +37,12 @@ public class ChatListPresenter implements ChatListPresenterInterface {
 
 
     @Override
-    public void onDataLoadComplete(List<Chat> chats, List<Tutor> tutors) {
-        mChatListViewInterface.onDataLoadComplete(chats, tutors);
+    public void onChatsLoadByStudentId(List<Chat> chats, List<Tutor> tutors) {
+        mChatListViewInterface.onChatsLoadByStudentId(chats, tutors);
+    }
+    @Override
+    public void onChatsLoadByTutorId(List<Chat> chats, List<Student> students) {
+        mChatListViewInterface.onChatsLoadByTutorId(chats, students);
     }
 
     //method to get feedback from database handler and pass to StudentListActivity

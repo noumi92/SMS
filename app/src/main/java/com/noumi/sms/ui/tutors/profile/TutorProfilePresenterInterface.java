@@ -7,4 +7,6 @@ public interface TutorProfilePresenterInterface {
     void onQueryResult(String result);
     void logoutUser();
     void loadTutor(String tutorId);
+    void updateTutor(Tutor tutor);
+    void onUpdateTutorSuccess();
 }

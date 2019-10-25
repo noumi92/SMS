@@ -8,17 +8,22 @@
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
-
+    <include
+        android:id="@+id/progressbar"
+        layout="@layout/progress_wrapper"
+        android:layout_below="@id/toolbar"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:visibility="gone"/>
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/progressbar"
         tools:context=".ui.tuition.TuitionListActivity">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <android.support.v7.widget.RecyclerView
@@ -28,24 +33,30 @@
                 android:layout_weight="12"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
                 android:orientation="horizontal">
-
                 <EditText
                     android:id="@+id/message_edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5" />
-
+                    android:background="@android:color/white"
+                    android:padding="8dp"
+                    android:layout_weight="4"/>
                 <Button
                     android:id="@+id/send_message_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="SEND" />
+                    android:background="@color/colorPrimary"
+                    android:textColor="@android:color/white"
+                    android:layout_weight="1"
+                    android:text="SEND"/>
             </LinearLayout>
+
         </LinearLayout>
+
+
+
         <android.support.design.widget.NavigationView
             android:id="@+id/navigation_menu_view"
             android:layout_width="wrap_content"
@@ -54,5 +65,4 @@
             app:menu="@menu/menu_student_navigation">
         </android.support.design.widget.NavigationView>
     </android.support.v4.widget.DrawerLayout>
-
 </RelativeLayout>

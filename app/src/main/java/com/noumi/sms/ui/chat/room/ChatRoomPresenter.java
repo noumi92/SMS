@@ -15,8 +15,8 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface {
     }
 
     @Override
-    public void loadMessages(String threadId) {
-        mDatabaseHandler.getMessages(threadId, this);
+    public void loadMessages(String chatId) {
+        mDatabaseHandler.getMessages(chatId, this);
     }
 
     @Override

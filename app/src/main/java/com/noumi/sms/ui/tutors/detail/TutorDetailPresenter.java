@@ -43,4 +43,14 @@ public class TutorDetailPresenter implements TutorDetailPresenterInterface {
     public void logoutUser() {
         mDatabaseHandler.logoutUser();
     }
+
+    @Override
+    public void onApplyTuitionSuccess(String tuitionId) {
+        mTutorDetailViewInterface.onApplyTuitionSuccess(tuitionId);
+    }
+
+    @Override
+    public void onAddChatSuccess(String chatId) {
+        mTutorDetailViewInterface.onAddChatSuccess(chatId);
+    }
 }

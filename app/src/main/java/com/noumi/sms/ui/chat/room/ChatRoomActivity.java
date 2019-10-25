@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.LoggedInUser;
@@ -37,6 +38,10 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomViewI
     private NavigationView mNavigationView;
     private EditText mMessageEditText;
     private Button mSendMessage;
+    private LinearLayout mProgressbar;
+    private String mChatTitle;
+    private Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,15 +53,16 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomViewI
         mNavigationView = (NavigationView) findViewById(R.id.navigation_menu_view);
         mMessageEditText = (EditText) findViewById(R.id.message_edit_text);
         mSendMessage = (Button) findViewById(R.id.send_message_button);
+        mProgressbar = (LinearLayout) findViewById(R.id.progressbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         //setup adapter here
         mMessagesRecyclerView.setHasFixedSize(true);
         mMessagesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //setting up toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        if(toolbar!=null){
-            toolbar.setTitle("Chat Room");
-            setSupportActionBar(toolbar);
+        if(mToolbar != null){
+            mToolbar.setTitle("Chat Room");
+            setSupportActionBar(mToolbar);
         }
         NavigationUtils.startStudentNaigation(this, mNavigationView);
 
@@ -68,8 +74,8 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomViewI
                 String messageBody = mMessageEditText.getText().toString();
                 if(!messageBody.isEmpty()){
                     Date messageTime = Calendar.getInstance().getTime();
-
                     Message message = new Message(messageBody, LoggedInUser.getLoggedInUser().getUserId(), messageTime);
+                    Log.d(TAG, "message added to: " + mChatId);
                     mChatRoomPresenter.sendMessage(mChatId, message);
 
                 }
@@ -79,6 +85,7 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomViewI
     //initial code to run onn startup
     @Override
     protected void onStart() {
+        mProgressbar.setVisibility(View.VISIBLE);
         if(mChatRoomPresenter == null){
             mChatRoomPresenter = new ChatRoomPresenter(this);
         }
@@ -90,11 +97,12 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomViewI
     public void onLoadComplete(List<Message> messages) {
         Log.d(TAG, "data result count:" + messages.size());
         if (mChatRoomAdapter == null) {
-            mChatRoomAdapter = new ChatRoomAdapter(this, messages);
+            mChatRoomAdapter = new ChatRoomAdapter(this, messages, mChatTitle);
             mMessagesRecyclerView.setAdapter(mChatRoomAdapter);
         } else {
             mChatRoomAdapter.notifyDataSetChanged();
         }
+        mProgressbar.setVisibility(View.GONE);
     }
     //display feedback to user actions
     @Override
@@ -123,6 +131,8 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomViewI
     private void getChatRoomIntent(){
         if(getIntent().hasExtra("chatId")){
             mChatId = getIntent().getStringExtra("chatId");
+            mChatTitle = getIntent().getStringExtra("senderName");
+            mToolbar.setTitle(mChatTitle + "'s Chats");
             if(mChatRoomPresenter == null){
                 mChatRoomPresenter = new ChatRoomPresenter(this);
             }

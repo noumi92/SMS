@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.noumi.sms.R;
 import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.ui.forgotpassword.ForgotPasswordActivity;
 import com.noumi.sms.ui.signup.SignupActivity;
+import com.noumi.sms.ui.students.profile.StudentProfileActivity;
 import com.noumi.sms.ui.tutors.list.TutorListActivity;
 import com.noumi.sms.ui.tutors.profile.TutorProfileActivity;
 
@@ -33,6 +35,7 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInterfa
     private RadioGroup mUserTypeRadioGroup;
     private RadioButton mStudentRadioButton;
     private RadioButton mTutorRadioButton;
+    private LinearLayout mProgressbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,9 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInterfa
         mStudentRadioButton = (RadioButton) findViewById(R.id.user_type_student);
         mForgotPasswordView = (TextView) findViewById(R.id.forgot_password_view);
         mLoginPresenter = new LoginPresenter(LoginActivity.this);
+        mProgressbar = (LinearLayout) findViewById(R.id.progressbar);
+        final TextView progressbarText = mProgressbar.findViewById(R.id.progressbar_text);
+        progressbarText.setText(getString(R.string.wecome_text));
         //login functionality: when user clicks on login this listener validate input fields and login user into the system
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +63,8 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInterfa
                 String userType = getUserType();
                 Log.d(TAG, "Usertype = " + userType);
                 if(validateInput(email, password, userType)) {
+                    progressbarText.setText("Logging In");
+                    mProgressbar.setVisibility(View.VISIBLE);
                     mLoginPresenter.loginUser(email, password, userType);
                 }
             }
@@ -80,6 +88,7 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInterfa
     @Override
     protected void onStart() {
         super.onStart();
+        mProgressbar.setVisibility(View.VISIBLE);
         if (mLoginPresenter == null){
             mLoginPresenter = new LoginPresenter(LoginActivity.this);
         }
@@ -94,8 +103,9 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInterfa
     @Override
     public void onLoginSuccess(String userType) {
         if(userType.equals("student")) {
-            Intent intent = new Intent(LoginActivity.this, TutorListActivity.class);
-            startActivity(intent);
+            Intent studentIntent = new Intent(LoginActivity.this, StudentProfileActivity.class);
+            studentIntent.putExtra("studentId", LoggedInUser.getLoggedInUser().getUserId());
+            startActivity(studentIntent);
         }else if(userType.equals("tutor")){
             Intent tutorIntent = new Intent(LoginActivity.this, TutorProfileActivity.class);
             tutorIntent.putExtra("tutorId", LoggedInUser.getLoggedInUser().getUserId());
@@ -105,7 +115,7 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInterfa
 
     @Override
     public void onLoginFailure() {
-
+        mProgressbar.setVisibility(View.GONE);
     }
 
     //utility method to validate input fields

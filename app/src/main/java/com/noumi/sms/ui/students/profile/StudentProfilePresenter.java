@@ -32,4 +32,14 @@ public class StudentProfilePresenter implements StudentProfilePresenterInterface
     public void logoutUser() {
         mDatabaseHandler.logoutUser();
     }
+
+    @Override
+    public void updateStudent(Student student) {
+        mDatabaseHandler.updateStudent(this, student);
+    }
+
+    @Override
+    public void onUpdateStudentSuccess() {
+        mStudentProfileViewInterface.onUpdateStudentSuccess();
+    }
 }

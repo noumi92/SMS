@@ -7,4 +7,6 @@ public interface StudentProfilePresenterInterface {
     void onQueryResult(String result);
     void loadStudent(String studentId);
     void logoutUser();
+    void updateStudent(Student student);
+    void onUpdateStudentSuccess();
 }

@@ -2,6 +2,7 @@ package com.noumi.sms.ui.tuition.detail;
 
 import com.noumi.sms.data.database.DatabaseHandler;
 import com.noumi.sms.data.database.DatabaseInterface;
+import com.noumi.sms.data.model.Rating;
 import com.noumi.sms.data.model.Tuition;
 import com.noumi.sms.data.model.Tutor;
 
@@ -42,5 +43,15 @@ public class TuitionDetailPresenter implements TuitionDetailPresenterInterface {
     @Override
     public void loadTutor(String tutorId) {
         mDatabaseHandler.loadTutor(tutorId, this);
+    }
+
+    @Override
+    public void loadRating(String ratingId) {
+        mDatabaseHandler.loadRating(ratingId, this);
+    }
+
+    @Override
+    public void onRatingLoad(Rating rating) {
+        mTuitionDetailView.onRatingLoad(rating);
     }
 }

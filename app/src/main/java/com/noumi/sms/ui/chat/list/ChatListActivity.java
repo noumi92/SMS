@@ -17,11 +17,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.Chat;
 import com.noumi.sms.data.model.LoggedInUser;
+import com.noumi.sms.data.model.Student;
 import com.noumi.sms.data.model.Tutor;
 import com.noumi.sms.ui.login.LoginActivity;
 import com.noumi.sms.utils.NavigationUtils;
@@ -37,6 +39,7 @@ public class ChatListActivity extends AppCompatActivity implements ChatListViewI
     private ListDivider mListDivider;
     private NavigationView mNavigationView;
     private String mUserType;
+    private LinearLayout mProgressbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +49,7 @@ public class ChatListActivity extends AppCompatActivity implements ChatListViewI
         mChatsRecyclerView = (RecyclerView) findViewById(R.id.chat_recycler_view);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_menu_view);
+        mProgressbar = (LinearLayout) findViewById(R.id.progressbar);
         mUserType = LoggedInUser.getLoggedInUser().getUserType();
         Log.d(TAG, "musertype: " + mUserType);
         //setup adapter here
@@ -74,29 +78,50 @@ public class ChatListActivity extends AppCompatActivity implements ChatListViewI
     //initial code to run onn startup
     @Override
     protected void onStart() {
+        super.onStart();
+        mProgressbar.setVisibility(View.VISIBLE);
         if(mChatsListPresenter == null){
             mChatsListPresenter = new ChatListPresenter(this);
             String userId = LoggedInUser.getLoggedInUser().getUserId();
             mUserType = LoggedInUser.getLoggedInUser().getUserType();
             mChatsListPresenter.loadChats(userId, mUserType);
+        }else{
+            mChatAdapter.notifyDataSetChanged();
         }
-        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mProgressbar.setVisibility(View.GONE);
     }
 
     //this method is called when database handler completes data fetchinn
     @Override
-    public void onDataLoadComplete(List<Chat> chats, List<Tutor> tutors) {
+    public void onChatsLoadByStudentId(List<Chat> chats, List<Tutor> tutors) {
         if (mChatAdapter == null) {
             mChatAdapter = new ChatAdapter(this, chats, tutors);
             mChatsRecyclerView.setAdapter(mChatAdapter);
         } else {
             mChatAdapter.notifyDataSetChanged();
         }
+        mProgressbar.setVisibility(View.GONE);
+    }
+    @Override
+    public void onChatsLoadByTutorId(List<Chat> chats, List<Student> students) {
+        if (mChatAdapter == null) {
+            mChatAdapter = new ChatAdapter(chats, this, students);
+            mChatsRecyclerView.setAdapter(mChatAdapter);
+        } else {
+            mChatAdapter.notifyDataSetChanged();
+        }
+        mProgressbar.setVisibility(View.GONE);
     }
 
     //display feedback to user actions
     @Override
     public void onResult(String result) {
+        mProgressbar.setVisibility(View.GONE);
         Toast.makeText(this, result, Toast.LENGTH_LONG).show();
     }
     //create option menu to

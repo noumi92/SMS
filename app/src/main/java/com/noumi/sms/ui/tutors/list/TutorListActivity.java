@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -49,6 +50,7 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
     private String mSelectedGender;
     private ListDivider mListDivider;
     private NavigationView mNavigationView;
+    private LinearLayout mProgressbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +72,7 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
         mClearFilters = (Button) findViewById(R.id.button_clear_filters);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_menu_view);
+        mProgressbar = (LinearLayout) findViewById(R.id.progressbar);
         //setup adapter here
         mTutorRecyclerView.setHasFixedSize(true);
         mTutorRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -81,7 +84,7 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
         //setting up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         if(toolbar!=null){
-            toolbar.setTitle(R.string.app_name);
+            toolbar.setTitle("Browse Tutors");
             setSupportActionBar(toolbar);
         }
         NavigationUtils.startStudentNaigation(this, mNavigationView);
@@ -89,6 +92,7 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
         mApplyFilters.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mProgressbar.setVisibility(View.VISIBLE);
                 //get selection for gender
                 int genderRadioButtonId = mGenderRadioGroup.getCheckedRadioButtonId();
                 //get selection for city
@@ -118,6 +122,7 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
         mClearFilters.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mProgressbar.setVisibility(View.VISIBLE);
                 mGenderRadioGroup.clearCheck();
                 mCitySpinner.setSelected(false);
                 mTutorListPresenter.loadTutors();
@@ -128,6 +133,7 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
     //initial code to run onn startup
     @Override
     protected void onStart() {
+        mProgressbar.setVisibility(View.VISIBLE);
         if(mTutorListPresenter == null){
             mTutorListPresenter = new TutorListPresenter(TutorListActivity.this);
         }
@@ -137,6 +143,13 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
         }
         super.onStart();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mProgressbar.setVisibility(View.GONE);
+    }
+
     //save search preferences data
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -164,10 +177,12 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
         } else {
             mTutorAdapter.notifyDataSetChanged();
         }
+        mProgressbar.setVisibility(View.GONE);
     }
     //display feedback to user actions
     @Override
     public void onResult(String result) {
+        mProgressbar.setVisibility(View.GONE);
         Toast.makeText(this, result, Toast.LENGTH_LONG).show();
     }
     //create option menu to

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.Chat;
+import com.noumi.sms.data.model.Student;
 import com.noumi.sms.data.model.Tutor;
 import com.noumi.sms.ui.chat.room.ChatRoomActivity;
 
@@ -23,15 +24,26 @@ import java.util.Locale;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder>{
     //field
+    private String TAG = "com.noumi.sms.custom.log";
     private List<Chat> mChats;
     private Context mContext;
     private List<Tutor> mTutors;
+    private List<Student> mStudents;
     //constructor
     public ChatAdapter(Context context, List<Chat> chats, List<Tutor> tutors) {
         mChats = chats;
         mTutors = tutors;
+        mStudents = null;
         mContext = context;
     }
+    //constructor
+    public ChatAdapter(List<Chat> chats, Context context, List<Student> students) {
+        mChats = chats;
+        mContext = context;
+        mStudents = students;
+        mTutors = null;
+    }
+
     @NonNull
     @Override
     public ChatHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -42,8 +54,17 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder>{
     @Override
     public void onBindViewHolder(@NonNull ChatHolder chatHolder, int i) {
         Chat chat = mChats.get(i);
-        Tutor tutor = mTutors.get(i);
-        chatHolder.bind(chat, tutor);
+        Log.d(TAG, "chatid at position " + i + ":" + chat.getChatId());
+        String name = null;
+        if(mStudents == null){
+            name = mTutors.get(i).getTutorName();
+            Log.d(TAG, "tutorId at position " + i + ":" + mTutors.get(i).getTutorId());
+        }else if(mTutors == null){
+            name = mStudents.get(i).getStudentName();
+            Log.d(TAG, "tutorId at position " + i + ":" + mStudents.get(i).getStudentId());
+        }
+
+        chatHolder.bind(chat, name);
     }
     @Override
     public int getItemCount() {
@@ -54,28 +75,28 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder>{
     public class ChatHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private String TAG = "com.noumi.sms.custom.log";
         private TextView mChatTimeView;
-        private TextView mTutorNameView;
+        private TextView mNameView;
         private Chat mChat;
-        private Tutor mTutor;
+        private String mName;
         public ChatHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             mChatTimeView = (TextView) itemView.findViewById(R.id.chat_time_view);
-            mTutorNameView = (TextView) itemView.findViewById(R.id.tutor_name_view);
+            mNameView = (TextView) itemView.findViewById(R.id.tutor_name_view);
         }
 
         @Override
         public void onClick(View view) {
             Intent chatIntent = new Intent(mContext, ChatRoomActivity.class);
-            chatIntent.putExtra("chatId", mChat.getChatId());Log.d(TAG, "putExtra: " + mChat.getChatId());
-            Log.d(TAG, "chatid in chatlist" + mChat.getChatId());
+            chatIntent.putExtra("chatId", mChat.getChatId());
+            chatIntent.putExtra("senderName", mName);
             mContext.startActivity(chatIntent);
         }
 
-        public void bind(Chat chat, Tutor tutor) {
+        public void bind(Chat chat, String name) {
             mChat = chat;
-            mTutor = tutor;
-            mTutorNameView.setText(tutor.getTutorName());
+            mName = name;
+            mNameView.setText(name);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
             String formattedDate = simpleDateFormat.format(chat.getChatTime());
             mChatTimeView.setText(formattedDate);

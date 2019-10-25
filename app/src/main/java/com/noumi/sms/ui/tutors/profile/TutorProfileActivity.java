@@ -8,7 +8,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +24,7 @@ import java.util.List;
 public class TutorProfileActivity extends AppCompatActivity implements TutorProfileViewInterface {
     private static final String TUTOR_ID_KEY = "tutorId";
     private String TAG = "com.noumi.sms.custom.log";
-    private TutorProfilePresenterInterface mTutorDetailPresenter;
+    private TutorProfilePresenterInterface mTutorProfilePresenter;
     private TextView mTutorNameView;
     private TextView mTutorEmailView;
     private TextView mTutorCityView;
@@ -45,6 +47,9 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
     private long mTutorFee;
     private String mTutorAboutMe;
     private NavigationView mNavigationView;
+    private LinearLayout mProgressbar;
+    private Tutor mTutor;
+    private Button mUpdateProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,26 +66,37 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
         mTutorAboutMeView = (TextView) findViewById(R.id.about_me_text);
         mTutorQualificationView = (TextView) findViewById(R.id.qualification_text);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_menu_view);
+        mProgressbar = (LinearLayout) findViewById(R.id.progressbar);
+        mUpdateProfile = (Button) findViewById(R.id.update_tutor_profile);
         //setting up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         if(toolbar!=null){
-            toolbar.setTitle(R.string.app_name);
+            toolbar.setTitle("My Profile");
             setSupportActionBar(toolbar);
         }
         getTutorIntent();
         NavigationUtils.startTutorNaigation(this, mNavigationView);
+        mUpdateProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mProgressbar.setVisibility(View.VISIBLE);
+                mTutorProfilePresenter.updateTutor(mTutor);
+            }
+        });
     }
 
     @Override
     protected void onStart() {
-        if(mTutorDetailPresenter == null){
-            mTutorDetailPresenter = new TutorProfilePresenter(TutorProfileActivity.this);
+        mProgressbar.setVisibility(View.VISIBLE);
+        if(mTutorProfilePresenter == null){
+            mTutorProfilePresenter = new TutorProfilePresenter(TutorProfileActivity.this);
         }
         super.onStart();
     }
 
     @Override
     public void onLoadComplete(Tutor tutor) {
+        mTutor = tutor;
         //get values
         mTutorName = tutor.getTutorName();
         mTutorEmail = tutor.getTutorEmail();
@@ -110,7 +126,14 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
         mTutorFeeView.setText(Long.toString(mTutorFee));
         mTutorAboutMeView.setText(mTutorAboutMe);
         mTutorLocationView.setText(mTutorLocation);
+        mProgressbar.setVisibility(View.GONE);
     }
+
+    @Override
+    public void onTutorUpdateSuccess() {
+        mProgressbar.setVisibility(View.GONE);
+    }
+
     //create option menu to
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -122,13 +145,14 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.logout_item){
-            mTutorDetailPresenter.logoutUser();
+            mTutorProfilePresenter.logoutUser();
             startActivity(new Intent(TutorProfileActivity.this, LoginActivity.class));
         }
         return true;
     }
     @Override
     public void onResult(String message) {
+        mProgressbar.setVisibility(View.GONE);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
     //exit app on back pressed
@@ -145,10 +169,10 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
     private void getTutorIntent(){
         if(getIntent().hasExtra("tutorId")){
             String tutorId = getIntent().getStringExtra("tutorId");
-            if(mTutorDetailPresenter == null){
-                mTutorDetailPresenter = new TutorProfilePresenter(this);
+            if(mTutorProfilePresenter == null){
+                mTutorProfilePresenter = new TutorProfilePresenter(this);
             }
-            mTutorDetailPresenter.loadTutor(tutorId);
+            mTutorProfilePresenter.loadTutor(tutorId);
         }
     }
 }

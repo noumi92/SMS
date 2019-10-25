@@ -5,6 +5,16 @@ package com.noumi.sms.data.model;
 public class LoggedInUser {
     private static LoggedInUser sLoggedInUser;
     private String userId;
+    private String userName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     private String userEmail;
     private String userType;
 

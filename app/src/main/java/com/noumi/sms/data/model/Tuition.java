@@ -10,8 +10,6 @@ public class Tuition {
     private Date mAcceptedDate;
     private boolean mActive;
     private boolean mAccepted;
-    private int mRating;
-    private String mComments;
 
     public Tuition() {
     }
@@ -24,8 +22,6 @@ public class Tuition {
         mAcceptedDate = null;
         mActive = active;
         mAccepted = accepted;
-        mRating = 0;
-        mComments = "";
     }
 
     public String getTuitionId() {
@@ -82,21 +78,5 @@ public class Tuition {
 
     public void setAccepted(boolean accepted) {
         mAccepted = accepted;
-    }
-
-    public long getRating() {
-        return mRating;
-    }
-
-    public void setRating(int rating) {
-        mRating = rating;
-    }
-
-    public String getComments() {
-        return mComments;
-    }
-
-    public void setComments(String comments) {
-        mComments = comments;
     }
 }

@@ -8,12 +8,19 @@
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
+    <include
+        android:id="@+id/progressbar"
+        layout="@layout/progress_wrapper"
+        android:layout_below="@id/toolbar"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:visibility="gone"/>
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/progressbar"
         tools:context=".ui.tutors.list.TutorListActivity">
 
         <LinearLayout

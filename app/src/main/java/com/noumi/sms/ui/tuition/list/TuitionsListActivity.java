@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.noumi.sms.R;
@@ -36,6 +37,7 @@ public class TuitionsListActivity extends AppCompatActivity implements TuitionLi
     private ListDivider mListDivider;
     private NavigationView mNavigationView;
     private String mUserType;
+    private LinearLayout mProgressbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +47,7 @@ public class TuitionsListActivity extends AppCompatActivity implements TuitionLi
         mTuitionsRecyclerView = (RecyclerView) findViewById(R.id.tuition_recycler_view);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_menu_view);
+        mProgressbar = (LinearLayout) findViewById(R.id.progressbar);
         mUserType = LoggedInUser.getLoggedInUser().getUserType();
         //setup adapter here
         mTuitionsRecyclerView.setHasFixedSize(true);
@@ -56,7 +59,7 @@ public class TuitionsListActivity extends AppCompatActivity implements TuitionLi
         //setting up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         if(toolbar!=null){
-            toolbar.setTitle(this.getTitle());
+            toolbar.setTitle("My Tuitions");
             setSupportActionBar(toolbar);
         }
         if(mUserType.equals("student")){
@@ -73,12 +76,19 @@ public class TuitionsListActivity extends AppCompatActivity implements TuitionLi
     //initial code to run onn startup
     @Override
     protected void onStart() {
+        mProgressbar.setVisibility(View.VISIBLE);
         if(mTuitionsListPresenter == null){
             mTuitionsListPresenter = new TuitionListPresenter(this);
             String userId = LoggedInUser.getLoggedInUser().getUserId();
             mTuitionsListPresenter.loadTuitions(userId, mUserType);
         }
         super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mProgressbar.setVisibility(View.GONE);
     }
 
     //this method is called when database handler completes data fetchinn
@@ -91,10 +101,12 @@ public class TuitionsListActivity extends AppCompatActivity implements TuitionLi
         } else {
             mTuitionAdapter.notifyDataSetChanged();
         }
+        mProgressbar.setVisibility(View.GONE);
     }
     //display feedback to user actions
     @Override
     public void onResult(String result) {
+        mProgressbar.setVisibility(View.GONE);
         Toast.makeText(this, result, Toast.LENGTH_LONG).show();
     }
     //create option menu to

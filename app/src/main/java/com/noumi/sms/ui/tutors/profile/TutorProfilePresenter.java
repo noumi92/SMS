@@ -31,4 +31,14 @@ public class TutorProfilePresenter implements TutorProfilePresenterInterface {
     public void logoutUser() {
         mDatabaseHandler.logoutUser();
     }
+
+    @Override
+    public void updateTutor(Tutor tutor) {
+        mDatabaseHandler.updateTutor(tutor, this);
+    }
+
+    @Override
+    public void onUpdateTutorSuccess() {
+        mTutorProfileViewInterface.onTutorUpdateSuccess();
+    }
 }
