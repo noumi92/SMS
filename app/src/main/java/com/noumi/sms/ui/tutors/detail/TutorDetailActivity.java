@@ -9,20 +9,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.Chat;
 import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.data.model.Tuition;
 import com.noumi.sms.data.model.Tutor;
 import com.noumi.sms.ui.chat.list.ChatListActivity;
-import com.noumi.sms.ui.chat.room.ChatRoomActivity;
 import com.noumi.sms.ui.login.LoginActivity;
-import com.noumi.sms.ui.tuition.detail.TuitionDetailActivity;
 import com.noumi.sms.ui.tuition.list.TuitionsListActivity;
 
 import java.util.Calendar;
@@ -77,6 +73,8 @@ public class TutorDetailActivity extends AppCompatActivity implements TutorDetai
         mApplyTuition = (Button) findViewById(R.id.apply_tuition);
         mCreateChat = (Button) findViewById(R.id.apply_chat);
         mProgressbar = (LinearLayout) findViewById(R.id.progressbar);
+        //display progressbar on startup while activity initializes contents
+        mProgressbar.setVisibility(View.VISIBLE);
         //setting up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         if(toolbar!=null){
@@ -120,7 +118,6 @@ public class TutorDetailActivity extends AppCompatActivity implements TutorDetai
 
     @Override
     protected void onStart() {
-        mProgressbar.setVisibility(View.VISIBLE);
         if(mTutorDetailPresenter == null){
             mTutorDetailPresenter = new TutorDetailPresenter(TutorDetailActivity.this);
         }

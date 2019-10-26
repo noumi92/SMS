@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.Chat;
 import com.noumi.sms.data.model.LoggedInUser;
@@ -59,6 +58,9 @@ public class ChatListActivity extends AppCompatActivity implements ChatListViewI
         mListDivider = new ListDivider(divider);
         mChatsRecyclerView.addItemDecoration(mListDivider);
 
+        //display progressbar on startup while activity initializes contents
+        mProgressbar.setVisibility(View.VISIBLE);
+
         //setting up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         if(toolbar!=null){
@@ -79,7 +81,6 @@ public class ChatListActivity extends AppCompatActivity implements ChatListViewI
     @Override
     protected void onStart() {
         super.onStart();
-        mProgressbar.setVisibility(View.VISIBLE);
         if(mChatsListPresenter == null){
             mChatsListPresenter = new ChatListPresenter(this);
             String userId = LoggedInUser.getLoggedInUser().getUserId();
@@ -88,12 +89,6 @@ public class ChatListActivity extends AppCompatActivity implements ChatListViewI
         }else{
             mChatAdapter.notifyDataSetChanged();
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mProgressbar.setVisibility(View.GONE);
     }
 
     //this method is called when database handler completes data fetchinn

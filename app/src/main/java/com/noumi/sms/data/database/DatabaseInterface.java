@@ -13,14 +13,12 @@ import com.noumi.sms.ui.forgotpassword.ForgotPasswordPresenterInterface;
 import com.noumi.sms.ui.login.LoginPresenterInterface;
 import com.noumi.sms.ui.signup.SignupPresenterInterface;
 import com.noumi.sms.ui.students.list.StudentListPresenterInterface;
-import com.noumi.sms.ui.students.profile.StudentProfilePresenter;
 import com.noumi.sms.ui.students.profile.StudentProfilePresenterInterface;
 import com.noumi.sms.ui.tuition.detail.TuitionDetailPresenter;
 import com.noumi.sms.ui.tuition.detail.TuitionDetailPresenterInterface;
 import com.noumi.sms.ui.tuition.list.TuitionListPresenterInterface;
 import com.noumi.sms.ui.tutors.detail.TutorDetailPresenterInterface;
 import com.noumi.sms.ui.tutors.list.TutorListPresenterInterface;
-import com.noumi.sms.ui.tutors.profile.TutorProfilePresenter;
 import com.noumi.sms.ui.tutors.profile.TutorProfilePresenterInterface;
 
 public interface DatabaseInterface {

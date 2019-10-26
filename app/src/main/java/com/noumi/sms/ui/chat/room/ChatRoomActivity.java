@@ -16,13 +16,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.data.model.Message;
 import com.noumi.sms.ui.login.LoginActivity;
 import com.noumi.sms.utils.NavigationUtils;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -59,6 +57,9 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomViewI
         mMessagesRecyclerView.setHasFixedSize(true);
         mMessagesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        //display progressbar on startup while activity initializes contents
+        mProgressbar.setVisibility(View.VISIBLE);
+
         //setting up toolbar
         if(mToolbar != null){
             mToolbar.setTitle("Chat Room");
@@ -85,7 +86,6 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomViewI
     //initial code to run onn startup
     @Override
     protected void onStart() {
-        mProgressbar.setVisibility(View.VISIBLE);
         if(mChatRoomPresenter == null){
             mChatRoomPresenter = new ChatRoomPresenter(this);
         }

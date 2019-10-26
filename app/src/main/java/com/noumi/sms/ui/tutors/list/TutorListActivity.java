@@ -81,6 +81,8 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
         mTutorRecyclerView.addItemDecoration(mListDivider);
         // 0  means no filter applied
         mFilterStateFlag = 0;
+        //display progressbar on startup while activity initializes contents
+        mProgressbar.setVisibility(View.VISIBLE);
         //setting up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         if(toolbar!=null){
@@ -133,7 +135,6 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
     //initial code to run onn startup
     @Override
     protected void onStart() {
-        mProgressbar.setVisibility(View.VISIBLE);
         if(mTutorListPresenter == null){
             mTutorListPresenter = new TutorListPresenter(TutorListActivity.this);
         }
@@ -142,12 +143,6 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
             mTutorListPresenter.loadTutors();
         }
         super.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mProgressbar.setVisibility(View.GONE);
     }
 
     //save search preferences data

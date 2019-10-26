@@ -28,19 +28,11 @@ import static android.view.View.GONE;
 
 public class StudentProfileActivity extends AppCompatActivity implements StudentProfileViewInterface {
     private String TAG = "com.noumi.sms.custom.log";
-    private static final String STUDENT_NAME_KEY = "student_name";
-    private static final String STUDENT_EMAIL_KEY = "student_email";
-    private static final String STUDENT_CITY_KEY = "student_city";
-    private static final String STUDENT_GENDER_KEY = "student_gender";
     private TextView mStudentNameView;
     private TextView mStudentEmailView;
     private TextView mStudentCityView;
     private TextView mStudentGenderView;
     private Student mStudent;
-    private String mStudentName;
-    private String mStudentEmail;
-    private String mStudentCity;
-    private String mStudentGender;
     private StudentProfilePresenterInterface mStudentDetailPresenter;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
@@ -52,14 +44,6 @@ public class StudentProfileActivity extends AppCompatActivity implements Student
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_profile);
 
-        if(savedInstanceState != null){
-            super.onRestoreInstanceState(savedInstanceState);
-            mStudentName = savedInstanceState.getString(STUDENT_NAME_KEY);
-            mStudentEmail = savedInstanceState.getString(STUDENT_EMAIL_KEY);
-            mStudentCity = savedInstanceState.getString(STUDENT_CITY_KEY);
-            mStudentGender = savedInstanceState.getString(STUDENT_GENDER_KEY);
-        }
-
         mStudentNameView = (TextView) findViewById(R.id.student_name_text);
         mStudentEmailView = (TextView) findViewById(R.id.email_text);
         mStudentCityView = (TextView) findViewById(R.id.city_text);
@@ -68,6 +52,9 @@ public class StudentProfileActivity extends AppCompatActivity implements Student
         mNavigationView = (NavigationView) findViewById(R.id.navigation_menu_view);
         mUpdateProfileButton = (Button) findViewById(R.id.update_student_button);
         mProgressBar = (LinearLayout) findViewById(R.id.progressbar);
+
+        //display progressbar on startup while activity initializes contents
+        mProgressBar.setVisibility(View.VISIBLE);
 
         //setting up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -85,15 +72,15 @@ public class StudentProfileActivity extends AppCompatActivity implements Student
                 AlertDialog.Builder nameDialog = new AlertDialog.Builder(StudentProfileActivity.this);
                 View view = getLayoutInflater().inflate(R.layout.dialog_text, null);
                 final EditText editText = view.findViewById(R.id.dialog_text_view);
-                editText.setText(mStudentName);
+                editText.setText(mStudent.getStudentName());
                 nameDialog.setView(view);
                 nameDialog.setTitle("Edit Name");
                 nameDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mStudentName = editText.getText().toString();
-                        mStudent.setStudentName(mStudentName);
-                        mStudentNameView.setText(mStudentName);
+                        String name = editText.getText().toString();
+                        mStudent.setStudentName(name);
+                        mStudentNameView.setText(mStudent.getStudentName());
                         mUpdateProfileButton.setEnabled(true);
                     }
                 });
@@ -117,9 +104,9 @@ public class StudentProfileActivity extends AppCompatActivity implements Student
                 nameDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mStudentCity = spinner.getSelectedItem().toString();
-                        mStudent.setStudentCity(mStudentCity);
-                        mStudentCityView.setText(mStudentCity);
+                        String city = spinner.getSelectedItem().toString();
+                        mStudent.setStudentCity(city);
+                        mStudentCityView.setText(mStudent.getStudentCity());
                         mUpdateProfileButton.setEnabled(true);
                     }
                 });
@@ -143,9 +130,9 @@ public class StudentProfileActivity extends AppCompatActivity implements Student
                 nameDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mStudentGender = spinner.getSelectedItem().toString();
-                        mStudent.setStudentGender(mStudentGender);
-                        mStudentGenderView.setText(mStudentGender);
+                        String gender = spinner.getSelectedItem().toString();
+                        mStudent.setStudentGender(gender);
+                        mStudentGenderView.setText(mStudent.getStudentGender());
                         mUpdateProfileButton.setEnabled(true);
                     }
                 });
@@ -170,7 +157,6 @@ public class StudentProfileActivity extends AppCompatActivity implements Student
 
     @Override
     protected void onStart() {
-        mProgressBar.setVisibility(View.VISIBLE);
         if(mStudentDetailPresenter == null){
             mStudentDetailPresenter = new StudentProfilePresenter(StudentProfileActivity.this);
         }
@@ -180,19 +166,16 @@ public class StudentProfileActivity extends AppCompatActivity implements Student
     @Override
     public void onLoadComplete(Student student) {
         mStudent = student;
-        mStudentName = student.getStudentName();
-        mStudentEmail = student.getStudentEmail();
-        mStudentCity = student.getStudentCity();
-        mStudentGender = student.getStudentGender();
-        mStudentNameView.setText(mStudentName);
-        mStudentEmailView.setText(mStudentEmail);
-        mStudentCityView.setText(mStudentCity);
-        mStudentGenderView.setText(mStudentGender);
+        mStudentNameView.setText(mStudent.getStudentName());
+        mStudentEmailView.setText(mStudent.getStudentEmail());
+        mStudentCityView.setText(mStudent.getStudentCity());
+        mStudentGenderView.setText(mStudent.getStudentGender());
         mProgressBar.setVisibility(GONE);
     }
 
     @Override
     public void onUpdateStudentSuccess() {
+        mUpdateProfileButton.setEnabled(false);
         mProgressBar.setVisibility(GONE);
     }
 

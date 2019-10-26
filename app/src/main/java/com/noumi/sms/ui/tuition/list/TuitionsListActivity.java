@@ -56,6 +56,9 @@ public class TuitionsListActivity extends AppCompatActivity implements TuitionLi
         mListDivider = new ListDivider(divider);
         mTuitionsRecyclerView.addItemDecoration(mListDivider);
 
+        //display progressbar on startup while activity initializes contents
+        mProgressbar.setVisibility(View.VISIBLE);
+
         //setting up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         if(toolbar!=null){
@@ -76,19 +79,12 @@ public class TuitionsListActivity extends AppCompatActivity implements TuitionLi
     //initial code to run onn startup
     @Override
     protected void onStart() {
-        mProgressbar.setVisibility(View.VISIBLE);
         if(mTuitionsListPresenter == null){
             mTuitionsListPresenter = new TuitionListPresenter(this);
             String userId = LoggedInUser.getLoggedInUser().getUserId();
             mTuitionsListPresenter.loadTuitions(userId, mUserType);
         }
         super.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mProgressbar.setVisibility(View.GONE);
     }
 
     //this method is called when database handler completes data fetchinn

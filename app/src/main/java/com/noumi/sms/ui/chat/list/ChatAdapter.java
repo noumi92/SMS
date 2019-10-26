@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder>{
+public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
     //field
     private String TAG = "com.noumi.sms.custom.log";
     private List<Chat> mChats;
@@ -54,14 +54,20 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder>{
     @Override
     public void onBindViewHolder(@NonNull ChatHolder chatHolder, int i) {
         Chat chat = mChats.get(i);
-        Log.d(TAG, "chatid at position " + i + ":" + chat.getChatId());
         String name = null;
+        //get name
         if(mStudents == null){
-            name = mTutors.get(i).getTutorName();
-            Log.d(TAG, "tutorId at position " + i + ":" + mTutors.get(i).getTutorId());
+            for(Tutor tutor: mTutors){
+                if(TextUtils.equals(tutor.getTutorId(),chat.getTutorId())){
+                    name = tutor.getTutorName();
+                }
+            }
         }else if(mTutors == null){
-            name = mStudents.get(i).getStudentName();
-            Log.d(TAG, "tutorId at position " + i + ":" + mStudents.get(i).getStudentId());
+            for(Student student: mStudents){
+                if(TextUtils.equals(student.getStudentId(),chat.getStudentId())){
+                    name = student.getStudentName();
+                }
+            }
         }
 
         chatHolder.bind(chat, name);

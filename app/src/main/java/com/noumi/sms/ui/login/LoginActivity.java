@@ -20,7 +20,6 @@ import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.ui.forgotpassword.ForgotPasswordActivity;
 import com.noumi.sms.ui.signup.SignupActivity;
 import com.noumi.sms.ui.students.profile.StudentProfileActivity;
-import com.noumi.sms.ui.tutors.list.TutorListActivity;
 import com.noumi.sms.ui.tutors.profile.TutorProfileActivity;
 
 public class LoginActivity extends AppCompatActivity implements LoginViewInterface{
@@ -54,6 +53,8 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInterfa
         mProgressbar = (LinearLayout) findViewById(R.id.progressbar);
         final TextView progressbarText = mProgressbar.findViewById(R.id.progressbar_text);
         progressbarText.setText(getString(R.string.wecome_text));
+        //display progressbar on startup while activity initializes contents
+        mProgressbar.setVisibility(View.VISIBLE);
         //login functionality: when user clicks on login this listener validate input fields and login user into the system
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +89,6 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInterfa
     @Override
     protected void onStart() {
         super.onStart();
-        mProgressbar.setVisibility(View.VISIBLE);
         if (mLoginPresenter == null){
             mLoginPresenter = new LoginPresenter(LoginActivity.this);
         }

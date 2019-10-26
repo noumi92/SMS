@@ -4,7 +4,6 @@ package com.noumi.sms.data.database;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,7 +38,6 @@ import com.noumi.sms.ui.tutors.list.TutorListPresenterInterface;
 import com.noumi.sms.ui.tutors.profile.TutorProfilePresenterInterface;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class DatabaseHandler implements DatabaseInterface {
@@ -622,7 +620,7 @@ public class DatabaseHandler implements DatabaseInterface {
                     }
                 });
     }
-    //get student by id
+    //get tutor by id
     @Override
     public void getTutorById(String tutorId, final TuitionListPresenterInterface tuitionListPresenter) {
         mDatabase.collection("tutors").document(tutorId).get()
@@ -675,25 +673,33 @@ public class DatabaseHandler implements DatabaseInterface {
     public void getChatsByStudentId(String studentId, final ChatListPresenter chatListPresenter) {
         mChats.clear();
         mTutors.clear();
+        Log.d(TAG, "getChatsByStudentId started....");
         mDatabase.collection("chats").whereEqualTo("studentId",studentId).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
                             for(QueryDocumentSnapshot document: task.getResult()){
-                                Chat chat = document.toObject(Chat.class);
+                                final Chat chat = document.toObject(Chat.class);
+                                Log.d(TAG, "chat added@" + chat.getChatId());
                                 mChats.add(chat);
+                            }
+                            for(Chat chat: mChats){
+                                Log.d(TAG, "getting tutor data for: " + chat.getTutorId());
                                 mDatabase.collection("tutors").document(chat.getTutorId()).get()
-                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                             @Override
-                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                mTutors.add(task.getResult().toObject(Tutor.class));
+                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                Tutor tutor = documentSnapshot.toObject(Tutor.class);
+                                                mTutors.add(tutor);
+                                                Log.d(TAG, "tutor added@" + tutor.getTutorId());
                                                 chatListPresenter.onChatsLoadByStudentId(mChats, mTutors);
                                             }
                                         });
+                                }
+
                             }
                         }
-                    }
                 });
     }
 

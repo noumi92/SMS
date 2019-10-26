@@ -11,7 +11,7 @@ import com.noumi.sms.data.model.Tutor;
 
 import java.util.List;
 
-public class ChatListPresenter implements ChatListPresenterInterface {
+public class ChatListPresenter implements ChatListPresenterInterface{
     private DatabaseInterface mDatabaseHandler;
     private ChatListViewInterface mChatListViewInterface;
 

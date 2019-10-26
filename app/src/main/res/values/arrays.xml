@@ -83,4 +83,32 @@
         <item>4</item>
         <item>5</item>
     </string-array>
+    <string-array name="degree_names">
+        <item>BA</item>
+        <item>BSc</item>
+        <item>B.Com</item>
+        <item>BS</item>
+        <item>BBA</item>
+
+        <item>MA</item>
+        <item>MSc</item>
+        <item>M.Com</item>
+        <item>MS</item>
+        <item>MBA</item>
+
+        <item>M.Phil</item>
+        <item>PHD</item>
+    </string-array>
+    <string-array name="degree_subjects">
+        <item>Islamiat</item>
+        <item>Urdu</item>
+        <item>Arabic</item>
+        <item>Physics</item>
+        <item>Chemistory</item>
+        <item>Biology</item>
+        <item>Mathematistics</item>
+        <item>Computer Science</item>
+        <item>Finance</item>
+        <item>Marketing</item>
+    </string-array>
 </resources>

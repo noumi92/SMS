@@ -5,13 +5,13 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.view.MenuItem;
-
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.ui.chat.list.ChatListActivity;
 import com.noumi.sms.ui.students.profile.StudentProfileActivity;
 import com.noumi.sms.ui.tuition.list.TuitionsListActivity;
 import com.noumi.sms.ui.tutors.list.TutorListActivity;
+import com.noumi.sms.ui.tutors.map.TutorMapActivity;
 import com.noumi.sms.ui.tutors.profile.TutorProfileActivity;
 
 public class NavigationUtils {
@@ -28,6 +28,11 @@ public class NavigationUtils {
                     }
                     case R.id.nav_browse_tutors:{
                         Intent tutorsIntent = new Intent(context, TutorListActivity.class);
+                        context.startActivity(tutorsIntent);
+                        return true;
+                    }
+                    case R.id.nav_tutors_map:{
+                        Intent tutorsIntent = new Intent(context, TutorMapActivity.class);
                         context.startActivity(tutorsIntent);
                         return true;
                     }

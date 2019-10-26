@@ -3,8 +3,8 @@ package com.noumi.sms.ui.signup;
 //this class provides the functionality for signing up user
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +15,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.Student;
 import com.noumi.sms.data.model.Tutor;

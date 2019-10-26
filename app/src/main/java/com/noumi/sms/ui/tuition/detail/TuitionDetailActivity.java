@@ -7,7 +7,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -28,7 +27,6 @@ import com.noumi.sms.data.model.Rating;
 import com.noumi.sms.data.model.Tuition;
 import com.noumi.sms.data.model.Tutor;
 import com.noumi.sms.ui.login.LoginActivity;
-import com.noumi.sms.ui.students.profile.StudentProfileActivity;
 
 public class TuitionDetailActivity extends AppCompatActivity implements TuitionDetailViewInterface{
     TuitionDetailPresenterInterface mTuitionDetailPresenter;
@@ -64,6 +62,8 @@ public class TuitionDetailActivity extends AppCompatActivity implements TuitionD
         mAcceptTuitionButton = (Button) findViewById(R.id.accept_tuition_button);
         mDeleteTuitionButton = (Button) findViewById(R.id.delete_tuition_button);
         mProgressBar = (LinearLayout) findViewById(R.id.progressbar);
+        //display progressbar on startup while activity initializes contents
+        mProgressBar.setVisibility(View.VISIBLE);
         //setting up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         if(toolbar!=null){
@@ -134,7 +134,6 @@ public class TuitionDetailActivity extends AppCompatActivity implements TuitionD
 
     @Override
     protected void onStart() {
-        mProgressBar.setVisibility(View.VISIBLE);
         if(mTuitionDetailPresenter == null){
             mTuitionDetailPresenter = new TuitionDetailPresenter(this);
         }

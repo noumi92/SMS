@@ -1,25 +1,27 @@
 package com.noumi.sms.ui.tutors.profile;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.Tutor;
 import com.noumi.sms.ui.login.LoginActivity;
 import com.noumi.sms.utils.NavigationUtils;
-
-import java.util.List;
 
 public class TutorProfileActivity extends AppCompatActivity implements TutorProfileViewInterface {
     private static final String TUTOR_ID_KEY = "tutorId";
@@ -35,17 +37,6 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
     private TextView mTutorLocationView;
     private TextView mTutorFeeView;
     private TextView mTutorAboutMeView;
-    private String mTutorName;
-    private String mTutorEmail;
-    private String mTutorCity;
-    private String mTutorGender;
-    private String mTutorDegreeName;
-    private String mTutorDegreeSubject;
-    private List<String> mTutorSubjects;
-    private long mTutorRating;
-    private String mTutorLocation;
-    private long mTutorFee;
-    private String mTutorAboutMe;
     private NavigationView mNavigationView;
     private LinearLayout mProgressbar;
     private Tutor mTutor;
@@ -68,6 +59,9 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
         mNavigationView = (NavigationView) findViewById(R.id.navigation_menu_view);
         mProgressbar = (LinearLayout) findViewById(R.id.progressbar);
         mUpdateProfile = (Button) findViewById(R.id.update_tutor_profile);
+        //display progressbar on startup while activity initializes contents
+        mProgressbar.setVisibility(View.VISIBLE);
+        mUpdateProfile.setEnabled(false);
         //setting up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         if(toolbar!=null){
@@ -76,6 +70,194 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
         }
         getTutorIntent();
         NavigationUtils.startTutorNaigation(this, mNavigationView);
+        mTutorNameView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder nameDialog = new AlertDialog.Builder(TutorProfileActivity.this);
+                View view = getLayoutInflater().inflate(R.layout.dialog_text, null);
+                final EditText editText = view.findViewById(R.id.dialog_text_view);
+                editText.setText(mTutor.getTutorName());
+                nameDialog.setView(view);
+                nameDialog.setTitle("Edit Name");
+                nameDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String name = editText.getText().toString();
+                        mTutor.setTutorName(name);
+                        mTutorNameView.setText(mTutor.getTutorName());
+                        mUpdateProfile.setEnabled(true);
+                    }
+                });
+                nameDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                nameDialog.create().show();
+            }
+        });
+        mTutorCityView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder cityDialog = new AlertDialog.Builder(TutorProfileActivity.this);
+                View view = getLayoutInflater().inflate(R.layout.dialog_city, null);
+                final Spinner spinner = view.findViewById(R.id.dialog_city_spinner);
+                cityDialog.setView(view);
+                cityDialog.setTitle("Edit City");
+                cityDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String city = spinner.getSelectedItem().toString();
+                        mTutor.setTutorCity(city);
+                        mTutorCityView.setText(mTutor.getTutorCity());
+                        mUpdateProfile.setEnabled(true);
+                    }
+                });
+                cityDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                cityDialog.create().show();
+            }
+        });
+        mTutorGenderView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder genderDialog = new AlertDialog.Builder(TutorProfileActivity.this);
+                View view = getLayoutInflater().inflate(R.layout.dialog_gender, null);
+                final Spinner spinner = view.findViewById(R.id.dialog_gender_spinner);
+                genderDialog.setView(view);
+                genderDialog.setTitle("Edit Gender");
+                genderDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String gender = spinner.getSelectedItem().toString();
+                        mTutor.setTutorGender(gender);
+                        mTutorGenderView.setText(mTutor.getTutorGender());
+                        mUpdateProfile.setEnabled(true);
+                    }
+                });
+                genderDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                genderDialog.create().show();
+            }
+        });
+        mTutorQualificationView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder qualificationDialog = new AlertDialog.Builder(TutorProfileActivity.this);
+                View view = getLayoutInflater().inflate(R.layout.dialog_qualificcation, null);
+                final Spinner degreeNameSpinner = view.findViewById(R.id.dialog_degree_name_spinner);
+                final Spinner degreeSubjectSpinner = view.findViewById(R.id.dialog_degree_subjects_spinner);
+                qualificationDialog.setView(view);
+                qualificationDialog.setTitle("Edit Qualification");
+                qualificationDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String degreeName = degreeNameSpinner.getSelectedItem().toString();
+                        String degreeSubject = degreeSubjectSpinner.getSelectedItem().toString();
+                        mTutor.setTutorDegreeName(degreeName);
+                        mTutor.setTutorDegreeSubject(degreeSubject);
+                        String qualification = mTutor.getTutorDegreeName() + " " + mTutor.getTutorDegreeSubject();
+                        mTutorQualificationView.setText(qualification);
+                        mUpdateProfile.setEnabled(true);
+                    }
+                });
+                qualificationDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                qualificationDialog.create().show();
+            }
+        });
+        mTutorSubjectsView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder subjectsDialog = new AlertDialog.Builder(TutorProfileActivity.this);
+                View view = getLayoutInflater().inflate(R.layout.dialog_subjects, null);
+                subjectsDialog.setView(view);
+                subjectsDialog.setTitle("Edit Subjects");
+                subjectsDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                subjectsDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                subjectsDialog.create().show();
+            }
+        });
+        mTutorFeeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder feeDialog = new AlertDialog.Builder(TutorProfileActivity.this);
+                View view = getLayoutInflater().inflate(R.layout.dialog_text, null);
+                final EditText editText = view.findViewById(R.id.dialog_text_view);
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                editText.setText(String.valueOf(mTutor.getTutorFee()));
+                feeDialog.setView(view);
+                feeDialog.setTitle("Edit Fee");
+                feeDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int fee = Integer.valueOf(editText.getText().toString());
+                        mTutor.setTutorFee(fee);
+                        mTutorFeeView.setText(String.valueOf(mTutor.getTutorFee()));
+                        mUpdateProfile.setEnabled(true);
+                    }
+                });
+                feeDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                feeDialog.create().show();
+            }
+        });
+        mTutorAboutMeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder aboutMeDialog = new AlertDialog.Builder(TutorProfileActivity.this);
+                View view = getLayoutInflater().inflate(R.layout.dialog_text, null);
+                final EditText editText = view.findViewById(R.id.dialog_text_view);
+                editText.setLines(10);
+                editText.setText(mTutor.getTutorAboutMe());
+                aboutMeDialog.setView(view);
+                aboutMeDialog.setTitle("Edit About Me");
+                aboutMeDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String aboutMe = editText.getText().toString();
+                        mTutor.setTutorAboutMe(aboutMe);
+                        mTutorAboutMeView.setText(mTutor.getTutorAboutMe());
+                        mUpdateProfile.setEnabled(true);
+                    }
+                });
+                aboutMeDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                aboutMeDialog.create().show();
+            }
+        });
+
         mUpdateProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +269,6 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
 
     @Override
     protected void onStart() {
-        mProgressbar.setVisibility(View.VISIBLE);
         if(mTutorProfilePresenter == null){
             mTutorProfilePresenter = new TutorProfilePresenter(TutorProfileActivity.this);
         }
@@ -97,35 +278,23 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
     @Override
     public void onLoadComplete(Tutor tutor) {
         mTutor = tutor;
-        //get values
-        mTutorName = tutor.getTutorName();
-        mTutorEmail = tutor.getTutorEmail();
-        mTutorCity = tutor.getTutorCity();
-        mTutorGender = tutor.getTutorGender();
-        mTutorSubjects = tutor.getTutorSubjects();
-        mTutorRating = tutor.getTutorRating();
-        mTutorDegreeName = tutor.getTutorDegreeName();
-        mTutorDegreeSubject = tutor.getTutorDegreeSubject();
-        mTutorFee = tutor.getTutorFee();
-        mTutorAboutMe = tutor.getTutorAboutMe();
-        mTutorLocation = tutor.getTutorLocation().toString();
         //display values
-        mTutorNameView.setText(mTutorName);
-        mTutorEmailView.setText(mTutorEmail);
-        mTutorCityView.setText(mTutorCity);
-        mTutorGenderView.setText(mTutorGender);
+        mTutorNameView.setText(mTutor.getTutorName());
+        mTutorEmailView.setText(mTutor.getTutorEmail());
+        mTutorCityView.setText(mTutor.getTutorCity());
+        mTutorGenderView.setText(mTutor.getTutorGender());
         StringBuilder subjectsSB = new StringBuilder();
-        for(String subject : mTutorSubjects){
+        for(String subject : mTutor.getTutorSubjects()){
             subjectsSB.append(subject);
             subjectsSB.append("\n");
         }
         mTutorSubjectsView.setText(subjectsSB.toString());
-        String qualification = mTutorDegreeName + " " + mTutorDegreeSubject;
+        String qualification = mTutor.getTutorDegreeName() + " " + mTutor.getTutorDegreeSubject();
         mTutorQualificationView.setText(qualification);
-        mTutorRatingView.setText(Long.toString(mTutorRating));
-        mTutorFeeView.setText(Long.toString(mTutorFee));
-        mTutorAboutMeView.setText(mTutorAboutMe);
-        mTutorLocationView.setText(mTutorLocation);
+        mTutorRatingView.setText(String.valueOf(mTutor.getTutorRating()));
+        mTutorFeeView.setText(String.valueOf(mTutor.getTutorFee()));
+        mTutorAboutMeView.setText(mTutor.getTutorAboutMe());
+        mTutorLocationView.setText(mTutor.getTutorLocation().toString());
         mProgressbar.setVisibility(View.GONE);
     }
 
