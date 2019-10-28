@@ -35,6 +35,7 @@ import com.noumi.sms.ui.tuition.detail.TuitionDetailPresenterInterface;
 import com.noumi.sms.ui.tuition.list.TuitionListPresenterInterface;
 import com.noumi.sms.ui.tutors.detail.TutorDetailPresenterInterface;
 import com.noumi.sms.ui.tutors.list.TutorListPresenterInterface;
+import com.noumi.sms.ui.tutors.map.TutorMapPresenterInterface;
 import com.noumi.sms.ui.tutors.profile.TutorProfilePresenterInterface;
 
 import java.util.ArrayList;
@@ -391,6 +392,28 @@ public class DatabaseHandler implements DatabaseInterface {
                     }
                 });
     }
+
+    @Override
+    public void loadStudent(String studentId, final TutorMapPresenterInterface tutorMapPresenter) {
+        mDatabase.collection("students").document(studentId).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot document = task.getResult();
+                            if(document.exists()){
+                                Student student = document.toObject(Student.class);
+                                LoggedInUser.getLoggedInUser().setUserName(student.getStudentName());
+                                tutorMapPresenter.onStudentLoad(student);
+                            }
+                            tutorMapPresenter.onQueryResult("load student successful");
+                        }else{
+                            tutorMapPresenter.onQueryResult(task.getException().getMessage());
+                        }
+                    }
+                });
+    }
+
     @Override
     public void loadTutor(String tutorId, final TutorProfilePresenterInterface tutorProfilePresenterInterface) {
         mDatabase.collection("tutors").document(tutorId).get()
@@ -571,6 +594,25 @@ public class DatabaseHandler implements DatabaseInterface {
                     }
                 });
     }
+
+    @Override
+    public void getTutorsByCity(String city, final TutorMapPresenterInterface tutorMapPresenter) {
+        mTutors.clear();
+        mDatabase.collection("tutors").whereEqualTo("tutorCity", city).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for(QueryDocumentSnapshot document : task.getResult()){
+                                Log.d(TAG, "database query gettutors by city: " + document.toObject(Tutor.class).toString());
+                                mTutors.add(document.toObject(Tutor.class));
+                            }
+                            tutorMapPresenter.onTutorsLoad(mTutors);
+                        }
+                    }
+                });
+    }
+
     //method to fetch tutors by city and gender. this method performs a composite query by logically AND on two fields
     @Override
     public void getTutorsByCityAndGender(String city, String gender, final TutorListPresenterInterface tutorListPresenter) {

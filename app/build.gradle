@@ -2,14 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    signingConfigs {
-        release {
-            storeFile file('E:\\Development\\Android\\Applications\\Key\\sms.jks')
-            storePassword '12345678'
-            keyAlias = 'sms'
-            keyPassword '12345678'
-        }
-    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.noumi.sms"
@@ -19,11 +11,6 @@ android {
         versionName "1.0.1"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-    buildTypes {
-        release {
-            signingConfig signingConfigs.release
-        }
     }
 }
 

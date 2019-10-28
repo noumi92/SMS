@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.firebase:firebase-appindexing:12.0.1@aar">
+    <CLASSES>
+      <root url="jar://D:/Users/noumi/.gradle/caches/transforms-2/files-2.1/fb4d5b6592ac9ff86b4b278970aa7e32/firebase-appindexing-12.0.1/jars/classes.jar!/" />
+      <root url="file://D:/Users/noumi/.gradle/caches/transforms-2/files-2.1/fb4d5b6592ac9ff86b4b278970aa7e32/firebase-appindexing-12.0.1/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

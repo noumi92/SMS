@@ -94,23 +94,23 @@ public class ChatListActivity extends AppCompatActivity implements ChatListViewI
     //this method is called when database handler completes data fetchinn
     @Override
     public void onChatsLoadByStudentId(List<Chat> chats, List<Tutor> tutors) {
+        mProgressbar.setVisibility(View.GONE);
         if (mChatAdapter == null) {
             mChatAdapter = new ChatAdapter(this, chats, tutors);
             mChatsRecyclerView.setAdapter(mChatAdapter);
         } else {
             mChatAdapter.notifyDataSetChanged();
         }
-        mProgressbar.setVisibility(View.GONE);
     }
     @Override
     public void onChatsLoadByTutorId(List<Chat> chats, List<Student> students) {
+        mProgressbar.setVisibility(View.GONE);
         if (mChatAdapter == null) {
             mChatAdapter = new ChatAdapter(chats, this, students);
             mChatsRecyclerView.setAdapter(mChatAdapter);
         } else {
             mChatAdapter.notifyDataSetChanged();
         }
-        mProgressbar.setVisibility(View.GONE);
     }
 
     //display feedback to user actions

@@ -19,9 +19,11 @@ import com.noumi.sms.ui.tuition.detail.TuitionDetailPresenterInterface;
 import com.noumi.sms.ui.tuition.list.TuitionListPresenterInterface;
 import com.noumi.sms.ui.tutors.detail.TutorDetailPresenterInterface;
 import com.noumi.sms.ui.tutors.list.TutorListPresenterInterface;
+import com.noumi.sms.ui.tutors.map.TutorMapPresenterInterface;
 import com.noumi.sms.ui.tutors.profile.TutorProfilePresenterInterface;
 
 public interface DatabaseInterface {
+    //TODO 1: segregate methods activity wise
     void signupStudent(Student student, String password, SignupPresenterInterface signupPresenter);
     void signupTutor(Tutor tutor, String password, SignupPresenterInterface signupPresenter);
     void LoginUser(String email, String password, String usertype, LoginPresenterInterface loginPresenter);
@@ -35,8 +37,10 @@ public interface DatabaseInterface {
     void getStudentsByCityAndGender(String city, String gender, StudentListPresenterInterface studentListPresenter);
     void getTutorsByGender(String gender, TutorListPresenterInterface tutorListPresenter);
     void getTutorsByCity(String city, TutorListPresenterInterface tutorListPresenter);
+    void getTutorsByCity(String city, TutorMapPresenterInterface tutorMapPresenter);
     void getTutorsByCityAndGender(String city, String gender, TutorListPresenterInterface tutorListPresenter);
     void loadStudent(String studentId, StudentProfilePresenterInterface studentProfilePresenterInterface);
+    void loadStudent(String studentId, TutorMapPresenterInterface tutorMapPresenter);
     void loadTutor(String tutorId, TutorProfilePresenterInterface tutorProfilePresenterInterface);
     void loadTutor(String tutorId, TutorDetailPresenterInterface tutorDetailPresenterInterface);
     void addTuition(Tuition tuition, TutorDetailPresenterInterface tutorDetailPresenterInterface);

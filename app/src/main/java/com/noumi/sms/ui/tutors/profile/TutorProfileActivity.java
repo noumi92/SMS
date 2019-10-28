@@ -18,6 +18,13 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.Tutor;
 import com.noumi.sms.ui.login.LoginActivity;
@@ -41,6 +48,7 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
     private LinearLayout mProgressbar;
     private Tutor mTutor;
     private Button mUpdateProfile;
+    private GoogleMap mTutorLocationThumb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -277,6 +285,8 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
 
     @Override
     public void onLoadComplete(Tutor tutor) {
+        //load map
+        ((SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.location_thumb)).getMapAsync(this);
         mTutor = tutor;
         //display values
         mTutorNameView.setText(mTutor.getTutorName());
@@ -295,7 +305,6 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
         mTutorFeeView.setText(String.valueOf(mTutor.getTutorFee()));
         mTutorAboutMeView.setText(mTutor.getTutorAboutMe());
         mTutorLocationView.setText(mTutor.getTutorLocation().toString());
-        mProgressbar.setVisibility(View.GONE);
     }
 
     @Override
@@ -335,6 +344,35 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
         startActivity(homeScreenIntent);
         this.finish();
     }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        //hide progress bar
+        mProgressbar.setVisibility(View.GONE);
+        mTutorLocationThumb = googleMap;
+        mTutorLocationThumb.setMinZoomPreference(10.0f);
+        mTutorLocationThumb.setMaxZoomPreference(18.0f);
+        //display tutor location on mapview
+        LatLng latLng = new LatLng(mTutor.getTutorLocation().getLatitude(), mTutor.getTutorLocation().getLongitude());
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(latLng)
+                .title(mTutor.getTutorName());
+        mTutorLocationThumb.addMarker(markerOptions);
+        mTutorLocationThumb.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,8.0f));
+        mTutorLocationThumb.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Intent intent = new Intent(TutorProfileActivity.this, LocationPickerActivity.class);
+                double[] lat = new double[2];
+                lat[0] = marker.getPosition().latitude;
+                lat[1] = marker.getPosition().longitude;
+                intent.putExtra("tutorMarker", lat);
+                startActivity(intent);
+                return true;
+            }
+        });
+    }
+
     private void getTutorIntent(){
         if(getIntent().hasExtra("tutorId")){
             String tutorId = getIntent().getStringExtra("tutorId");
