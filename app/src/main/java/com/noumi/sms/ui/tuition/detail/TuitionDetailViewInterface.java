@@ -9,4 +9,7 @@ public interface TuitionDetailViewInterface {
     void onTutorLoad(Tutor tutor);
     void onResult(String message);
     void onRatingLoad(Rating rating);
+    void onRatingUpdate();
+    void onTuitionUpdate();
+    void onTuitionDelete();
 }

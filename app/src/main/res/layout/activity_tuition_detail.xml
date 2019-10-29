@@ -140,7 +140,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/row_primary_color.button"
-        android:enabled="false"
+        android:visibility="gone"
         android:text="Update Rating / Comments" />
 
     <Button
@@ -148,19 +148,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/row_primary_color.button"
+        android:visibility="gone"
         android:text="Leave Tuition" />
     <Button
         android:id="@+id/accept_tuition_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/row_primary_color.button"
-        android:enabled="false"
+        android:visibility="gone"
         android:text="Accept Tuition" />
-
+    <Button
+        android:id="@+id/activate_tuition_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/row_primary_color.button"
+        android:visibility="gone"
+        android:text="Activate Tuition" />
     <Button
         android:id="@+id/delete_tuition_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/row_primary_color.button"
+        android:visibility="gone"
         android:text="Delete Tuition" />
 </LinearLayout>

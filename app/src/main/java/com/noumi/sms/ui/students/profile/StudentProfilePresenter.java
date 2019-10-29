@@ -42,4 +42,14 @@ public class StudentProfilePresenter implements StudentProfilePresenterInterface
     public void onUpdateStudentSuccess() {
         mStudentProfileViewInterface.onUpdateStudentSuccess();
     }
+
+    @Override
+    public void deleteStudentById(String userId) {
+        mDatabaseHandler.deleteStudentById(userId, this);
+    }
+
+    @Override
+    public void onDeleteAccount() {
+        mStudentProfileViewInterface.onDeleteAccount();
+    }
 }

@@ -3,8 +3,13 @@ package com.noumi.sms.ui.signup;
 //this class connects SignupActivity to database and passes feedbacks from database to SignupActivity to update views and
 //feedback to user
 
+import android.content.Context;
+
+import com.google.android.gms.maps.model.LatLng;
 import com.noumi.sms.data.database.DatabaseHandler;
 import com.noumi.sms.data.database.DatabaseInterface;
+import com.noumi.sms.data.maps.MapsHandler;
+import com.noumi.sms.data.maps.MapsHandlerInterface;
 import com.noumi.sms.data.model.Student;
 import com.noumi.sms.data.model.Tutor;
 
@@ -13,9 +18,11 @@ public class SignupPresenter implements SignupPresenterInterface {
     private String TAG = "com.noumi.sms.custom.log"; // tag for debugging
     private DatabaseInterface mDBHandler;
     private SignupViewInterface mSignupViewInterface;
+    private MapsHandlerInterface mMapsHandler;
 
     public SignupPresenter(SignupViewInterface view) {
         mDBHandler = new DatabaseHandler();
+        mMapsHandler = new MapsHandler();
         mSignupViewInterface = view;
     }
     //method to signup student
@@ -32,5 +39,20 @@ public class SignupPresenter implements SignupPresenterInterface {
     @Override
     public void onQueryResult(String result){
         mSignupViewInterface.onResult(result);
+    }
+
+    @Override
+    public void getLatLongByCity(String cityName, Context context) {
+        mMapsHandler.getLatLongByCity(cityName, context,this);
+    }
+
+    @Override
+    public void onLatLongByCityLoad(LatLng latLng) {
+        mSignupViewInterface.onLatLongByCityLoad(latLng);
+    }
+
+    @Override
+    public void onSignupSuccess() {
+        mSignupViewInterface.onSignupSuccess();
     }
 }

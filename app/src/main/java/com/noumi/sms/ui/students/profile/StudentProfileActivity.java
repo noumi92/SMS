@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noumi.sms.R;
+import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.data.model.Student;
 import com.noumi.sms.ui.login.LoginActivity;
 import com.noumi.sms.utils.NavigationUtils;
@@ -37,6 +38,7 @@ public class StudentProfileActivity extends AppCompatActivity implements Student
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private Button mUpdateProfileButton;
+    private Button mDeleteAccountButton;
     private LinearLayout mProgressBar;
 
     @Override
@@ -51,6 +53,7 @@ public class StudentProfileActivity extends AppCompatActivity implements Student
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_menu_view);
         mUpdateProfileButton = (Button) findViewById(R.id.update_student_button);
+        mDeleteAccountButton = (Button) findViewById(R.id.delete_student_button);
         mProgressBar = (LinearLayout) findViewById(R.id.progressbar);
 
         //display progressbar on startup while activity initializes contents
@@ -152,6 +155,28 @@ public class StudentProfileActivity extends AppCompatActivity implements Student
                 mStudentDetailPresenter.updateStudent(mStudent);
             }
         });
+        mDeleteAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder deleteAccountDialog = new AlertDialog.Builder(StudentProfileActivity.this);
+                deleteAccountDialog
+                        .setTitle("Delete Account")
+                        .setMessage("Are you sure you want to delete account permanently from system")
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mStudentDetailPresenter.deleteStudentById(LoggedInUser.getLoggedInUser().getUserId());
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .create().show();
+            }
+        });
 
     }
 
@@ -197,7 +222,6 @@ public class StudentProfileActivity extends AppCompatActivity implements Student
     }
     @Override
     public void onResult(String message) {
-        mProgressBar.setVisibility(GONE);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
     //exit app on back pressed
@@ -211,6 +235,12 @@ public class StudentProfileActivity extends AppCompatActivity implements Student
         startActivity(homeScreenIntent);
         this.finish();
     }
+
+    @Override
+    public void onDeleteAccount() {
+        startActivity(new Intent(StudentProfileActivity.this, LoginActivity.class));
+    }
+
     private void getStudentIntent(){
         if(getIntent().hasExtra("studentId")){
             String studentId = getIntent().getStringExtra("studentId");

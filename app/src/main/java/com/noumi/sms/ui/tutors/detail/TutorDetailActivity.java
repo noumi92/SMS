@@ -36,7 +36,6 @@ public class TutorDetailActivity extends AppCompatActivity implements TutorDetai
     private TextView mTutorQualificationView;
     private TextView mTutorSubjectsView;
     private TextView mTutorRatingView;
-    private TextView mTutorLocationView;
     private TextView mTutorFeeView;
     private TextView mTutorAboutMeView;
     private Tutor mTutor;
@@ -65,7 +64,6 @@ public class TutorDetailActivity extends AppCompatActivity implements TutorDetai
         mTutorCityView = (TextView) findViewById(R.id.city_text);
         mTutorGenderView = (TextView) findViewById(R.id.gender_text);
         mTutorSubjectsView = (TextView) findViewById(R.id.subjects_text);
-        mTutorLocationView = (TextView) findViewById(R.id.location_text);
         mTutorRatingView = (TextView) findViewById(R.id.rating_text);
         mTutorFeeView = (TextView) findViewById(R.id.fee_text);
         mTutorAboutMeView = (TextView) findViewById(R.id.about_me_text);
@@ -155,7 +153,6 @@ public class TutorDetailActivity extends AppCompatActivity implements TutorDetai
         mTutorRatingView.setText(Long.toString(mTutorRating));
         mTutorFeeView.setText(Long.toString(mTutorFee));
         mTutorAboutMeView.setText(mTutorAboutMe);
-        mTutorLocationView.setText(mTutorLocation);
         mProgressbar.setVisibility(View.GONE);
     }
 

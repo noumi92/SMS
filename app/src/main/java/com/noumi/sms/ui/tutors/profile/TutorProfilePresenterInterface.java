@@ -9,4 +9,6 @@ public interface TutorProfilePresenterInterface {
     void loadTutor(String tutorId);
     void updateTutor(Tutor tutor);
     void onUpdateTutorSuccess();
+    void deleteTutorById(String userId);
+    void onDeleteAccount();
 }

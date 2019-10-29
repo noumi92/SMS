@@ -7,4 +7,5 @@ public interface TutorProfileViewInterface extends OnMapReadyCallback {
     void onLoadComplete(Tutor tutor);
     void onResult(String message);
     void onTutorUpdateSuccess();
+    void onDeleteAccount();
 }

@@ -6,4 +6,5 @@ public interface StudentProfileViewInterface {
     void onLoadComplete(Student student);
     void onResult(String message);
     void onUpdateStudentSuccess();
+    void onDeleteAccount();
 }

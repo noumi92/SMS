@@ -13,5 +13,11 @@ public interface TuitionDetailPresenterInterface {
     void loadTutor(String tutorId);
     void loadRating(String ratingId);
     void onRatingLoad(Rating rating);
+    void updateTuitionRating(Rating rating);
+    void deleteTuition(String tuitionId);
+    void updateTuition(Tuition tuition);
+    void onRatingUpdate();
+    void onTuitionUpdate();
+    void onTuitionDelete();
 }
 

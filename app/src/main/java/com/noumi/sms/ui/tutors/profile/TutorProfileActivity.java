@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.noumi.sms.R;
+import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.data.model.Tutor;
 import com.noumi.sms.ui.login.LoginActivity;
 import com.noumi.sms.utils.NavigationUtils;
@@ -48,6 +49,7 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
     private LinearLayout mProgressbar;
     private Tutor mTutor;
     private Button mUpdateProfile;
+    private Button mDeleteAccount;
     private GoogleMap mTutorLocationThumb;
 
     @Override
@@ -67,6 +69,7 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
         mNavigationView = (NavigationView) findViewById(R.id.navigation_menu_view);
         mProgressbar = (LinearLayout) findViewById(R.id.progressbar);
         mUpdateProfile = (Button) findViewById(R.id.update_tutor_profile);
+        mDeleteAccount = (Button) findViewById(R.id.delete_account);
         //display progressbar on startup while activity initializes contents
         mProgressbar.setVisibility(View.VISIBLE);
         mUpdateProfile.setEnabled(false);
@@ -273,6 +276,29 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
                 mTutorProfilePresenter.updateTutor(mTutor);
             }
         });
+
+        mDeleteAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder deleteAccountDialog = new AlertDialog.Builder(TutorProfileActivity.this);
+                deleteAccountDialog
+                        .setTitle("Delete Account")
+                        .setMessage("Are you sure you want to delete account permanently from system")
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mTutorProfilePresenter.deleteTutorById(LoggedInUser.getLoggedInUser().getUserId());
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .create().show();
+            }
+        });
     }
 
     @Override
@@ -330,7 +356,6 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
     }
     @Override
     public void onResult(String message) {
-        mProgressbar.setVisibility(View.GONE);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
     //exit app on back pressed
@@ -362,7 +387,7 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
         mTutorLocationThumb.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                Intent intent = new Intent(TutorProfileActivity.this, LocationPickerActivity.class);
+                Intent intent = new Intent(TutorProfileActivity.this, TutorLocationActivity.class);
                 double[] lat = new double[2];
                 lat[0] = marker.getPosition().latitude;
                 lat[1] = marker.getPosition().longitude;
@@ -371,6 +396,11 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
                 return true;
             }
         });
+    }
+
+    @Override
+    public void onDeleteAccount() {
+        startActivity(new Intent(TutorProfileActivity.this, LoginActivity.class));
     }
 
     private void getTutorIntent(){

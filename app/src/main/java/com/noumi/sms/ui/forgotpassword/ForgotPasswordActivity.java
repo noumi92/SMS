@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noumi.sms.R;
@@ -16,6 +17,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements ForgotP
     private Button mPasswordResetButton;
     private ForgotPasswordPresenterInterface mForgotPasswordPresenter;
     private LinearLayout mProgressBar;
+    private TextView mLoginView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements ForgotP
         //get view references here
         mEmailTextView = (EditText) findViewById(R.id.email_view);
         mPasswordResetButton = (Button) findViewById(R.id.reset_password_button);
+        mLoginView = (TextView) findViewById(R.id.login_view);
         mProgressBar = (LinearLayout) findViewById(R.id.progressbar);
         //send reset email when user click on password reset button
         mPasswordResetButton.setOnClickListener(new View.OnClickListener() {
@@ -35,6 +38,12 @@ public class ForgotPasswordActivity extends AppCompatActivity implements ForgotP
                     mProgressBar.setVisibility(View.VISIBLE);
                     mForgotPasswordPresenter.resetPassword(email);
                 }
+            }
+        });
+        mLoginView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

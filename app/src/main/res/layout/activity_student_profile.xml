@@ -97,6 +97,12 @@
             style="@style/row_primary_color.button"
             android:enabled="false"
             android:text="Update Profile"/>
+        <Button
+            android:id="@+id/delete_student_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/row_primary_color.button"
+            android:text="Delete Account"/>
     </LinearLayout>
         <android.support.design.widget.NavigationView
             android:id="@+id/navigation_menu_view"

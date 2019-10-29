@@ -245,6 +245,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Update Profile" />
+                    <Button
+                        android:id="@+id/delete_account"
+                        style="@style/row_primary_color.button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Delete Account" />
 
                 </LinearLayout>
 

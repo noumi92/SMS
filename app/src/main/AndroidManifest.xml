@@ -18,7 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.tutors.profile.LocationPickerActivity"></activity>
+        <activity android:name=".ui.tutors.profile.LocationLocationActivity"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -77,6 +77,8 @@
         <activity android:name=".ui.students.profile.StudentProfileActivity" />
         <activity android:name=".ui.tuition.detail.TuitionDetailActivity" />
         <activity android:name=".ui.chat.list.ChatListActivity" />
+        <activity android:name=".ui.tutors.profile.TutorLocationActivity" />
+        <activity android:name=".ui.rating.RatingListActivity" />
     </application>
 
 </manifest>

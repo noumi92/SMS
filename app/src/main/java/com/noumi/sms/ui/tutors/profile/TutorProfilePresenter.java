@@ -41,4 +41,14 @@ public class TutorProfilePresenter implements TutorProfilePresenterInterface {
     public void onUpdateTutorSuccess() {
         mTutorProfileViewInterface.onTutorUpdateSuccess();
     }
+
+    @Override
+    public void deleteTutorById(String tutorId) {
+        mDatabaseHandler.deleteTutorById(tutorId, this);
+    }
+
+    @Override
+    public void onDeleteAccount() {
+        mTutorProfileViewInterface.onDeleteAccount();
+    }
 }

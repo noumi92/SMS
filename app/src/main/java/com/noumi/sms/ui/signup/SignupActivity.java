@@ -2,10 +2,10 @@ package com.noumi.sms.ui.signup;
 
 //this class provides the functionality for signing up user
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,10 +16,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.firestore.GeoPoint;
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.Student;
 import com.noumi.sms.data.model.Tutor;
-import com.noumi.sms.ui.login.LoginActivity;
 
 public class SignupActivity extends AppCompatActivity implements SignupViewInterface{
     //fields
@@ -39,6 +40,7 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInter
     private RadioButton mStudentRadioButton;
     private RadioButton mTutorRadioButton;
     private LinearLayout mProgressBar;
+    private String mPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,20 +66,20 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInter
             public void onClick(View view) {
                 String username = mUsernameView.getText().toString();
                 String email = mEmailView.getText().toString().trim();
-                String password = mPasswordView.getText().toString();
+                mPassword = mPasswordView.getText().toString();
                 String confirmPassword = mConfirmPasswordView.getText().toString();
                 String gender = mGenderSpinner.getSelectedItem().toString();
                 String city = mCitySpinner.getSelectedItem().toString();
                 String userType = getUserType();
-                if (validateInput(username, email, password, confirmPassword, gender, city, userType)){
+                if (validateInput(username, email, mPassword, confirmPassword, gender, city, userType)){
                     if(userType.equals("student")) {
                         mStudent = new Student("123", email, username, city, gender);
                         mProgressBar.setVisibility(View.VISIBLE);
-                        mSignupPresenter.signupStudent(mStudent, password);
+                        mSignupPresenter.signupStudent(mStudent, mPassword);
                     }else if(userType.equals("tutor")){
                         mProgressBar.setVisibility(View.VISIBLE);
                         mTutor = new Tutor(username, email, city, gender);
-                        mSignupPresenter.signupTutor(mTutor, password);
+                        mSignupPresenter.getLatLongByCity(city, SignupActivity.this);
                     }
                 }
             }
@@ -86,8 +88,7 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInter
         mLoginView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
     }
@@ -97,6 +98,12 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInter
         mProgressBar.setVisibility(View.GONE);
         Toast.makeText(SignupActivity.this, message, Toast.LENGTH_LONG).show();
     }
+
+    @Override
+    public void onSignupSuccess() {
+        finish();
+    }
+
     //method to perform initial initializations on start of activity
     @Override
     protected void onStart() {
@@ -105,6 +112,15 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInter
             mSignupPresenter = new SignupPresenter(SignupActivity.this);
         }
     }
+
+    @Override
+    public void onLatLongByCityLoad(LatLng latLng) {
+        GeoPoint geoPoint = new GeoPoint(latLng.latitude, latLng.longitude);
+        Log.d(TAG, "LAtLong: " + latLng.latitude + latLng.longitude);
+        mTutor.setTutorLocation(geoPoint);
+        mSignupPresenter.signupTutor(mTutor, mPassword);
+    }
+
     //utility method to validate input fields
     private boolean validateInput(String username, String email, String password, String confirmPassword, String gender, String city, String userType) {
         if (username.isEmpty()){

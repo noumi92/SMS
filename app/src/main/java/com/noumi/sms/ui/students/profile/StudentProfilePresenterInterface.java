@@ -9,4 +9,6 @@ public interface StudentProfilePresenterInterface {
     void logoutUser();
     void updateStudent(Student student);
     void onUpdateStudentSuccess();
+    void onDeleteAccount();
+    void deleteStudentById(String userId);
 }

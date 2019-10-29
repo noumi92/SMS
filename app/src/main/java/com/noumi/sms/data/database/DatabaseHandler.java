@@ -4,6 +4,7 @@ package com.noumi.sms.data.database;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -13,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.noumi.sms.data.model.Chat;
@@ -27,6 +29,7 @@ import com.noumi.sms.ui.chat.room.ChatRoomPresenter;
 import com.noumi.sms.ui.chat.room.ChatRoomPresenterInterface;
 import com.noumi.sms.ui.forgotpassword.ForgotPasswordPresenterInterface;
 import com.noumi.sms.ui.login.LoginPresenterInterface;
+import com.noumi.sms.ui.rating.RatingListPresenterInterface;
 import com.noumi.sms.ui.signup.SignupPresenterInterface;
 import com.noumi.sms.ui.students.list.StudentListPresenterInterface;
 import com.noumi.sms.ui.students.profile.StudentProfilePresenterInterface;
@@ -36,6 +39,7 @@ import com.noumi.sms.ui.tuition.list.TuitionListPresenterInterface;
 import com.noumi.sms.ui.tutors.detail.TutorDetailPresenterInterface;
 import com.noumi.sms.ui.tutors.list.TutorListPresenterInterface;
 import com.noumi.sms.ui.tutors.map.TutorMapPresenterInterface;
+import com.noumi.sms.ui.tutors.profile.TutorLocationPresenterInterface;
 import com.noumi.sms.ui.tutors.profile.TutorProfilePresenterInterface;
 
 import java.util.ArrayList;
@@ -56,6 +60,8 @@ public class DatabaseHandler implements DatabaseInterface {
     private List<Chat> mChats;
     private List<Message> mMessages;
     private Boolean mUserTypeSetFlag;
+    private List<Rating> mRatings;
+
     //constructor which initializes firebase authentication and firestore database instances
     public DatabaseHandler() {
         mAuth = FirebaseAuth.getInstance();
@@ -66,6 +72,7 @@ public class DatabaseHandler implements DatabaseInterface {
         mTuitions = new ArrayList<>();
         mChats = new ArrayList<>();
         mMessages = new ArrayList<>();
+        mRatings = new ArrayList<>();
     }
     //public methods which are defined in databaseinterface and implemented in handler class
     //method to register new student
@@ -83,7 +90,9 @@ public class DatabaseHandler implements DatabaseInterface {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if(task.isSuccessful()){
+                                            mAuth.signOut();
                                             signupPresenter.onQueryResult("Email Verification sent");
+                                            signupPresenter.onSignupSuccess();
                                         }
                                     }
                                 });
@@ -111,7 +120,9 @@ public class DatabaseHandler implements DatabaseInterface {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if(task.isSuccessful()){
+                                            mAuth.signOut();
                                             signupPresenter.onQueryResult("Email Verification sent");
+                                            signupPresenter.onSignupSuccess();
                                         }
                                     }
                                 });
@@ -128,13 +139,16 @@ public class DatabaseHandler implements DatabaseInterface {
     @Override
     public void checkLogin(final LoginPresenterInterface loginPresenter) {
         if(mAuth.getCurrentUser() != null){
+            Log.d(TAG, "current user not null");
             mUser = mAuth.getCurrentUser();
             if(mUser.isEmailVerified()) {
+                Log.d(TAG, "email verified");
                 LoggedInUser.getLoggedInUser().setUserId(mUser.getUid());
                 LoggedInUser.getLoggedInUser().setUserEmail(mUser.getEmail());
                 String userId = LoggedInUser.getLoggedInUser().getUserId();
                 mUserTypeSetFlag = false;
                 if(!mUserTypeSetFlag) {
+                    Log.d(TAG, "checkin in student database");
                     mDatabase.collection("students").document(userId).get()
                             .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
@@ -142,6 +156,7 @@ public class DatabaseHandler implements DatabaseInterface {
                                     if (task.isSuccessful()) {
                                         DocumentSnapshot document = task.getResult();
                                         if (document.exists()) {
+                                            Log.d(TAG, "user found in student database");
                                             LoggedInUser.getLoggedInUser().setUserType("student");
                                             loginPresenter.onLoginSuccess(LoggedInUser.getLoggedInUser().getUserType());
                                             loginPresenter.onQueryResult("Welcome Back...." + LoggedInUser.getLoggedInUser().getUserEmail());
@@ -155,6 +170,7 @@ public class DatabaseHandler implements DatabaseInterface {
                             });
                 }
                 if(!mUserTypeSetFlag) {
+                    Log.d(TAG, "checkin in tutor database");
                     mDatabase.collection("tutors").document(userId).get()
                             .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
@@ -162,6 +178,7 @@ public class DatabaseHandler implements DatabaseInterface {
                                     if (task.isSuccessful()) {
                                         DocumentSnapshot document = task.getResult();
                                         if (document.exists()) {
+                                            Log.d(TAG, "user found in tutor database");
                                             LoggedInUser.getLoggedInUser().setUserType("tutor");
                                             loginPresenter.onLoginSuccess(LoggedInUser.getLoggedInUser().getUserType());
                                             loginPresenter.onQueryResult("Welcome Back...." + LoggedInUser.getLoggedInUser().getUserEmail());
@@ -175,7 +192,12 @@ public class DatabaseHandler implements DatabaseInterface {
                             });
                 }
             }
+            else{
+                Log.d(TAG, "email not verified");
+                loginPresenter.onLoginFailure();
+            }
         }else{
+            Log.d(TAG, "current user is null");
             loginPresenter.onLoginFailure();
         }
     }
@@ -886,6 +908,209 @@ public class DatabaseHandler implements DatabaseInterface {
                             tutorProfilePresenter.onUpdateTutorSuccess();
                         } else{
                             tutorProfilePresenter.onQueryResult("Update Error: " + task.getException().getMessage());
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void updateTutorLocationById(String id, GeoPoint geoPoint, final TutorLocationPresenterInterface tutorLocationPresenter) {
+        mDatabase.collection("tutors").document(id).update("tutorLocation", geoPoint)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            tutorLocationPresenter.onTutorLocationUpdate();
+                            tutorLocationPresenter.OnQueryResult("Tutor lcation updated");
+                        }else{
+                            tutorLocationPresenter.OnQueryResult("Tutor Update Failed: " + task.getException().getMessage());
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void deleteTutorById(final String tutorId, final TutorProfilePresenterInterface tutorProfilePresenter) {
+        Log.d(TAG, "Account deletion started");
+        Log.d(TAG, "deleting chat records");
+        mDatabase.collection("chats").whereEqualTo("tutorId", tutorId).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for(final QueryDocumentSnapshot chatdocument : task.getResult()){
+                            mDatabase.collection("chats").document(chatdocument.getId()).collection("messages").get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            Log.d(TAG, "deleting messages records");
+                                            for(QueryDocumentSnapshot messageDocument : task.getResult()){
+                                                mDatabase.collection("chats").document(chatdocument.getId())
+                                                        .collection("messages").document(messageDocument.getId()).delete();
+                                            }
+                                        }
+                                    });
+                            Log.d(TAG, "deleting chat");
+                            mDatabase.collection("chats").document(chatdocument.getId()).delete();
+                        }
+                        Log.d(TAG, "deleting tuition records");
+                        mDatabase.collection("tuitions").whereEqualTo("tutorId", tutorId).get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        for(QueryDocumentSnapshot document : task.getResult()){
+                                            mDatabase.collection("tuitions").document(document.getId()).delete();
+                                        }
+                                        Log.d(TAG, "deleting ratings records");
+                                        mDatabase.collection("ratings").whereEqualTo("tutorId", tutorId).get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        for(QueryDocumentSnapshot document : task.getResult()){
+                                                            mDatabase.collection("ratings").document(document.getId()).delete();
+                                                        }
+                                                        Log.d(TAG, "deleting tutor profile");
+                                                        mDatabase.collection("tutors").document(tutorId).delete();
+                                                        Log.d(TAG, "deleting user authentication record");
+                                                        mAuth.getCurrentUser().delete()
+                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        Log.d(TAG, "Account deleted from system");
+                                                                        tutorProfilePresenter.onQueryResult("Account Deleted from Database");
+                                                                        tutorProfilePresenter.onDeleteAccount();
+                                                                    }
+                                                                });
+                                                    }
+                                                });
+                                    }
+                                });
+                    }
+                });
+
+    }
+
+    @Override
+    public void deleteStudentById(final String studentId, final StudentProfilePresenterInterface studentProfilePresenter) {
+        Log.d(TAG, "Account deletion started");
+        Log.d(TAG, "deleting chat records");
+        mDatabase.collection("chats").whereEqualTo("studentId", studentId).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for(final QueryDocumentSnapshot chatdocument : task.getResult()){
+                            mDatabase.collection("chats").document(chatdocument.getId()).collection("messages").get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            Log.d(TAG, "deleting messages records");
+                                            for(QueryDocumentSnapshot messageDocument : task.getResult()){
+                                                mDatabase.collection("chats").document(chatdocument.getId())
+                                                        .collection("messages").document(messageDocument.getId()).delete();
+                                            }
+                                        }
+                                    });
+                            Log.d(TAG, "deleting chat");
+                            mDatabase.collection("chats").document(chatdocument.getId()).delete();
+                        }
+                        Log.d(TAG, "deleting tuition records");
+                        mDatabase.collection("tuitions").whereEqualTo("studentId", studentId).get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        for(QueryDocumentSnapshot document : task.getResult()){
+                                            mDatabase.collection("tuitions").document(document.getId()).delete();
+                                        }
+                                                        Log.d(TAG, "deleting tutor profile");
+                                                        mDatabase.collection("students").document(studentId).delete();
+                                                        Log.d(TAG, "deleting user authentication record");
+                                                        mAuth.getCurrentUser().delete()
+                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        Log.d(TAG, "Account deleted from system");
+                                                                        studentProfilePresenter.onQueryResult("Account Deleted from Database");
+                                                                        studentProfilePresenter.onDeleteAccount();
+                                                                    }
+                                                                });
+                                                    }
+                                                });
+                                    }
+                                });
+    }
+
+    @Override
+    public void updateTuitionRating(Rating rating, final TuitionDetailPresenterInterface tuitionDetailPresenter) {
+        mDatabase.collection("ratings").document(rating.getRatingId()).set(rating)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            tuitionDetailPresenter.onQueryResult("Ratings updated");
+                            tuitionDetailPresenter.onRatingUpdate();
+                        }else {
+                            tuitionDetailPresenter.onQueryResult("Rating update failed" + task.getException().getMessage());
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void updateTuition(Tuition tuition, final TuitionDetailPresenterInterface tuitionDetailPresenter) {
+        mDatabase.collection("tuitions").document(tuition.getTuitionId()).set(tuition)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            tuitionDetailPresenter.onQueryResult("Tuition updated");
+                            tuitionDetailPresenter.onTuitionUpdate();
+                        }else {
+                            tuitionDetailPresenter.onQueryResult("Tuition update failed" + task.getException().getMessage());
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void deleteTuition(String tuitionId, final TuitionDetailPresenterInterface tuitionDetailPresenter) {
+        mDatabase.collection("tuitions").document(tuitionId).delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            tuitionDetailPresenter.onQueryResult("Tuition Deleted");
+                            tuitionDetailPresenter.onTuitionDelete();
+                        }else {
+                            tuitionDetailPresenter.onQueryResult("Tuition delete failed" + task.getException().getMessage());
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void getRatingsByTutorId(String tutorId, final RatingListPresenterInterface ratingListPresenter) {
+        mStudents.clear();
+        mRatings.clear();
+        mDatabase.collection("ratings").whereEqualTo("tutorId", tutorId).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for(QueryDocumentSnapshot document: task.getResult()){
+                                final Rating rating = document.toObject(Rating.class);
+                                mRatings.add(rating);
+                            }
+                            for(final Rating rating: mRatings){
+                                mDatabase.collection("students").document(rating.getStudentId()).get()
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                Student student = documentSnapshot.toObject(Student.class);
+                                                mStudents.add(student);
+                                                ratingListPresenter.onDataLoadComplete(mRatings, mStudents);
+                                            }
+                                        });
+                            }
+
                         }
                     }
                 });

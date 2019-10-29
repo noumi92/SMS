@@ -55,6 +55,8 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInterfa
         progressbarText.setText(getString(R.string.wecome_text));
         //display progressbar on startup while activity initializes contents
         mProgressbar.setVisibility(View.VISIBLE);
+        mLoginPresenter = new LoginPresenter(this);
+        mLoginPresenter.checkLogin();
         //login functionality: when user clicks on login this listener validate input fields and login user into the system
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override

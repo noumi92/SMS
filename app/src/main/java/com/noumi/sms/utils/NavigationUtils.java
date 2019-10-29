@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.ui.chat.list.ChatListActivity;
+import com.noumi.sms.ui.rating.RatingListActivity;
 import com.noumi.sms.ui.students.profile.StudentProfileActivity;
 import com.noumi.sms.ui.tuition.list.TuitionsListActivity;
 import com.noumi.sms.ui.tutors.list.TutorListActivity;
@@ -73,6 +74,8 @@ public class NavigationUtils {
                         return true;
                     }
                     case R.id.nav_tutor_ratings:{
+                        Intent ratingIntent = new Intent(context, RatingListActivity.class);
+                        context.startActivity(ratingIntent);
                         return true;
                     }
                 }

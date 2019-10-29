@@ -10,7 +10,7 @@ public class Rating {
     public Rating() {
     }
 
-    public Rating(String ratingId, String studentId, String tutorId) {
+    public Rating(String ratingId, String tutorId, String studentId) {
         mRatingId = ratingId;
         mStudentId = studentId;
         mTutorId = tutorId;

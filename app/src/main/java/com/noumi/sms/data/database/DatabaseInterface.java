@@ -1,8 +1,10 @@
 package com.noumi.sms.data.database;
 //this interface defines the contract for DatabaseHandler class
 
+import com.google.firebase.firestore.GeoPoint;
 import com.noumi.sms.data.model.Chat;
 import com.noumi.sms.data.model.Message;
+import com.noumi.sms.data.model.Rating;
 import com.noumi.sms.data.model.Student;
 import com.noumi.sms.data.model.Tuition;
 import com.noumi.sms.data.model.Tutor;
@@ -11,6 +13,7 @@ import com.noumi.sms.ui.chat.room.ChatRoomPresenter;
 import com.noumi.sms.ui.chat.room.ChatRoomPresenterInterface;
 import com.noumi.sms.ui.forgotpassword.ForgotPasswordPresenterInterface;
 import com.noumi.sms.ui.login.LoginPresenterInterface;
+import com.noumi.sms.ui.rating.RatingListPresenterInterface;
 import com.noumi.sms.ui.signup.SignupPresenterInterface;
 import com.noumi.sms.ui.students.list.StudentListPresenterInterface;
 import com.noumi.sms.ui.students.profile.StudentProfilePresenterInterface;
@@ -20,6 +23,7 @@ import com.noumi.sms.ui.tuition.list.TuitionListPresenterInterface;
 import com.noumi.sms.ui.tutors.detail.TutorDetailPresenterInterface;
 import com.noumi.sms.ui.tutors.list.TutorListPresenterInterface;
 import com.noumi.sms.ui.tutors.map.TutorMapPresenterInterface;
+import com.noumi.sms.ui.tutors.profile.TutorLocationPresenterInterface;
 import com.noumi.sms.ui.tutors.profile.TutorProfilePresenterInterface;
 
 public interface DatabaseInterface {
@@ -57,4 +61,11 @@ public interface DatabaseInterface {
     void loadRating(String ratingId, TuitionDetailPresenterInterface tuitionDetailPresenter);
     void updateStudent(StudentProfilePresenterInterface studentProfilePresenter, Student student);
     void updateTutor(Tutor tutor, TutorProfilePresenterInterface tutorProfilePresenter);
+    void updateTutorLocationById(String id, GeoPoint geoPoint, TutorLocationPresenterInterface tutorLocationPresenter);
+    void deleteTutorById(String tutorId, TutorProfilePresenterInterface tutorProfilePresenter);
+    void deleteStudentById(String studentId, StudentProfilePresenterInterface studentProfilePresenter);
+    void updateTuitionRating(Rating rating, TuitionDetailPresenterInterface tuitionDetailPresenter);
+    void deleteTuition(String tuitionId, TuitionDetailPresenterInterface tuitionDetailPresenter);
+    void updateTuition(Tuition tuition, TuitionDetailPresenterInterface tuitionDetailPresenter);
+    void getRatingsByTutorId(String tutorId, RatingListPresenterInterface ratingListPresenter);
 }

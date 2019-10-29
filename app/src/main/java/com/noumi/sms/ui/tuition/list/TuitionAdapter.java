@@ -53,7 +53,7 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.TuitionH
         if(tuition.isAccepted()){
             tuitionHolder.mTuitionAcceptedView.setText("Accepted");
         }else{
-            tuitionHolder.mTuitionAcceptedView.setText("Not Accepted");
+            tuitionHolder.mTuitionAcceptedView.setText("Pending");
         }
     }
     @Override

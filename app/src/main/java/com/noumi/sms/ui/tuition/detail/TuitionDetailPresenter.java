@@ -51,7 +51,37 @@ public class TuitionDetailPresenter implements TuitionDetailPresenterInterface {
     }
 
     @Override
+    public void updateTuitionRating(Rating rating) {
+        mDatabaseHandler.updateTuitionRating(rating, this);
+    }
+
+    @Override
+    public void updateTuition(Tuition tuition) {
+        mDatabaseHandler.updateTuition(tuition, this);
+    }
+
+    @Override
+    public void deleteTuition(String tuitionId) {
+        mDatabaseHandler.deleteTuition(tuitionId, this);
+    }
+
+    @Override
     public void onRatingLoad(Rating rating) {
         mTuitionDetailView.onRatingLoad(rating);
+    }
+
+    @Override
+    public void onRatingUpdate() {
+        mTuitionDetailView.onRatingUpdate();
+    }
+
+    @Override
+    public void onTuitionUpdate() {
+        mTuitionDetailView.onTuitionUpdate();
+    }
+
+    @Override
+    public void onTuitionDelete() {
+        mTuitionDetailView.onTuitionDelete();
     }
 }
