@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">433754915881-gvn957mjv2aii70gt4nnlgvidtotdu8s.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://sms-app-27aa0.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">433754915881</string>
+    <string name="google_api_key" translatable="false">AIzaSyBNfwvOHeGet_LeVGs6zdeecuR5e0ThuH4</string>
+    <string name="google_app_id" translatable="false">1:433754915881:android:3b1e9eb9fccf4ce7</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBNfwvOHeGet_LeVGs6zdeecuR5e0ThuH4</string>
+    <string name="google_storage_bucket" translatable="false">sms-app-27aa0.appspot.com</string>
+    <string name="project_id" translatable="false">sms-app-27aa0</string>
+</resources>
