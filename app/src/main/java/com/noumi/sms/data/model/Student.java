@@ -8,6 +8,7 @@ public class Student {
     private String mStudentName;
     private String mStudentCity;
     private String mStudentGender;
+    private String mTokenId;
     //constructor required for database operations
     public Student() {
     }
@@ -18,6 +19,7 @@ public class Student {
         mStudentName = studentName;
         mStudentCity = studentCity;
         mStudentGender = studentGender;
+        mTokenId = "";
     }
     //getters and setters for fields
     public String getStudentId() {
@@ -59,6 +61,15 @@ public class Student {
     public void setStudentGender(String studentGender) {
         this.mStudentGender = studentGender;
     }
+
+    public String getTokenId() {
+        return mTokenId;
+    }
+
+    public void setTokenId(String tokenId) {
+        mTokenId = tokenId;
+    }
+
     //overrides toString method to print student data
     @Override
     public String toString() {

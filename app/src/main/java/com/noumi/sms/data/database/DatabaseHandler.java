@@ -3,6 +3,7 @@ package com.noumi.sms.data.database;
 //for onward messaging to view class. No view directly accesses this class view accesses presenter and presenter calls methods of databasehandler
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,6 +18,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.noumi.sms.data.model.Chat;
 import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.data.model.Message;
@@ -84,7 +87,16 @@ public class DatabaseHandler implements DatabaseInterface {
                     public void onSuccess(AuthResult authResult) {
                         signupPresenter.onQueryResult("User created successfully...");
                         student.setStudentId(authResult.getUser().getUid());
-                        insertStudent(student, signupPresenter);
+                        FirebaseInstanceId.getInstance().getInstanceId()
+                                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                        if(task.isSuccessful()){
+                                            student.setTokenId(task.getResult().getToken());
+                                            insertStudent(student, signupPresenter);
+                                        }
+                                    }
+                                });
                         authResult.getUser().sendEmailVerification()
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
@@ -114,7 +126,16 @@ public class DatabaseHandler implements DatabaseInterface {
                     public void onSuccess(AuthResult authResult) {
                         signupPresenter.onQueryResult("User created successfully...");
                         tutor.setTutorId(authResult.getUser().getUid());
-                        insertTutor(tutor, signupPresenter);
+                        FirebaseInstanceId.getInstance().getInstanceId()
+                                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                        if(task.isSuccessful()){
+                                            tutor.setTokenId(task.getResult().getToken());
+                                            insertTutor(tutor, signupPresenter);
+                                        }
+                                    }
+                                });
                         authResult.getUser().sendEmailVerification()
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
@@ -225,6 +246,7 @@ public class DatabaseHandler implements DatabaseInterface {
                                                             LoggedInUser.getLoggedInUser().setUserEmail(mUser.getEmail());
                                                             LoggedInUser.getLoggedInUser().setUserId(mUser.getUid());
                                                             LoggedInUser.getLoggedInUser().setUserType("student");
+                                                            updateStudentTokenId(mUser.getUid());
                                                             loginPresenter.onLoginSuccess("student");
                                                             loginPresenter.onQueryResult("Login as.." + mUser.getEmail());
                                                             Log.d(TAG, "Login as.." + mUser.getEmail());
@@ -247,6 +269,7 @@ public class DatabaseHandler implements DatabaseInterface {
                                                             LoggedInUser.getLoggedInUser().setUserEmail(mUser.getEmail());
                                                             LoggedInUser.getLoggedInUser().setUserId(mUser.getUid());
                                                             LoggedInUser.getLoggedInUser().setUserType("tutor");
+                                                            updateTutorTokenId(mUser.getUid());
                                                             loginPresenter.onLoginSuccess("tutor");
                                                             loginPresenter.onQueryResult("Login as.." + mUser.getEmail());
                                                             Log.d(TAG, "Login as.." + mUser.getEmail());
@@ -282,6 +305,32 @@ public class DatabaseHandler implements DatabaseInterface {
                     }
                 });
     }
+
+    private void updateStudentTokenId(final String uid) {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if(task.isSuccessful()){
+                            String tokenId = task.getResult().getToken();
+                            mDatabase.collection("students").document(uid).update("tokenId", tokenId);
+                        }
+                    }
+                });
+    }
+    private void updateTutorTokenId(final String uid) {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if(task.isSuccessful()){
+                            String tokenId = task.getResult().getToken();
+                            mDatabase.collection("tutors").document(uid).update("tokenId", tokenId);
+                        }
+                    }
+                });
+    }
+
     //method to fetch all students from firestore database
     @Override
     public void getStudents(final StudentListPresenterInterface listPresenter) {
@@ -375,6 +424,12 @@ public class DatabaseHandler implements DatabaseInterface {
     //method to logout user
     @Override
     public void logoutUser() {
+        String userType = LoggedInUser.getLoggedInUser().getUserType();
+        if(TextUtils.equals(userType, "student")){
+            mDatabase.collection("students").document(LoggedInUser.getLoggedInUser().getUserId()).update("tokenId", "");
+        }else if(TextUtils.equals(userType, "tutor")){
+            mDatabase.collection("tutors").document(LoggedInUser.getLoggedInUser().getUserId()).update("tokenId", "");
+        }
         mAuth.signOut();
     }
     //method to reset email for password reset
@@ -661,10 +716,16 @@ public class DatabaseHandler implements DatabaseInterface {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
-                            for(QueryDocumentSnapshot document: task.getResult()){
-                                mTuitions.add(document.toObject(Tuition.class));
+                            if (!task.getResult().isEmpty()) {
+                                for(QueryDocumentSnapshot document: task.getResult()){
+                                    mTuitions.add(document.toObject(Tuition.class));
+                                }
+                                tuitionListPresenter.onDataLoadComplete(mTuitions);
+                            }else{
+                                tuitionListPresenter.onQueryResult("No Tuitions found");
                             }
-                            tuitionListPresenter.onDataLoadComplete(mTuitions);
+                        }else{
+                            tuitionListPresenter.onQueryResult(task.getException().getMessage());
                         }
                     }
                 });
@@ -676,10 +737,16 @@ public class DatabaseHandler implements DatabaseInterface {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
-                            for(QueryDocumentSnapshot document: task.getResult()){
-                                mTuitions.add(document.toObject(Tuition.class));
+                            if (!task.getResult().isEmpty()) {
+                                for(QueryDocumentSnapshot document: task.getResult()){
+                                    mTuitions.add(document.toObject(Tuition.class));
+                                }
+                                tuitionListPresenter.onDataLoadComplete(mTuitions);
+                            }else{
+                                tuitionListPresenter.onQueryResult("No tuitions found");
                             }
-                            tuitionListPresenter.onDataLoadComplete(mTuitions);
+                        }else {
+                            tuitionListPresenter.onQueryResult(task.getException().getMessage());
                         }
                     }
                 });
@@ -743,27 +810,30 @@ public class DatabaseHandler implements DatabaseInterface {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
-                            for(QueryDocumentSnapshot document: task.getResult()){
-                                final Chat chat = document.toObject(Chat.class);
-                                Log.d(TAG, "chat added@" + chat.getChatId());
-                                mChats.add(chat);
+                            if (!task.getResult().isEmpty()) {
+                                for(QueryDocumentSnapshot document: task.getResult()) {
+                                    final Chat chat = document.toObject(Chat.class);
+                                    Log.d(TAG, "chat added@" + chat.getChatId());
+                                    mChats.add(chat);
+                                    Log.d(TAG, "getting tutor data for: " + chat.getTutorId());
+                                    mDatabase.collection("tutors").document(chat.getTutorId()).get()
+                                            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                    Tutor tutor = documentSnapshot.toObject(Tutor.class);
+                                                    mTutors.add(tutor);
+                                                    Log.d(TAG, "tutor added@" + tutor.getTutorId());
+                                                    chatListPresenter.onChatsLoadByStudentId(mChats, mTutors);
+                                                }
+                                            });
+                                    }
+                            }else{
+                                chatListPresenter.onQueryResult("No chats found");
                             }
-                            for(Chat chat: mChats){
-                                Log.d(TAG, "getting tutor data for: " + chat.getTutorId());
-                                mDatabase.collection("tutors").document(chat.getTutorId()).get()
-                                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                Tutor tutor = documentSnapshot.toObject(Tutor.class);
-                                                mTutors.add(tutor);
-                                                Log.d(TAG, "tutor added@" + tutor.getTutorId());
-                                                chatListPresenter.onChatsLoadByStudentId(mChats, mTutors);
-                                            }
-                                        });
-                                }
-
-                            }
+                        }else{
+                            chatListPresenter.onQueryResult(task.getException().getMessage());
                         }
+                    }
                 });
     }
 
@@ -776,18 +846,27 @@ public class DatabaseHandler implements DatabaseInterface {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
-                            for(QueryDocumentSnapshot document: task.getResult()){
-                                Chat chat = document.toObject(Chat.class);
-                                mChats.add(chat);
-                                mDatabase.collection("students").document(chat.getStudentId()).get()
-                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                mStudents.add(task.getResult().toObject(Student.class));
-                                                chatListPresenter.onChatsLoadByTutorId(mChats, mStudents);
-                                            }
-                                        });
+                            Log.d(TAG, "chats fetch task success");
+                            if (!task.getResult().isEmpty()) {
+                                for(QueryDocumentSnapshot document: task.getResult()){
+                                    Chat chat = document.toObject(Chat.class);
+                                    Log.d(TAG,"chat added at" + chat.getStudentId());
+                                    mChats.add(chat);
+                                    mDatabase.collection("students").document(chat.getStudentId()).get()
+                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    Log.d(TAG, "students fetch task success");
+                                                    mStudents.add(task.getResult().toObject(Student.class));
+                                                    chatListPresenter.onChatsLoadByTutorId(mChats, mStudents);
+                                                }
+                                            });
+                                }
+                            }else{
+                                chatListPresenter.onQueryResult("No chats found");
                             }
+                        }else{
+                            chatListPresenter.onQueryResult(task.getException().getMessage());
                         }
                     }
                 });
@@ -1019,18 +1098,19 @@ public class DatabaseHandler implements DatabaseInterface {
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                         for(QueryDocumentSnapshot document : task.getResult()){
                                             mDatabase.collection("tuitions").document(document.getId()).delete();
+                                            mDatabase.collection("ratings").document(document.getId()).delete();
                                         }
-                                                        Log.d(TAG, "deleting tutor profile");
-                                                        mDatabase.collection("students").document(studentId).delete();
-                                                        Log.d(TAG, "deleting user authentication record");
-                                                        mAuth.getCurrentUser().delete()
-                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            Log.d(TAG, "deleting tutor profile");
+                                            mDatabase.collection("students").document(studentId).delete();
+                                            Log.d(TAG, "deleting user authentication record");
+                                            mAuth.getCurrentUser().delete()
+                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<Void> task) {
-                                                                        Log.d(TAG, "Account deleted from system");
-                                                                        studentProfilePresenter.onQueryResult("Account Deleted from Database");
-                                                                        studentProfilePresenter.onDeleteAccount();
-                                                                    }
+                                                       Log.d(TAG, "Account deleted from system");
+                                                       studentProfilePresenter.onQueryResult("Account Deleted from Database");
+                                                        studentProfilePresenter.onDeleteAccount();
+                                                            }
                                                                 });
                                                     }
                                                 });
@@ -1091,28 +1171,37 @@ public class DatabaseHandler implements DatabaseInterface {
         mStudents.clear();
         mRatings.clear();
         mDatabase.collection("ratings").whereEqualTo("tutorId", tutorId).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            for(QueryDocumentSnapshot document: task.getResult()){
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            for(QueryDocumentSnapshot document: queryDocumentSnapshots){
+                                Log.d(TAG, "getting rating data");
                                 final Rating rating = document.toObject(Rating.class);
+                                Log.d(TAG, "rating data" + rating.toString());
                                 mRatings.add(rating);
-                            }
-                            for(final Rating rating: mRatings){
                                 mDatabase.collection("students").document(rating.getStudentId()).get()
-                                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                             @Override
-                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                Student student = documentSnapshot.toObject(Student.class);
-                                                mStudents.add(student);
-                                                ratingListPresenter.onDataLoadComplete(mRatings, mStudents);
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if(task.isSuccessful()){
+                                                    Student student = task.getResult().toObject(Student.class);
+                                                    mStudents.add(student);
+                                                    ratingListPresenter.onDataLoadComplete(mRatings, mStudents);
+                                                }
                                             }
                                         });
                             }
-
+                        }else{
+                            ratingListPresenter.onQueryResult("No Rating found");
                         }
                     }
-                });
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                    ratingListPresenter.onQueryResult(e.getMessage());
+                }
+        });
     }
 }

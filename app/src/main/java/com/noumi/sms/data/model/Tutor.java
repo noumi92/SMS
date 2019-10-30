@@ -18,6 +18,15 @@ public class Tutor {
     private long mTutorRating;
     private String mTutorAboutMe;
     private long mTutorFee;
+    private String mTokenId;
+
+    public String getTokenId() {
+        return mTokenId;
+    }
+
+    public void setTokenId(String tokenId) {
+        mTokenId = tokenId;
+    }
 
     public Tutor() {
     }
@@ -35,6 +44,7 @@ public class Tutor {
         mTutorRating = 0;
         mTutorAboutMe = "";
         mTutorFee = 0;
+        mTokenId = "";
     }
 
     public Tutor(String tutorId, String tutorName, String tutorEmail, String tutorCity, String tutorGender, List<String> tutorSubjects, String tutorDegreeName, String tutorDegreeSubject, GeoPoint tutorLocation, long tutorRating, String tutorAboutMe, long tutorFee) {

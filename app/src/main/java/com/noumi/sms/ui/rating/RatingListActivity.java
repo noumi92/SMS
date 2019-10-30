@@ -2,6 +2,7 @@ package com.noumi.sms.ui.rating;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.data.model.Rating;
 import com.noumi.sms.data.model.Student;
 import com.noumi.sms.ui.login.LoginActivity;
+import com.noumi.sms.utils.NavigationUtils;
 
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class RatingListActivity extends AppCompatActivity implements RatingListV
     private RatingListPresenterInterface mRatingListPresenter;
     private RecyclerView mRatingsRecyclerView;
     private RatingAdapter mRatingAdapter;
+    private NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
     private List<Rating> mRatings;
     private List<Student> mStudents;
@@ -38,6 +41,7 @@ public class RatingListActivity extends AppCompatActivity implements RatingListV
         //get references of views
         mRatingsRecyclerView = (RecyclerView) findViewById(R.id.rating_recycler_view);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_menu_view);
         //setup adapter here
         mRatingsRecyclerView.setHasFixedSize(true);
         mRatingsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -47,6 +51,9 @@ public class RatingListActivity extends AppCompatActivity implements RatingListV
             toolbar.setTitle("My Ratings");
             setSupportActionBar(toolbar);
         }
+        mNavigationView.getMenu().clear();
+        mNavigationView.inflateMenu(R.menu.menu_tutor_navigation);
+        NavigationUtils.startTutorNaigation(this, mNavigationView);
     }
     //initial code to run onn startup
     @Override
