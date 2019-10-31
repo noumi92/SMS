@@ -6,6 +6,7 @@ public class Tuition {
     private String mTuitionId;
     private String mTutorId;
     private String mStudentId;
+    private String mSenderId;
     private Date mRequestedDate;
     private Date mAcceptedDate;
     private boolean mActive;
@@ -14,14 +15,23 @@ public class Tuition {
     public Tuition() {
     }
 
-    public Tuition(String tuitionId, String tutorId, String studentId, Date requestedDate, boolean active, boolean accepted) {
+    public Tuition(String tuitionId, String tutorId, String studentId, String senderId, Date requestedDate, boolean active, boolean accepted) {
         mTuitionId = tuitionId;
         mTutorId = tutorId;
         mStudentId = studentId;
+        mSenderId = senderId;
         mRequestedDate = requestedDate;
         mAcceptedDate = null;
         mActive = active;
         mAccepted = accepted;
+    }
+
+    public String getSenderId() {
+        return mSenderId;
+    }
+
+    public void setSenderId(String senderId) {
+        mSenderId = senderId;
     }
 
     public String getTuitionId() {

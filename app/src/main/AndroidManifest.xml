@@ -37,16 +37,17 @@
             android:name=".ui.tutors.map.TutorMapActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.chat.room.ChatRoomActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.noumi.sms.CHAT_REQUEST_NOTIFICATION"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.tutors.detail.TutorDetailActivity"
             android:label="Tutor Details"
             android:parentActivityName=".ui.tutors.list.TutorListActivity"
             android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="com.noumi.sms.TUITION_REQUEST_NOTIFICATION" />
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.tutors.profile.TutorProfileActivity"
@@ -77,13 +78,19 @@
         <activity android:name=".ui.students.profile.StudentProfileActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.tuition.detail.TuitionDetailActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.noumi.sms.TUITION_REQUEST_NOTIFICATION" />
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.chat.list.ChatListActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.tutors.profile.TutorLocationActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.rating.RatingListActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.students.details.StudentDetailActivity" />
 
         <service android:name=".data.services.FirebaseNotificationService" >
             <intent-filter>

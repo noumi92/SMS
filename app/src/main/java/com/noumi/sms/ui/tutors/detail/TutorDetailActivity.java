@@ -91,7 +91,7 @@ public class TutorDetailActivity extends AppCompatActivity implements TutorDetai
                 sb.append(studentId);
                 String tuitionId = sb.toString();
                 Date requestedDate = Calendar.getInstance().getTime();
-                Tuition tuition = new Tuition(tuitionId, tutorId, studentId, requestedDate, false, false);
+                Tuition tuition = new Tuition(tuitionId, tutorId, studentId, studentId, requestedDate, false, false);
                 mProgressbar.setVisibility(View.VISIBLE);
                 mTutorDetailPresenter.addTuition(tuition);
             }

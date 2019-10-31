@@ -9,6 +9,7 @@ import com.noumi.sms.R;
 import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.ui.chat.list.ChatListActivity;
 import com.noumi.sms.ui.rating.RatingListActivity;
+import com.noumi.sms.ui.students.list.StudentListActivity;
 import com.noumi.sms.ui.students.profile.StudentProfileActivity;
 import com.noumi.sms.ui.tuition.list.TuitionsListActivity;
 import com.noumi.sms.ui.tutors.list.TutorListActivity;
@@ -61,6 +62,11 @@ public class NavigationUtils {
                         Intent tutorIntent = new Intent(context, TutorProfileActivity.class);
                         tutorIntent.putExtra("tutorId", LoggedInUser.getLoggedInUser().getUserId());
                         context.startActivity(tutorIntent);
+                        return true;
+                    }
+                    case R.id.nav_browse_students:{
+                        Intent studentsIntent = new Intent(context, StudentListActivity.class);
+                        context.startActivity(studentsIntent);
                         return true;
                     }
                     case R.id.nav_browse_tuitions:{

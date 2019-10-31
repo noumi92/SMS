@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.Chat;
 import com.noumi.sms.data.model.LoggedInUser;
@@ -81,6 +82,8 @@ public class ChatListActivity extends AppCompatActivity implements ChatListViewI
     @Override
     protected void onStart() {
         super.onStart();
+        mUserType = LoggedInUser.getLoggedInUser().getUserType();
+        Log.d(TAG, "musertype: " + mUserType);
         if(mChatsListPresenter == null){
             mChatsListPresenter = new ChatListPresenter(this);
             String userId = LoggedInUser.getLoggedInUser().getUserId();

@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidbuts.multispinnerfilter.MultiSpinner;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -30,6 +31,9 @@ import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.data.model.Tutor;
 import com.noumi.sms.ui.login.LoginActivity;
 import com.noumi.sms.utils.NavigationUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class TutorProfileActivity extends AppCompatActivity implements TutorProfileViewInterface {
     private static final String TUTOR_ID_KEY = "tutorId";
@@ -195,23 +199,10 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
             public void onClick(View v) {
                 AlertDialog.Builder subjectsDialog = new AlertDialog.Builder(TutorProfileActivity.this);
                 View view = getLayoutInflater().inflate(R.layout.dialog_subjects, null);
-                subjectsDialog.setView(view);
-                subjectsDialog.setTitle("Edit Subjects");
-                subjectsDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                subjectsDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                subjectsDialog.create().show();
-            }
-        });
+                final List<String> list = Arrays.asList(getResources().getStringArray(R.array.degree_subjects));
+                MultiSpinner spinner = (MultiSpinner) view.findViewById(R.id.dialog_tutor_subjects_spinner);
+                }
+            });
         mTutorFeeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.noumi.sms.R;
@@ -17,6 +18,7 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
     private String mNotificationTitle;
     private String mNotificationBody;
     private String mNotificationClickAction;
+    private String mNotificationType;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -25,22 +27,46 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
         mNotificationTitle = remoteMessage.getNotification().getTitle();
         mNotificationBody = remoteMessage.getNotification().getBody();
         mNotificationClickAction = remoteMessage.getNotification().getClickAction();
-
-        Intent intent = new Intent(mNotificationClickAction);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        mNotificationType = remoteMessage.getData().get("type");
 
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"ok")
+        Intent resultIntent = getNotificationData(mNotificationType, remoteMessage);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"default_channel")
                 .setContentTitle(mNotificationTitle)
                 .setContentText(mNotificationBody)
-                .setContentIntent(resultPendingIntent);
+                .setSmallIcon(R.mipmap.ic_app_logo);
+
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(this,0, resultIntent, PendingIntent.FLAG_ONE_SHOT);
+
+        builder.setContentIntent(resultPendingIntent);
+
+        //NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(getString(R.string.wecome_text), "Default channel", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel notificationChannel = new NotificationChannel("default_channel", "Default channel", NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(notificationChannel);
         }
+        //notificationManagerCompat.notify(mNotificationId, builder.build());
         notificationManager.notify(mNotificationId, builder.build());
+    }
+
+    private Intent getNotificationData(String notificationType, RemoteMessage remoteMessage) {
+        Intent intent = new Intent(mNotificationClickAction);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        switch (notificationType){
+            case "tuition_request":{
+                String tuitionId = remoteMessage.getData().get("tuitionId");
+                intent.putExtra("tuitionId", tuitionId);
+            }
+            case "chat_requset":{
+                String chatId = remoteMessage.getData().get("chatId");
+                String studentName = remoteMessage.getData().get("studentName");
+                intent.putExtra("chatId", chatId);
+                intent.putExtra("senderName", studentName);
+            }
+        }
+        return intent;
     }
 }

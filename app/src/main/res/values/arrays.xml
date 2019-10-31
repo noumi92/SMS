@@ -4,7 +4,7 @@
         <item>Male</item>
         <item>Female</item>
     </string-array>
-    <array name="students_cities">
+    <string-array name="students_cities">
         <item></item>
         <item>Abbottabad</item>
         <item>Ahmadpur East</item>
@@ -76,7 +76,7 @@
         <item>Vihari</item>
         <item>Wah Cantonment</item>
         <item>Wazirabad</item>
-    </array>
+    </string-array>
     <string-array name="tuition_rating">
         <item>1</item>
         <item>2</item>

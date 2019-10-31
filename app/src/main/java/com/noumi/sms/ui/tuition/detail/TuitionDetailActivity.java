@@ -243,6 +243,8 @@ public class TuitionDetailActivity extends AppCompatActivity implements TuitionD
                 mTuitionDetailPresenter = new TuitionDetailPresenter(this);
             }
             mTuitionDetailPresenter.loadTuition(tuitionId);
+        }else{
+            startActivity(new Intent(TuitionDetailActivity.this, TuitionsListActivity.class));
         }
     }
 
@@ -280,22 +282,37 @@ public class TuitionDetailActivity extends AppCompatActivity implements TuitionD
         String userType = LoggedInUser.getLoggedInUser().getUserType();
         mCommentsView.setFocusable(false);
         mTutorRatingTextView.setClickable(false);
+        //tuition request is sent but not accceptence is pending
         if (TextUtils.equals(userType, "student")) {
             if (!mTuition.isActive() && !mTuition.isAccepted()) {
+                //if tuition request is sent from tutor display accept tuition option to student
+                if (TextUtils.equals(mTuition.getSenderId(), mTuition.getTutorId())) {
+                    mAcceptTuitionButton.setVisibility(View.VISIBLE);
+                }
                 mDeleteTuitionButton.setVisibility(View.VISIBLE);
-            } else if (mTuition.isActive() && mTuition.isAccepted()) {
+            }
+            //tuition request is accepted
+            else if (mTuition.isActive() && mTuition.isAccepted()) {
                 mCommentsView.setFocusable(true);
                 mTutorRatingTextView.setClickable(true);
                 mUpdateRatingButton.setVisibility(View.VISIBLE);
                 mLeaveTuitionButton.setVisibility(View.VISIBLE);
             }
         } else if (TextUtils.equals(userType, "tutor")) {
+            //tuition request is sent but not accceptence is pending
             if (!mTuition.isActive() && !mTuition.isAccepted()) {
-                mAcceptTuitionButton.setVisibility(View.VISIBLE);
+                //if tuition request is sent from student display accept tuition option to tutor
+                if (TextUtils.equals(mTuition.getSenderId(), mTuition.getStudentId())) {
+                    mAcceptTuitionButton.setVisibility(View.VISIBLE);
+                }
                 mDeleteTuitionButton.setVisibility(View.VISIBLE);
-            } else if (mTuition.isActive() && mTuition.isAccepted()) {
+            }
+            //tuition request is accepted
+            else if (mTuition.isActive() && mTuition.isAccepted()) {
                 mDeleteTuitionButton.setVisibility(View.VISIBLE);
-            } else if (!mTuition.isActive() && mTuition.isAccepted()) {
+            }
+            //tuition request was accepted by student but student left tuition, tutor can re-activate tuition services
+            else if (!mTuition.isActive() && mTuition.isAccepted()) {
                 mActivateTuitionButton.setVisibility(View.VISIBLE);
                 mDeleteTuitionButton.setVisibility(View.VISIBLE);
             }

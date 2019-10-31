@@ -8,6 +8,7 @@ import com.noumi.sms.data.model.Rating;
 import com.noumi.sms.data.model.Student;
 import com.noumi.sms.data.model.Tuition;
 import com.noumi.sms.data.model.Tutor;
+import com.noumi.sms.ui.chat.list.ChatAdapterInterface;
 import com.noumi.sms.ui.chat.list.ChatListPresenter;
 import com.noumi.sms.ui.chat.room.ChatRoomPresenter;
 import com.noumi.sms.ui.chat.room.ChatRoomPresenterInterface;
@@ -15,6 +16,7 @@ import com.noumi.sms.ui.forgotpassword.ForgotPasswordPresenterInterface;
 import com.noumi.sms.ui.login.LoginPresenterInterface;
 import com.noumi.sms.ui.rating.RatingListPresenterInterface;
 import com.noumi.sms.ui.signup.SignupPresenterInterface;
+import com.noumi.sms.ui.students.details.StudentDetailPresenterInterface;
 import com.noumi.sms.ui.students.list.StudentListPresenterInterface;
 import com.noumi.sms.ui.students.profile.StudentProfilePresenterInterface;
 import com.noumi.sms.ui.tuition.detail.TuitionDetailPresenter;
@@ -44,10 +46,12 @@ public interface DatabaseInterface {
     void getTutorsByCity(String city, TutorMapPresenterInterface tutorMapPresenter);
     void getTutorsByCityAndGender(String city, String gender, TutorListPresenterInterface tutorListPresenter);
     void loadStudent(String studentId, StudentProfilePresenterInterface studentProfilePresenterInterface);
+    void loadStudent(String studentId, StudentDetailPresenterInterface studentDetailPresenter);
     void loadStudent(String studentId, TutorMapPresenterInterface tutorMapPresenter);
     void loadTutor(String tutorId, TutorProfilePresenterInterface tutorProfilePresenterInterface);
     void loadTutor(String tutorId, TutorDetailPresenterInterface tutorDetailPresenterInterface);
     void addTuition(Tuition tuition, TutorDetailPresenterInterface tutorDetailPresenterInterface);
+    void addTuition(Tuition tuition, StudentDetailPresenterInterface studentDetailPresenter);
     void getTuitionsByStudentId(String studentId, TuitionListPresenterInterface tuitionListPresenter);
     void getTutorById(String tutorId, TuitionListPresenterInterface tuitionListPresenter);
     void loadTuition(String tuitionId, TuitionDetailPresenter tuitionDetailPresenter);
@@ -68,4 +72,5 @@ public interface DatabaseInterface {
     void deleteTuition(String tuitionId, TuitionDetailPresenterInterface tuitionDetailPresenter);
     void updateTuition(Tuition tuition, TuitionDetailPresenterInterface tuitionDetailPresenter);
     void getRatingsByTutorId(String tutorId, RatingListPresenterInterface ratingListPresenter);
+    void deleteChatById(String chatId, ChatAdapterInterface chatAdapterInterface);
 }

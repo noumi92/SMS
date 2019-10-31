@@ -27,6 +27,7 @@ import com.noumi.sms.data.model.Rating;
 import com.noumi.sms.data.model.Student;
 import com.noumi.sms.data.model.Tuition;
 import com.noumi.sms.data.model.Tutor;
+import com.noumi.sms.ui.chat.list.ChatAdapterInterface;
 import com.noumi.sms.ui.chat.list.ChatListPresenter;
 import com.noumi.sms.ui.chat.room.ChatRoomPresenter;
 import com.noumi.sms.ui.chat.room.ChatRoomPresenterInterface;
@@ -34,6 +35,7 @@ import com.noumi.sms.ui.forgotpassword.ForgotPasswordPresenterInterface;
 import com.noumi.sms.ui.login.LoginPresenterInterface;
 import com.noumi.sms.ui.rating.RatingListPresenterInterface;
 import com.noumi.sms.ui.signup.SignupPresenterInterface;
+import com.noumi.sms.ui.students.details.StudentDetailPresenterInterface;
 import com.noumi.sms.ui.students.list.StudentListPresenterInterface;
 import com.noumi.sms.ui.students.profile.StudentProfilePresenterInterface;
 import com.noumi.sms.ui.tuition.detail.TuitionDetailPresenter;
@@ -469,6 +471,25 @@ public class DatabaseHandler implements DatabaseInterface {
                     }
                 });
     }
+    public void loadStudent(String studentId, final StudentDetailPresenterInterface studentDetailPresenter) {
+        mDatabase.collection("students").document(studentId).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot document = task.getResult();
+                            if(document.exists()){
+                                Student student = document.toObject(Student.class);
+                                LoggedInUser.getLoggedInUser().setUserName(student.getStudentName());
+                                studentDetailPresenter.onDataLoad(student);
+                            }
+                            studentDetailPresenter.onQueryResult("load student successful");
+                        }else{
+                            studentDetailPresenter.onQueryResult(task.getException().getMessage());
+                        }
+                    }
+                });
+    }
 
     @Override
     public void loadStudent(String studentId, final TutorMapPresenterInterface tutorMapPresenter) {
@@ -601,7 +622,48 @@ public class DatabaseHandler implements DatabaseInterface {
                 });
 
     }
+    @Override
+    public void addTuition(final Tuition tuition, final StudentDetailPresenterInterface studentDetailPresenter) {
+        mDatabase.collection("tuitions").document(tuition.getTuitionId()).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> checExixtingTask) {
+                        if(checExixtingTask.isSuccessful()){
+                            DocumentSnapshot document = checExixtingTask.getResult();
+                            if(document.exists()){
+                                studentDetailPresenter.onQueryResult("Record already exist");
+                                studentDetailPresenter.onOfferTuitionSuccess(tuition.getTuitionId());
+                            }else{
+                                mDatabase.collection("tuitions").document(tuition.getTuitionId()).set(tuition)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> addTuitiontask) {
+                                                if(addTuitiontask.isSuccessful()){
+                                                    Rating rating = new Rating(tuition.getTuitionId(), tuition.getTutorId(), tuition.getStudentId());
+                                                    mDatabase.collection("ratings").document(tuition.getTuitionId()).set(rating)
+                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> addRatingtask) {
+                                                                    if(addRatingtask.isSuccessful()){
+                                                                        studentDetailPresenter.onOfferTuitionSuccess(tuition.getTuitionId());
+                                                                    }else{
+                                                                        studentDetailPresenter.onQueryResult("rating insertion failed..." + addRatingtask.getException().getMessage());
+                                                                    }
+                                                                }
+                                                            });
+                                                }else{
+                                                    studentDetailPresenter.onQueryResult("tuition insertion failed..." + addTuitiontask.getException().getMessage());
+                                                }
+                                            }
+                                        });
+                            }
+                        }else{
+                            studentDetailPresenter.onQueryResult("tuition insertion failed" + checExixtingTask.getException().getMessage());
+                        }
+                    }
+                });
 
+    }
     @Override
     public void addChat(final Chat chat, final TutorDetailPresenterInterface tutorDetailPresenterInterface) {
         mDatabase.collection("chats").document(chat.getChatId()).get()
@@ -1203,5 +1265,10 @@ public class DatabaseHandler implements DatabaseInterface {
                     ratingListPresenter.onQueryResult(e.getMessage());
                 }
         });
+    }
+
+    @Override
+    public void deleteChatById(String chatId, ChatAdapterInterface chatAdapterInterface) {
+        mDatabase.collection("chats").document(chatId).delete();
     }
 }

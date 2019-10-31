@@ -6,6 +6,10 @@
         android:icon="@drawable/ic_profile"
         android:title="My Profile" />
     <item
+        android:id="@+id/nav_browse_students"
+        android:icon="@drawable/ic_browse_tutors"
+        android:title="Browse Students" />
+    <item
         android:id="@+id/nav_browse_tuitions"
         android:icon="@drawable/ic_tuitions_list"
         android:title="My Tuitions" />

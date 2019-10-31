@@ -50,15 +50,6 @@ public class StudentListActivity extends AppCompatActivity implements StudentLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_list);
-
-        //check instance state
-        if(savedInstanceState != null){
-            super.onRestoreInstanceState(savedInstanceState);
-            mFilterStateFlag = savedInstanceState.getInt(FILTER_STATE_FLAG_KEY);
-            mSelectedCity = savedInstanceState.getString(SELECTED_CITY_KEY);
-            mSelectedGender = savedInstanceState.getString(SELECTED_GENDER_KEY);
-            mStudentListPresenter.getFilteredStudents(mSelectedCity, mSelectedGender, mFilterStateFlag);
-        }
         //get references of views
         mStudentsRecyclerView = (RecyclerView) findViewById(R.id.student_recycler_view);
         mGenderRadioGroup = (RadioGroup) findViewById(R.id.gender_radio_group);
@@ -133,29 +124,12 @@ public class StudentListActivity extends AppCompatActivity implements StudentLis
         }
         super.onStart();
     }
-    //save search preferences data
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(FILTER_STATE_FLAG_KEY, mFilterStateFlag);
-        outState.putString(SELECTED_CITY_KEY, mSelectedCity);
-        outState.putString(SELECTED_GENDER_KEY, mSelectedGender);
-        super.onSaveInstanceState(outState);
-    }
-    //call when restoring activity
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mFilterStateFlag = savedInstanceState.getInt(FILTER_STATE_FLAG_KEY);
-        mSelectedCity = savedInstanceState.getString(SELECTED_CITY_KEY);
-        mSelectedGender = savedInstanceState.getString(SELECTED_GENDER_KEY);
-        mStudentListPresenter.getFilteredStudents(mSelectedCity, mSelectedGender, mFilterStateFlag);
-    }
     //this method is called when database handler completes data fetchinn
     @Override
     public void onLoadComplete(List<Student> students) {
         Log.d(TAG, "data result count:" + students.size());
         if (mStudentAdapter == null) {
-            mStudentAdapter = new StudentAdapter(students);
+            mStudentAdapter = new StudentAdapter(students, this);
             mStudentsRecyclerView.setAdapter(mStudentAdapter);
         } else {
             mStudentAdapter.notifyDataSetChanged();

@@ -3,8 +3,10 @@ package com.noumi.sms.ui.chat.list;
 //this class displays students in StudentListActivity
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -70,7 +72,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
             }
         }
 
-        chatHolder.bind(chat, name);
+        chatHolder.bind(chat, name, i);
     }
     @Override
     public int getItemCount() {
@@ -78,17 +80,21 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
     }
 
     //inner class which holds a single item of student data list
-    public class ChatHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ChatHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
         private String TAG = "com.noumi.sms.custom.log";
         private TextView mChatTimeView;
         private TextView mNameView;
         private Chat mChat;
         private String mName;
+        private int mPosition;
+        private ChatAdapterInterface mChatAdapterInterface;
         public ChatHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
             mChatTimeView = (TextView) itemView.findViewById(R.id.chat_time_view);
             mNameView = (TextView) itemView.findViewById(R.id.tutor_name_view);
+            mChatAdapterInterface = new ChatAdapterPresenter();
         }
 
         @Override
@@ -99,9 +105,26 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
             mContext.startActivity(chatIntent);
         }
 
-        public void bind(Chat chat, String name) {
+        @Override
+        public boolean onLongClick(View v) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+            dialog.setTitle("Delete Chat");
+            dialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String id = mChat.getChatId();
+                    mChatAdapterInterface.deleteChatById(id);
+                }
+            });
+            dialog.create().show();
+            notifyItemRemoved(mPosition);
+            return true;
+        }
+
+        public void bind(Chat chat, String name, int position) {
             mChat = chat;
             mName = name;
+            mPosition = position;
             mNameView.setText(name);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
             String formattedDate = simpleDateFormat.format(chat.getChatTime());
