@@ -59,290 +59,291 @@
 36-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:18:9-54
 37        android:supportsRtl="true"
 37-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:19:9-35
-38        android:theme="@style/AppTheme" >
-38-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:20:9-40
-39
-40        <!--
-41             The API key for Google Maps-based APIs is defined as a string resource.
-42             (See the file "res/values/google_maps_api.xml").
-43             Note that the API key is linked to the encryption key used to sign the APK.
-44             You need a different API key for each encryption key, including the release key that is used to
-45             sign the APK for publishing.
-46             You can define the keys for the debug and release targets in src/debug/ and src/release/.
-47        -->
-48        <meta-data
-48-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:29:9-31:69
-49            android:name="com.google.android.gms.version"
-49-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:30:13-58
-50            android:value="@integer/google_play_services_version" />
-50-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:31:13-66
-51        <meta-data
-51-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:32:9-34:55
-52            android:name="com.google.android.geo.API_KEY"
-52-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:33:13-58
-53            android:value="@string/google_maps_key" />
-53-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:34:13-52
-54
-55        <activity
-55-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:36:9-38:52
-56            android:name="com.noumi.sms.ui.tutors.map.TutorMapActivity"
-56-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:37:13-59
-57            android:screenOrientation="portrait" />
-57-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:38:13-49
-58        <activity
-58-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:39:9-45:20
-59            android:name="com.noumi.sms.ui.chat.room.ChatRoomActivity"
-59-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:39:19-64
-60            android:screenOrientation="portrait" >
-60-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:40:13-49
-61            <intent-filter>
-61-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:41:13-44:29
-62                <action android:name="com.noumi.sms.CHAT_REQUEST_NOTIFICATION" />
-62-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:42:17-81
-62-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:42:25-79
-63
-64                <category android:name="android.intent.category.DEFAULT" />
-64-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:43:17-75
-64-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:43:27-73
-65            </intent-filter>
-66        </activity>
-67        <activity
-67-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:46:9-51:20
-68            android:name="com.noumi.sms.ui.tutors.detail.TutorDetailActivity"
-68-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:47:13-65
-69            android:label="Tutor Details"
-69-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:48:13-42
-70            android:parentActivityName="com.noumi.sms.ui.tutors.list.TutorListActivity"
-70-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:49:13-75
-71            android:screenOrientation="portrait" >
-71-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:50:13-49
-72        </activity>
-73        <activity
-73-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:52:9-54:52
-74            android:name="com.noumi.sms.ui.tutors.profile.TutorProfileActivity"
-74-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:53:13-67
-75            android:screenOrientation="portrait" />
-75-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:54:13-49
-76        <activity
-76-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:55:9-57:52
-77            android:name="com.noumi.sms.ui.forgotpassword.ForgotPasswordActivity"
-77-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:56:13-69
-78            android:screenOrientation="portrait" />
-78-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:57:13-49
-79        <activity
-79-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:58:9-60:52
-80            android:name="com.noumi.sms.ui.students.list.StudentListActivity"
-80-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:59:13-65
-81            android:screenOrientation="portrait" />
-81-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:60:13-49
-82        <activity
-82-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:61:9-63:52
-83            android:name="com.noumi.sms.ui.tutors.list.TutorListActivity"
-83-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:62:13-61
-84            android:screenOrientation="portrait" />
-84-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:63:13-49
-85        <activity
-85-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:64:9-66:52
-86            android:name="com.noumi.sms.ui.signup.SignupActivity"
-86-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:65:13-53
-87            android:screenOrientation="portrait" />
-87-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:66:13-49
-88        <activity
-88-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:67:9-75:20
-89            android:name="com.noumi.sms.ui.login.LoginActivity"
-89-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:68:13-51
-90            android:screenOrientation="portrait" >
-90-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:69:13-49
-91            <intent-filter>
-91-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:70:13-74:29
-92                <action android:name="android.intent.action.MAIN" />
-92-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:71:17-69
-92-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:71:25-66
-93
-94                <category android:name="android.intent.category.LAUNCHER" />
-94-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:73:17-77
-94-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:73:27-74
-95            </intent-filter>
-96        </activity>
-97        <activity
-97-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:76:9-77:51
-98            android:name="com.noumi.sms.ui.tuition.list.TuitionsListActivity"
-98-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:76:19-71
-99            android:screenOrientation="portrait" />
-99-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:77:13-49
-100        <activity
-100-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:78:9-79:51
-101            android:name="com.noumi.sms.ui.students.profile.StudentProfileActivity"
-101-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:78:19-77
-102            android:screenOrientation="portrait" />
-102-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:79:13-49
-103        <activity
-103-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:80:9-86:20
-104            android:name="com.noumi.sms.ui.tuition.detail.TuitionDetailActivity"
-104-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:80:19-74
-105            android:screenOrientation="portrait" >
-105-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:81:13-49
-106            <intent-filter>
-106-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:82:13-85:29
-107                <action android:name="com.noumi.sms.TUITION_REQUEST_NOTIFICATION" />
-107-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:83:17-85
-107-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:83:25-82
-108
-109                <category android:name="android.intent.category.DEFAULT" />
-109-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:43:17-75
-109-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:43:27-73
-110            </intent-filter>
-111        </activity>
-112        <activity
-112-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:87:9-88:51
-113            android:name="com.noumi.sms.ui.chat.list.ChatListActivity"
-113-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:87:19-64
-114            android:screenOrientation="portrait" />
-114-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:88:13-49
-115        <activity
-115-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:89:9-90:51
-116            android:name="com.noumi.sms.ui.tutors.profile.TutorLocationActivity"
-116-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:89:19-74
-117            android:screenOrientation="portrait" />
-117-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:90:13-49
-118        <activity
-118-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:91:9-92:51
-119            android:name="com.noumi.sms.ui.rating.RatingListActivity"
-119-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:91:19-63
-120            android:screenOrientation="portrait" />
-120-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:92:13-49
-121        <activity android:name="com.noumi.sms.ui.students.details.StudentDetailActivity" />
-121-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:93:9-79
-121-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:93:19-76
-122
-123        <service android:name="com.noumi.sms.data.services.FirebaseNotificationService" >
-123-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:95:9-99:19
-123-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:95:18-75
-124            <intent-filter>
-124-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:96:13-98:29
-125                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-125-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:97:17-78
-125-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:97:25-75
-126            </intent-filter>
-127        </service>
-128
-129        <activity
-129-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:24:9-31:50
-130            android:name="com.google.firebase.auth.internal.FederatedSignInActivity"
-130-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:25:13-85
-131            android:excludeFromRecents="true"
-131-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:26:13-46
-132            android:exported="true"
-132-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:27:13-36
-133            android:launchMode="singleTask"
-133-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:28:13-44
-134            android:permission="com.google.firebase.auth.api.gms.permission.LAUNCH_FEDERATED_SIGN_IN"
-134-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:29:13-102
-135            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-135-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:30:13-72
-136
-137        <service
-137-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:33:9-39:19
-138            android:name="com.google.firebase.components.ComponentDiscoveryService"
-138-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:34:13-84
-139            android:exported="false" >
-139-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:35:13-37
-140            <meta-data
-140-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:36:13-38:85
-141                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
-141-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:37:17-109
-142                android:value="com.google.firebase.components.ComponentRegistrar" />
-142-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:38:17-82
-143            <meta-data
-143-->[com.google.firebase:firebase-firestore:17.1.2] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\e1bfbe6a62bc01912ffc26a26faf972b\firebase-firestore-17.1.2\AndroidManifest.xml:15:13-17:85
-144                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
-144-->[com.google.firebase:firebase-firestore:17.1.2] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\e1bfbe6a62bc01912ffc26a26faf972b\firebase-firestore-17.1.2\AndroidManifest.xml:16:17-111
-145                android:value="com.google.firebase.components.ComponentRegistrar" />
-145-->[com.google.firebase:firebase-firestore:17.1.2] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\e1bfbe6a62bc01912ffc26a26faf972b\firebase-firestore-17.1.2\AndroidManifest.xml:17:17-82
-146            <meta-data
-146-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:32:13-34:85
-147                android:name="com.google.firebase.components:com.google.firebase.iid.Registrar"
-147-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:33:17-96
-148                android:value="com.google.firebase.components.ComponentRegistrar" />
-148-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:34:17-82
-149        </service> <!-- Needs to be explicitly declared on P+ -->
-150        <uses-library
-150-->[com.google.android.gms:play-services-maps:16.1.0] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\a7756aad771cd43b51cb9669ead08445\play-services-maps-16.1.0\AndroidManifest.xml:33:9-35:40
-151            android:name="org.apache.http.legacy"
-151-->[com.google.android.gms:play-services-maps:16.1.0] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\a7756aad771cd43b51cb9669ead08445\play-services-maps-16.1.0\AndroidManifest.xml:34:13-50
-152            android:required="false" />
-152-->[com.google.android.gms:play-services-maps:16.1.0] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\a7756aad771cd43b51cb9669ead08445\play-services-maps-16.1.0\AndroidManifest.xml:35:13-37
-153        <!--
-154             FirebaseMessagingService performs security checks at runtime,
-155             no need for explicit permissions despite exported="true"
-156        -->
-157        <service
-157-->[com.google.firebase:firebase-messaging:17.3.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\d8b752a90f3ce88daedb97ece4431fec\firebase-messaging-17.3.4\AndroidManifest.xml:28:9-34:19
-158            android:name="com.google.firebase.messaging.FirebaseMessagingService"
-158-->[com.google.firebase:firebase-messaging:17.3.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\d8b752a90f3ce88daedb97ece4431fec\firebase-messaging-17.3.4\AndroidManifest.xml:29:13-82
-159            android:exported="true" >
-159-->[com.google.firebase:firebase-messaging:17.3.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\d8b752a90f3ce88daedb97ece4431fec\firebase-messaging-17.3.4\AndroidManifest.xml:30:13-36
-160            <intent-filter android:priority="-500" >
-160-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:96:13-98:29
-161                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-161-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:97:17-78
-161-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:97:25-75
-162            </intent-filter>
-163        </service>
-164
-165        <receiver
-165-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:37:9-44:20
-166            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
-166-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:38:13-78
-167            android:exported="true"
-167-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:39:13-36
-168            android:permission="com.google.android.c2dm.permission.SEND" >
-168-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:40:13-73
-169            <intent-filter>
-169-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:41:13-43:29
-170                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-170-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:42:17-81
-170-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:42:25-78
-171            </intent-filter>
-172        </receiver>
-173        <!--
-174             FirebaseInstanceIdService performs security checks at runtime,
-175             no need for explicit permissions despite exported="true"
-176        -->
-177        <service
-177-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:50:9-56:19
-178            android:name="com.google.firebase.iid.FirebaseInstanceIdService"
-178-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:51:13-77
-179            android:exported="true" >
-179-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:52:13-36
-180            <intent-filter android:priority="-500" >
-180-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:53:13-55:29
-180-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:53:28-51
-181                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-181-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:54:17-80
-181-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:54:25-77
-182            </intent-filter>
-183        </service>
-184
-185        <activity
-185-->[com.google.android.gms:play-services-base:16.0.1] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\57567ae853f194090e0776c253229cce\play-services-base-16.0.1\AndroidManifest.xml:23:9-26:75
-186            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-186-->[com.google.android.gms:play-services-base:16.0.1] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\57567ae853f194090e0776c253229cce\play-services-base-16.0.1\AndroidManifest.xml:24:13-79
-187            android:exported="false"
-187-->[com.google.android.gms:play-services-base:16.0.1] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\57567ae853f194090e0776c253229cce\play-services-base-16.0.1\AndroidManifest.xml:25:13-37
-188            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-188-->[com.google.android.gms:play-services-base:16.0.1] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\57567ae853f194090e0776c253229cce\play-services-base-16.0.1\AndroidManifest.xml:26:13-72
-189
-190        <provider
-190-->[com.google.firebase:firebase-common:16.0.3] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\611773d5f1e79ae8bd5fa7ec9bc24f0d\firebase-common-16.0.3\AndroidManifest.xml:10:9-14:39
-191            android:name="com.google.firebase.provider.FirebaseInitProvider"
-191-->[com.google.firebase:firebase-common:16.0.3] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\611773d5f1e79ae8bd5fa7ec9bc24f0d\firebase-common-16.0.3\AndroidManifest.xml:11:13-77
-192            android:authorities="com.noumi.sms.firebaseinitprovider"
-192-->[com.google.firebase:firebase-common:16.0.3] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\611773d5f1e79ae8bd5fa7ec9bc24f0d\firebase-common-16.0.3\AndroidManifest.xml:12:13-72
-193            android:exported="false"
-193-->[com.google.firebase:firebase-common:16.0.3] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\611773d5f1e79ae8bd5fa7ec9bc24f0d\firebase-common-16.0.3\AndroidManifest.xml:13:13-37
-194            android:initOrder="100" />
-194-->[com.google.firebase:firebase-common:16.0.3] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\611773d5f1e79ae8bd5fa7ec9bc24f0d\firebase-common-16.0.3\AndroidManifest.xml:14:13-36
-195    </application>
-196
-197</manifest>
+38        android:testOnly="true"
+39        android:theme="@style/AppTheme" >
+39-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:20:9-40
+40
+41        <!--
+42             The API key for Google Maps-based APIs is defined as a string resource.
+43             (See the file "res/values/google_maps_api.xml").
+44             Note that the API key is linked to the encryption key used to sign the APK.
+45             You need a different API key for each encryption key, including the release key that is used to
+46             sign the APK for publishing.
+47             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+48        -->
+49        <meta-data
+49-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:29:9-31:69
+50            android:name="com.google.android.gms.version"
+50-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:30:13-58
+51            android:value="@integer/google_play_services_version" />
+51-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:31:13-66
+52        <meta-data
+52-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:32:9-34:55
+53            android:name="com.google.android.geo.API_KEY"
+53-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:33:13-58
+54            android:value="@string/google_maps_key" />
+54-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:34:13-52
+55
+56        <activity
+56-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:36:9-38:52
+57            android:name="com.noumi.sms.ui.tutors.map.TutorMapActivity"
+57-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:37:13-59
+58            android:screenOrientation="portrait" />
+58-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:38:13-49
+59        <activity
+59-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:39:9-45:20
+60            android:name="com.noumi.sms.ui.chat.room.ChatRoomActivity"
+60-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:39:19-64
+61            android:screenOrientation="portrait" >
+61-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:40:13-49
+62            <intent-filter>
+62-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:41:13-44:29
+63                <action android:name="com.noumi.sms.CHAT_REQUEST_NOTIFICATION" />
+63-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:42:17-81
+63-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:42:25-79
+64
+65                <category android:name="android.intent.category.DEFAULT" />
+65-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:43:17-75
+65-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:43:27-73
+66            </intent-filter>
+67        </activity>
+68        <activity
+68-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:46:9-51:20
+69            android:name="com.noumi.sms.ui.tutors.detail.TutorDetailActivity"
+69-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:47:13-65
+70            android:label="Tutor Details"
+70-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:48:13-42
+71            android:parentActivityName="com.noumi.sms.ui.tutors.list.TutorListActivity"
+71-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:49:13-75
+72            android:screenOrientation="portrait" >
+72-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:50:13-49
+73        </activity>
+74        <activity
+74-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:52:9-54:52
+75            android:name="com.noumi.sms.ui.tutors.profile.TutorProfileActivity"
+75-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:53:13-67
+76            android:screenOrientation="portrait" />
+76-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:54:13-49
+77        <activity
+77-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:55:9-57:52
+78            android:name="com.noumi.sms.ui.forgotpassword.ForgotPasswordActivity"
+78-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:56:13-69
+79            android:screenOrientation="portrait" />
+79-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:57:13-49
+80        <activity
+80-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:58:9-60:52
+81            android:name="com.noumi.sms.ui.students.list.StudentListActivity"
+81-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:59:13-65
+82            android:screenOrientation="portrait" />
+82-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:60:13-49
+83        <activity
+83-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:61:9-63:52
+84            android:name="com.noumi.sms.ui.tutors.list.TutorListActivity"
+84-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:62:13-61
+85            android:screenOrientation="portrait" />
+85-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:63:13-49
+86        <activity
+86-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:64:9-66:52
+87            android:name="com.noumi.sms.ui.signup.SignupActivity"
+87-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:65:13-53
+88            android:screenOrientation="portrait" />
+88-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:66:13-49
+89        <activity
+89-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:67:9-75:20
+90            android:name="com.noumi.sms.ui.login.LoginActivity"
+90-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:68:13-51
+91            android:screenOrientation="portrait" >
+91-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:69:13-49
+92            <intent-filter>
+92-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:70:13-74:29
+93                <action android:name="android.intent.action.MAIN" />
+93-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:71:17-69
+93-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:71:25-66
+94
+95                <category android:name="android.intent.category.LAUNCHER" />
+95-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:73:17-77
+95-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:73:27-74
+96            </intent-filter>
+97        </activity>
+98        <activity
+98-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:76:9-77:51
+99            android:name="com.noumi.sms.ui.tuition.list.TuitionsListActivity"
+99-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:76:19-71
+100            android:screenOrientation="portrait" />
+100-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:77:13-49
+101        <activity
+101-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:78:9-79:51
+102            android:name="com.noumi.sms.ui.students.profile.StudentProfileActivity"
+102-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:78:19-77
+103            android:screenOrientation="portrait" />
+103-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:79:13-49
+104        <activity
+104-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:80:9-86:20
+105            android:name="com.noumi.sms.ui.tuition.detail.TuitionDetailActivity"
+105-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:80:19-74
+106            android:screenOrientation="portrait" >
+106-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:81:13-49
+107            <intent-filter>
+107-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:82:13-85:29
+108                <action android:name="com.noumi.sms.TUITION_REQUEST_NOTIFICATION" />
+108-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:83:17-85
+108-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:83:25-82
+109
+110                <category android:name="android.intent.category.DEFAULT" />
+110-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:43:17-75
+110-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:43:27-73
+111            </intent-filter>
+112        </activity>
+113        <activity
+113-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:87:9-88:51
+114            android:name="com.noumi.sms.ui.chat.list.ChatListActivity"
+114-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:87:19-64
+115            android:screenOrientation="portrait" />
+115-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:88:13-49
+116        <activity
+116-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:89:9-90:51
+117            android:name="com.noumi.sms.ui.tutors.profile.TutorLocationActivity"
+117-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:89:19-74
+118            android:screenOrientation="portrait" />
+118-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:90:13-49
+119        <activity
+119-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:91:9-92:51
+120            android:name="com.noumi.sms.ui.rating.RatingListActivity"
+120-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:91:19-63
+121            android:screenOrientation="portrait" />
+121-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:92:13-49
+122        <activity android:name="com.noumi.sms.ui.students.details.StudentDetailActivity" />
+122-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:93:9-79
+122-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:93:19-76
+123
+124        <service android:name="com.noumi.sms.data.services.FirebaseNotificationService" >
+124-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:95:9-99:19
+124-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:95:18-75
+125            <intent-filter>
+125-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:96:13-98:29
+126                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+126-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:97:17-78
+126-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:97:25-75
+127            </intent-filter>
+128        </service>
+129
+130        <activity
+130-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:24:9-31:50
+131            android:name="com.google.firebase.auth.internal.FederatedSignInActivity"
+131-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:25:13-85
+132            android:excludeFromRecents="true"
+132-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:26:13-46
+133            android:exported="true"
+133-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:27:13-36
+134            android:launchMode="singleTask"
+134-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:28:13-44
+135            android:permission="com.google.firebase.auth.api.gms.permission.LAUNCH_FEDERATED_SIGN_IN"
+135-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:29:13-102
+136            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+136-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:30:13-72
+137
+138        <service
+138-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:33:9-39:19
+139            android:name="com.google.firebase.components.ComponentDiscoveryService"
+139-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:34:13-84
+140            android:exported="false" >
+140-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:35:13-37
+141            <meta-data
+141-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:36:13-38:85
+142                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
+142-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:37:17-109
+143                android:value="com.google.firebase.components.ComponentRegistrar" />
+143-->[com.google.firebase:firebase-auth:16.0.5] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\ffd1148910b86601fa9069431900e3e8\firebase-auth-16.0.5\AndroidManifest.xml:38:17-82
+144            <meta-data
+144-->[com.google.firebase:firebase-firestore:17.1.2] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\e1bfbe6a62bc01912ffc26a26faf972b\firebase-firestore-17.1.2\AndroidManifest.xml:15:13-17:85
+145                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
+145-->[com.google.firebase:firebase-firestore:17.1.2] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\e1bfbe6a62bc01912ffc26a26faf972b\firebase-firestore-17.1.2\AndroidManifest.xml:16:17-111
+146                android:value="com.google.firebase.components.ComponentRegistrar" />
+146-->[com.google.firebase:firebase-firestore:17.1.2] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\e1bfbe6a62bc01912ffc26a26faf972b\firebase-firestore-17.1.2\AndroidManifest.xml:17:17-82
+147            <meta-data
+147-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:32:13-34:85
+148                android:name="com.google.firebase.components:com.google.firebase.iid.Registrar"
+148-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:33:17-96
+149                android:value="com.google.firebase.components.ComponentRegistrar" />
+149-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:34:17-82
+150        </service> <!-- Needs to be explicitly declared on P+ -->
+151        <uses-library
+151-->[com.google.android.gms:play-services-maps:16.1.0] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\a7756aad771cd43b51cb9669ead08445\play-services-maps-16.1.0\AndroidManifest.xml:33:9-35:40
+152            android:name="org.apache.http.legacy"
+152-->[com.google.android.gms:play-services-maps:16.1.0] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\a7756aad771cd43b51cb9669ead08445\play-services-maps-16.1.0\AndroidManifest.xml:34:13-50
+153            android:required="false" />
+153-->[com.google.android.gms:play-services-maps:16.1.0] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\a7756aad771cd43b51cb9669ead08445\play-services-maps-16.1.0\AndroidManifest.xml:35:13-37
+154        <!--
+155             FirebaseMessagingService performs security checks at runtime,
+156             no need for explicit permissions despite exported="true"
+157        -->
+158        <service
+158-->[com.google.firebase:firebase-messaging:17.3.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\d8b752a90f3ce88daedb97ece4431fec\firebase-messaging-17.3.4\AndroidManifest.xml:28:9-34:19
+159            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+159-->[com.google.firebase:firebase-messaging:17.3.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\d8b752a90f3ce88daedb97ece4431fec\firebase-messaging-17.3.4\AndroidManifest.xml:29:13-82
+160            android:exported="true" >
+160-->[com.google.firebase:firebase-messaging:17.3.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\d8b752a90f3ce88daedb97ece4431fec\firebase-messaging-17.3.4\AndroidManifest.xml:30:13-36
+161            <intent-filter android:priority="-500" >
+161-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:96:13-98:29
+162                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+162-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:97:17-78
+162-->E:\Development\Android\SMS\app\src\main\AndroidManifest.xml:97:25-75
+163            </intent-filter>
+164        </service>
+165
+166        <receiver
+166-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:37:9-44:20
+167            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+167-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:38:13-78
+168            android:exported="true"
+168-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:39:13-36
+169            android:permission="com.google.android.c2dm.permission.SEND" >
+169-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:40:13-73
+170            <intent-filter>
+170-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:41:13-43:29
+171                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+171-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:42:17-81
+171-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:42:25-78
+172            </intent-filter>
+173        </receiver>
+174        <!--
+175             FirebaseInstanceIdService performs security checks at runtime,
+176             no need for explicit permissions despite exported="true"
+177        -->
+178        <service
+178-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:50:9-56:19
+179            android:name="com.google.firebase.iid.FirebaseInstanceIdService"
+179-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:51:13-77
+180            android:exported="true" >
+180-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:52:13-36
+181            <intent-filter android:priority="-500" >
+181-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:53:13-55:29
+181-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:53:28-51
+182                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+182-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:54:17-80
+182-->[com.google.firebase:firebase-iid:17.0.4] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\4218c6043b2186df357c18c899ece374\firebase-iid-17.0.4\AndroidManifest.xml:54:25-77
+183            </intent-filter>
+184        </service>
+185
+186        <activity
+186-->[com.google.android.gms:play-services-base:16.0.1] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\57567ae853f194090e0776c253229cce\play-services-base-16.0.1\AndroidManifest.xml:23:9-26:75
+187            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+187-->[com.google.android.gms:play-services-base:16.0.1] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\57567ae853f194090e0776c253229cce\play-services-base-16.0.1\AndroidManifest.xml:24:13-79
+188            android:exported="false"
+188-->[com.google.android.gms:play-services-base:16.0.1] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\57567ae853f194090e0776c253229cce\play-services-base-16.0.1\AndroidManifest.xml:25:13-37
+189            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+189-->[com.google.android.gms:play-services-base:16.0.1] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\57567ae853f194090e0776c253229cce\play-services-base-16.0.1\AndroidManifest.xml:26:13-72
+190
+191        <provider
+191-->[com.google.firebase:firebase-common:16.0.3] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\611773d5f1e79ae8bd5fa7ec9bc24f0d\firebase-common-16.0.3\AndroidManifest.xml:10:9-14:39
+192            android:name="com.google.firebase.provider.FirebaseInitProvider"
+192-->[com.google.firebase:firebase-common:16.0.3] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\611773d5f1e79ae8bd5fa7ec9bc24f0d\firebase-common-16.0.3\AndroidManifest.xml:11:13-77
+193            android:authorities="com.noumi.sms.firebaseinitprovider"
+193-->[com.google.firebase:firebase-common:16.0.3] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\611773d5f1e79ae8bd5fa7ec9bc24f0d\firebase-common-16.0.3\AndroidManifest.xml:12:13-72
+194            android:exported="false"
+194-->[com.google.firebase:firebase-common:16.0.3] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\611773d5f1e79ae8bd5fa7ec9bc24f0d\firebase-common-16.0.3\AndroidManifest.xml:13:13-37
+195            android:initOrder="100" />
+195-->[com.google.firebase:firebase-common:16.0.3] D:\Users\noumi\.gradle\caches\transforms-2\files-2.1\611773d5f1e79ae8bd5fa7ec9bc24f0d\firebase-common-16.0.3\AndroidManifest.xml:14:13-36
+196    </application>
+197
+198</manifest>

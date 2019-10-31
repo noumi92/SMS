@@ -103,7 +103,11 @@ public class TutorLocationActivity extends AppCompatActivity implements TutorLoc
         if (requestCode == FINE_LOCATION_REQUEST){
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 mLocationPermissionGranted = true;
+            }else if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED){
+                startActivity(new Intent(TutorLocationActivity.this, TutorProfileActivity.class));
             }
+        }else{
+            startActivity(new Intent(TutorLocationActivity.this, TutorProfileActivity.class));
         }
         updateUI();
     }

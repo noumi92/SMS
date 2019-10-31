@@ -8,7 +8,6 @@ import com.noumi.sms.data.model.Tutor;
 
 import java.util.List;
 public interface TutorMapPresenterInterface {
-    void checkLocationPermission(TutorMapActivity tutorMapActivity);
     void getStudentById(String userId);
     void onQueryResult(String message);
     void onStudentLoad(Student student);

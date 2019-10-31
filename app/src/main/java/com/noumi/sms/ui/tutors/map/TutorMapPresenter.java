@@ -1,10 +1,6 @@
 package com.noumi.sms.ui.tutors.map;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.noumi.sms.data.database.DatabaseHandler;
@@ -25,15 +21,6 @@ public class TutorMapPresenter implements TutorMapPresenterInterface {
         mDatabaseHandler = new DatabaseHandler();
         mMapsHandler = new MapsHandler();
         mTutorMapViewInterface = tutorMapViewInterface;
-    }
-
-    @Override
-    public void checkLocationPermission(TutorMapActivity tutorMapActivity) {
-        if (ContextCompat.checkSelfPermission(tutorMapActivity,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(tutorMapActivity,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
     }
 
     @Override

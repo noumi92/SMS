@@ -2,12 +2,12 @@ package com.noumi.sms.ui.tutors.map;
 
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -18,11 +18,11 @@ import com.noumi.sms.R;
 import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.data.model.Student;
 import com.noumi.sms.data.model.Tutor;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class TutorMapActivity extends FragmentActivity implements TutorMapViewInterface {
-
     private GoogleMap mMap;
     private List<Tutor> mTutorList;
     private SupportMapFragment mMapFragment;
@@ -38,7 +38,6 @@ public class TutorMapActivity extends FragmentActivity implements TutorMapViewIn
         mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mTutorMapPresenter = new TutorMapPresenter(this);
         mCitySpinner = (Spinner) findViewById(R.id.city_spinner);
-        mTutorMapPresenter.checkLocationPermission(this);
         if (mMapFragment != null) {
             mMapFragment.getMapAsync(this);
         }
@@ -54,14 +53,6 @@ public class TutorMapActivity extends FragmentActivity implements TutorMapViewIn
 
             }
         });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == 1){
-
-        }
     }
 
     @Override
