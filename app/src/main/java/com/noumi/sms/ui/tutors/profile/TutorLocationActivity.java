@@ -1,5 +1,6 @@
 package com.noumi.sms.ui.tutors.profile;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -103,13 +105,24 @@ public class TutorLocationActivity extends AppCompatActivity implements TutorLoc
         if (requestCode == FINE_LOCATION_REQUEST){
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 mLocationPermissionGranted = true;
+                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                dialog.setTitle("Enable GPS");
+                dialog.setMessage("Enable GPS manually and restart App to get current location");
+                dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                dialog.create().show();
+                updateUI();
             }else if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED){
-                startActivity(new Intent(TutorLocationActivity.this, TutorProfileActivity.class));
+                Toast.makeText(this, "Location permission is required to get current location", Toast.LENGTH_SHORT).show();
+                getLocationPermissions();
             }
         }else{
-            startActivity(new Intent(TutorLocationActivity.this, TutorProfileActivity.class));
+            getLocationPermissions();
         }
-        updateUI();
     }
 
     private void updateUI() {

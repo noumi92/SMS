@@ -8,6 +8,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidbuts.multispinnerfilter.MultiSpinner;
+import com.androidbuts.multispinnerfilter.MultiSpinnerListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -32,7 +35,9 @@ import com.noumi.sms.data.model.Tutor;
 import com.noumi.sms.ui.login.LoginActivity;
 import com.noumi.sms.utils.NavigationUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class TutorProfileActivity extends AppCompatActivity implements TutorProfileViewInterface {
@@ -197,10 +202,63 @@ public class TutorProfileActivity extends AppCompatActivity implements TutorProf
         mTutorSubjectsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder subjectsDialog = new AlertDialog.Builder(TutorProfileActivity.this);
+                //get list of all sujects from xml resource
+                final List<String> savedSubjects = Arrays.asList(getResources().getStringArray(R.array.degree_subjects));
+                //create new list for storing selected subjects by tutor
+                final List<String> subjects = new ArrayList<>();
+                //variable for multispinner first argument is subject name second if selected by tutor or not
+                final LinkedHashMap<String, Boolean> list = new LinkedHashMap<>();
+                for (String savedSubject : savedSubjects) {
+                    boolean selected = false;
+                    for (String tutorSubject : mTutor.getTutorSubjects()) {
+                        if (TextUtils.equals(tutorSubject, savedSubject)) {
+                            selected = true;
+
+                        }
+                    }
+                    list.put(savedSubject, selected);
+                }
                 View view = getLayoutInflater().inflate(R.layout.dialog_subjects, null);
-                final List<String> list = Arrays.asList(getResources().getStringArray(R.array.degree_subjects));
-                MultiSpinner spinner = (MultiSpinner) view.findViewById(R.id.dialog_tutor_subjects_spinner);
+                final MultiSpinner spinner = (MultiSpinner) view.findViewById(R.id.dialog_tutor_subjects_spinner);
+                MultiSpinnerListener spinnerListener= new MultiSpinnerListener() {
+                    @Override
+                    public void onItemsSelected(boolean[] selected) {
+                        //clear list every time otherwise duplicates subjects
+                        subjects.clear();
+                        Log.d(TAG, "list before: " + subjects.toString());
+                        for (int i = 0; i < selected.length; i++) {
+                            boolean index = selected[i];
+                            if (index) {
+                                subjects.add(savedSubjects.get(i));
+                                Log.d(TAG, "list building: " + subjects.toString());
+                            }
+                        }
+                        mUpdateProfile.setEnabled(true);
+                    }
+                };
+                spinner.setItems(list, spinnerListener);
+                AlertDialog.Builder subjectsDialog = new AlertDialog.Builder(TutorProfileActivity.this);
+                subjectsDialog.setView(view).setTitle("Edit Subjects");
+                subjectsDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d(TAG, "list building complete: " + subjects.toString());
+                        mTutor.setTutorSubjects(subjects);
+                        StringBuilder subjectsSB = new StringBuilder();
+                        for(String subject : mTutor.getTutorSubjects()){
+                            subjectsSB.append(subject);
+                            subjectsSB.append("\n");
+                        }
+                        mTutorSubjectsView.setText(subjectsSB.toString());
+                    }
+                });
+                subjectsDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                subjectsDialog.create().show();
                 }
             });
         mTutorFeeView.setOnClickListener(new View.OnClickListener() {

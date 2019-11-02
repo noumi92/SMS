@@ -3,27 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/input_background"
-    android:padding="16dp"
+    android:layout_margin="16dp"
+    android:padding="8dp"
     android:gravity= "bottom">
     <ImageView
         android:id= "@+id/application_icon"
-        android:layout_width= "wrap_content"
-        android:layout_height= "wrap_content"
+        android:layout_width= "80dp"
+        android:layout_height= "80dp"
         android:contentDescription= "application logo"
         app:srcCompat= "@mipmap/ic_app_logo" />
     <TextView
-        android:id="@+id/app_name"
+        android:id="@+id/user_name_view"
         android:layout_width= "match_parent"
         android:layout_height= "wrap_content"
         style="@style/title_text"
+        android:textSize="22sp"
         android:text= "FindMyTutor" />
-    <TextView
-        android:id= "@+id/application_description"
-        android:layout_width= "wrap_content"
-        android:layout_height= "wrap_content"
-        style="@style/subtitle_text"
-        android:text= "High qualified experienced tutors" />
 
 </LinearLayout>

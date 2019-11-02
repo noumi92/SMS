@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.Student;
 import com.noumi.sms.ui.login.LoginActivity;
+import com.noumi.sms.utils.NavigationUtils;
 
 import java.util.List;
 
@@ -45,6 +47,7 @@ public class StudentListActivity extends AppCompatActivity implements StudentLis
     private String mSelectedCity;
     private String mSelectedGender;
     private ListDivider mListDivider;
+    private NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,7 @@ public class StudentListActivity extends AppCompatActivity implements StudentLis
         mApplyFilters = (Button) findViewById(R.id.button_apply_filters);
         mClearFilters = (Button) findViewById(R.id.button_clear_filters);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_menu_view);
         //setup adapter here
         mStudentsRecyclerView.setHasFixedSize(true);
         mStudentsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -71,6 +75,7 @@ public class StudentListActivity extends AppCompatActivity implements StudentLis
             toolbar.setTitle(R.string.app_name);
             setSupportActionBar(toolbar);
         }
+        NavigationUtils.startTutorNaigation(this, mNavigationView);
         //apply filter button when any filter selected app calls appropriate method to fetch required data from database
         mApplyFilters.setOnClickListener(new View.OnClickListener() {
             @Override

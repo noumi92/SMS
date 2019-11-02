@@ -1,8 +1,10 @@
 package com.noumi.sms.ui.tutors.map;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
@@ -18,11 +20,13 @@ import com.noumi.sms.R;
 import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.data.model.Student;
 import com.noumi.sms.data.model.Tutor;
+import com.noumi.sms.ui.tutors.detail.TutorDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TutorMapActivity extends FragmentActivity implements TutorMapViewInterface {
+    private String TAG = "com.noumi.sms.custom.log";
     private GoogleMap mMap;
     private List<Tutor> mTutorList;
     private SupportMapFragment mMapFragment;
@@ -85,15 +89,25 @@ public class TutorMapActivity extends FragmentActivity implements TutorMapViewIn
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(latLng)
                     .title(tutor.getTutorName())
-                    .snippet(tutor.getTutorSubjects().toString());
+                    .snippet(tutor.getTutorId());
             Marker marker = mMap.addMarker(markerOptions);
             markers.add(marker);
         }
         if(markers.size() != 0) {
-            //mMap.moveCamera(CameraUpdateFactory.newLatLng(markers.get(0).getPosition()));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(markers.get(0).getPosition()));
         }else{
             Toast.makeText(this, "No Tutors Found in " + mCitySpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
         }
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Intent intent = new Intent(TutorMapActivity.this, TutorDetailActivity.class);
+                intent.putExtra("tutorId", marker.getSnippet());
+                Log.d(TAG, "Intent extra tutorId: " + marker.getSnippet());
+                startActivity(intent);
+                return true;
+            }
+        });
     }
 
     @Override

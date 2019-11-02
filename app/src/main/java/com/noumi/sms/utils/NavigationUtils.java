@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.view.MenuItem;
+import android.widget.TextView;
+
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.ui.chat.list.ChatListActivity;
@@ -18,6 +20,9 @@ import com.noumi.sms.ui.tutors.profile.TutorProfileActivity;
 
 public class NavigationUtils {
     public static void startStudentNaigation(final Context context, NavigationView navigationView){
+        //display user name
+        TextView nameView = navigationView.getHeaderView(0).findViewById(R.id.user_name_view);
+        nameView.setText(LoggedInUser.getLoggedInUser().getUserName());
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -54,6 +59,9 @@ public class NavigationUtils {
         });
     }
     public static void startTutorNaigation(final Context context, NavigationView navigationView){
+        //display user name
+        TextView nameView = navigationView.getHeaderView(0).findViewById(R.id.user_name_view);
+        nameView.setText(LoggedInUser.getLoggedInUser().getUserName());
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {

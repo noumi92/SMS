@@ -166,13 +166,10 @@ public class DatabaseHandler implements DatabaseInterface {
             mUser = mAuth.getCurrentUser();
             if(mUser.isEmailVerified()) {
                 Log.d(TAG, "email verified");
-                LoggedInUser.getLoggedInUser().setUserId(mUser.getUid());
-                LoggedInUser.getLoggedInUser().setUserEmail(mUser.getEmail());
-                String userId = LoggedInUser.getLoggedInUser().getUserId();
                 mUserTypeSetFlag = false;
                 if(!mUserTypeSetFlag) {
                     Log.d(TAG, "checkin in student database");
-                    mDatabase.collection("students").document(userId).get()
+                    mDatabase.collection("students").document(mUser.getUid()).get()
                             .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -180,10 +177,24 @@ public class DatabaseHandler implements DatabaseInterface {
                                         DocumentSnapshot document = task.getResult();
                                         if (document.exists()) {
                                             Log.d(TAG, "user found in student database");
-                                            LoggedInUser.getLoggedInUser().setUserType("student");
-                                            loginPresenter.onLoginSuccess(LoggedInUser.getLoggedInUser().getUserType());
-                                            loginPresenter.onQueryResult("Welcome Back...." + LoggedInUser.getLoggedInUser().getUserEmail());
-                                            mUserTypeSetFlag = true;
+                                            mDatabase.collection("students").document(mUser.getUid()).get()
+                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                            if(task.isSuccessful()){
+                                                                Student student = task.getResult().toObject(Student.class);
+                                                                LoggedInUser.getLoggedInUser().setUserId(student.getStudentId());
+                                                                LoggedInUser.getLoggedInUser().setUserEmail(student.getStudentEmail());
+                                                                LoggedInUser.getLoggedInUser().setUserName(student.getStudentName());
+                                                                LoggedInUser.getLoggedInUser().setUserType("student");
+                                                                loginPresenter.onLoginSuccess(LoggedInUser.getLoggedInUser().getUserType());
+                                                                loginPresenter.onQueryResult("Welcome Back...." + LoggedInUser.getLoggedInUser().getUserName());
+                                                                mUserTypeSetFlag = true;
+                                                            }else{
+                                                                loginPresenter.onLoginFailure();
+                                                            }
+                                                        }
+                                                    });
                                         }
                                     } else {
                                         Log.d(TAG, task.getException().getMessage());
@@ -194,7 +205,7 @@ public class DatabaseHandler implements DatabaseInterface {
                 }
                 if(!mUserTypeSetFlag) {
                     Log.d(TAG, "checkin in tutor database");
-                    mDatabase.collection("tutors").document(userId).get()
+                    mDatabase.collection("tutors").document(mUser.getUid()).get()
                             .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -202,10 +213,24 @@ public class DatabaseHandler implements DatabaseInterface {
                                         DocumentSnapshot document = task.getResult();
                                         if (document.exists()) {
                                             Log.d(TAG, "user found in tutor database");
-                                            LoggedInUser.getLoggedInUser().setUserType("tutor");
-                                            loginPresenter.onLoginSuccess(LoggedInUser.getLoggedInUser().getUserType());
-                                            loginPresenter.onQueryResult("Welcome Back...." + LoggedInUser.getLoggedInUser().getUserEmail());
-                                            mUserTypeSetFlag = true;
+                                            mDatabase.collection("tutors").document(mUser.getUid()).get()
+                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                            if(task.isSuccessful()){
+                                                                Tutor tutor = task.getResult().toObject(Tutor.class);
+                                                                LoggedInUser.getLoggedInUser().setUserId(tutor.getTutorId());
+                                                                LoggedInUser.getLoggedInUser().setUserEmail(tutor.getTutorEmail());
+                                                                LoggedInUser.getLoggedInUser().setUserName(tutor.getTutorName());
+                                                                LoggedInUser.getLoggedInUser().setUserType("tutor");
+                                                                loginPresenter.onLoginSuccess(LoggedInUser.getLoggedInUser().getUserType());
+                                                                loginPresenter.onQueryResult("Welcome Back...." + LoggedInUser.getLoggedInUser().getUserName());
+                                                                mUserTypeSetFlag = true;
+                                                            }else{
+                                                                loginPresenter.onLoginFailure();
+                                                            }
+                                                        }
+                                                    });
                                         }
                                     } else {
                                         Log.d(TAG, task.getException().getMessage());
@@ -347,6 +372,8 @@ public class DatabaseHandler implements DatabaseInterface {
                             mStudents.add(document.toObject(Student.class));
                         }
                         listPresenter.onDataLoadComplete(mStudents);
+                    }else{
+                        listPresenter.onQueryResult(task.getException().getMessage());
                     }
                }
            });
@@ -432,6 +459,7 @@ public class DatabaseHandler implements DatabaseInterface {
         }else if(TextUtils.equals(userType, "tutor")){
             mDatabase.collection("tutors").document(LoggedInUser.getLoggedInUser().getUserId()).update("tokenId", "");
         }
+        LoggedInUser.getLoggedInUser().clearUser();
         mAuth.signOut();
     }
     //method to reset email for password reset
@@ -1181,7 +1209,7 @@ public class DatabaseHandler implements DatabaseInterface {
     }
 
     @Override
-    public void updateTuitionRating(Rating rating, final TuitionDetailPresenterInterface tuitionDetailPresenter) {
+    public void updateTuitionRating(final Rating rating, final TuitionDetailPresenterInterface tuitionDetailPresenter) {
         mDatabase.collection("ratings").document(rating.getRatingId()).set(rating)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -1189,8 +1217,39 @@ public class DatabaseHandler implements DatabaseInterface {
                         if (task.isSuccessful()) {
                             tuitionDetailPresenter.onQueryResult("Ratings updated");
                             tuitionDetailPresenter.onRatingUpdate();
+                            updateTutorRating(rating);
                         }else {
                             tuitionDetailPresenter.onQueryResult("Rating update failed" + task.getException().getMessage());
+                        }
+                    }
+                });
+    }
+
+    private void updateTutorRating(final Rating rating) {
+        mDatabase.collection("ratings").whereEqualTo("tutorId", rating.getTutorId()).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull final Task<QuerySnapshot> task) {
+                        if(task.isSuccessful() && !task.getResult().isEmpty()){
+                            Log.d(TAG, "rating list fetched to update tutor rating");
+                            int ratingNumber = 0;
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                Rating myRating = document.toObject(Rating.class);
+                                ratingNumber += myRating.getRating();
+                            }
+                            ratingNumber /= task.getResult().size();
+                            Log.d(TAG, "new rating sent for updation");
+                            mDatabase.collection("tutors").document(rating.getTutorId()).update("tutorRating", ratingNumber)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()) {
+                                                Log.d(TAG, "tutor rating updated");
+                                            }else{
+                                                Log.e(TAG, task.getException().getMessage());
+                                            }
+                                        }
+                                    });
                         }
                     }
                 });

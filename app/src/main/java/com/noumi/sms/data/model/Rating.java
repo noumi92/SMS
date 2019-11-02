@@ -14,6 +14,7 @@ public class Rating {
         mRatingId = ratingId;
         mStudentId = studentId;
         mTutorId = tutorId;
+        mRating = 1;
     }
 
     public String getComments() {
