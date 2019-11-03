@@ -1,6 +1,7 @@
 package com.noumi.sms.ui.tuition.detail;
 
 import com.noumi.sms.data.model.Rating;
+import com.noumi.sms.data.model.Student;
 import com.noumi.sms.data.model.Tuition;
 import com.noumi.sms.data.model.Tutor;
 
@@ -19,5 +20,7 @@ public interface TuitionDetailPresenterInterface {
     void onRatingUpdate();
     void onTuitionUpdate();
     void onTuitionDelete();
+    void loadStudent(String studentId);
+    void onStudentLoad(Student student);
 }
 

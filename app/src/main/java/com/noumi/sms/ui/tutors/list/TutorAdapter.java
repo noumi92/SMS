@@ -51,6 +51,11 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.TutorHolder>
     public int getItemCount() {
         return mTutors.size();
     }
+
+    public void setTutors(List<Tutor> tutors) {
+        mTutors = tutors;
+    }
+
     //inner class which holds a single item of student data list
     public class TutorHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private String TAG = "com.noumi.sms.custom.log";

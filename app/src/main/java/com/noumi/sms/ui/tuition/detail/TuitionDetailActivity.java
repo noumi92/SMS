@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.data.model.Rating;
+import com.noumi.sms.data.model.Student;
 import com.noumi.sms.data.model.Tuition;
 import com.noumi.sms.data.model.Tutor;
 import com.noumi.sms.ui.login.LoginActivity;
@@ -49,6 +50,7 @@ public class TuitionDetailActivity extends AppCompatActivity implements TuitionD
     private Tutor mTutor;
     private Rating mRating;
     private LinearLayout mProgressBar;
+    private Student mStudent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +80,163 @@ public class TuitionDetailActivity extends AppCompatActivity implements TuitionD
             setSupportActionBar(toolbar);
         }
         getTuitionIntent();
+        startListeners();
 
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        if (mTuitionDetailPresenter == null) {
+            mTuitionDetailPresenter = new TuitionDetailPresenter(this);
+        }
+        super.onStart();
+    }
+
+    //create option menu to
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_options, menu);
+        return true;
+    }
+
+    //provides functionality when user clicks on option menu item
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.logout_item) {
+            mTuitionDetailPresenter.logoutUser();
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+        return true;
+    }
+
+    @Override
+    public void onTuitionLoad(Tuition tuition) {
+        mTuition = tuition;
+        String userType = LoggedInUser.getLoggedInUser().getUserType();
+        if(TextUtils.equals(userType, "student")){
+            mTuitionDetailPresenter.loadTutor(tuition.getTutorId());
+        }else if(TextUtils.equals(userType, "tutor")) {
+            mTuitionDetailPresenter.loadStudent(tuition.getStudentId());
+        }
+        mTuitionDetailPresenter.loadRating(tuition.getTuitionId());
+    }
+
+    @Override
+    public void onTutorLoad(Tutor tutor) {
+        mTutor = tutor;
+        updateTuitionData(tutor.getTutorName());
+        updateUIControls();
+        mProgressBar.setVisibility(View.GONE);
+    }
+    @Override
+    public void onStudentLoad(Student student) {
+        mStudent = student;
+        updateTuitionData(student.getStudentName());
+        updateUIControls();
+        mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onRatingLoad(Rating rating) {
+        mRating = rating;
+        updateRating();
+    }
+
+    @Override
+    public void onResult(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    private void getTuitionIntent() {
+        if (getIntent().hasExtra("tuitionId")) {
+            String tuitionId = getIntent().getStringExtra("tuitionId");
+            if (mTuitionDetailPresenter == null) {
+                mTuitionDetailPresenter = new TuitionDetailPresenter(this);
+            }
+            mTuitionDetailPresenter.loadTuition(tuitionId);
+        }else{
+            startActivity(new Intent(TuitionDetailActivity.this, TuitionsListActivity.class));
+        }
+    }
+
+    @Override
+    public void onRatingUpdate() {
+        mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onTuitionUpdate() {
+        mTuitionDetailPresenter.loadTuition(mTuition.getTuitionId());
+    }
+
+    @Override
+    public void onTuitionDelete() {
+        startActivity(new Intent(TuitionDetailActivity.this, TuitionsListActivity.class));
+    }
+
+    private void updateTuitionData(String name) {
+        mTutorNameTextView.setText(name);
+        if (mTuition.isAccepted()) {
+            mTuitionAcceptanceTextView.setText("Accepted");
+        } else {
+            mTuitionAcceptanceTextView.setText("Pending");
+            mAcceptTuitionButton.setEnabled(true);
+        }
+        if (mTuition.isActive()) {
+            mTuitionActiveTextView.setText("Active");
+        } else {
+            mTuitionActiveTextView.setText("InActive");
+        }
+    }
+
+    private void updateUIControls() {
+        String userType = LoggedInUser.getLoggedInUser().getUserType();
+        mCommentsView.setFocusable(false);
+        mTutorRatingTextView.setClickable(false);
+        //tuition request is sent but not accceptence is pending
+        if (TextUtils.equals(userType, "student")) {
+            if (!mTuition.isActive() && !mTuition.isAccepted()) {
+                //if tuition request is sent from tutor display accept tuition option to student
+                if (TextUtils.equals(mTuition.getSenderId(), mTuition.getTutorId())) {
+                    mAcceptTuitionButton.setVisibility(View.VISIBLE);
+                }
+                mDeleteTuitionButton.setVisibility(View.VISIBLE);
+            }
+            //tuition request is accepted
+            else if (mTuition.isActive() && mTuition.isAccepted()) {
+                mCommentsView.setFocusable(true);
+                mTutorRatingTextView.setClickable(true);
+                mUpdateRatingButton.setVisibility(View.VISIBLE);
+                mLeaveTuitionButton.setVisibility(View.VISIBLE);
+            }
+        } else if (TextUtils.equals(userType, "tutor")) {
+            //tuition request is sent but not accceptence is pending
+            if (!mTuition.isActive() && !mTuition.isAccepted()) {
+                //if tuition request is sent from student display accept tuition option to tutor
+                if (TextUtils.equals(mTuition.getSenderId(), mTuition.getStudentId())) {
+                    mAcceptTuitionButton.setVisibility(View.VISIBLE);
+                }
+                mDeleteTuitionButton.setVisibility(View.VISIBLE);
+            }
+            //tuition request is accepted
+            else if (mTuition.isActive() && mTuition.isAccepted()) {
+                mDeleteTuitionButton.setVisibility(View.VISIBLE);
+            }
+            //tuition request was accepted by student but student left tuition, tutor can re-activate tuition services
+            else if (!mTuition.isActive() && mTuition.isAccepted()) {
+                mActivateTuitionButton.setVisibility(View.VISIBLE);
+                mDeleteTuitionButton.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+    private void updateRating() {
+        mTutorRatingTextView.setText(Integer.toString(mRating.getRating()));
+        mCommentsView.setText(mRating.getComments());
+    }
+    private void startListeners(){
         mTutorRatingTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,146 +339,5 @@ public class TuitionDetailActivity extends AppCompatActivity implements TuitionD
             }
         });
 
-
-    }
-
-    @Override
-    protected void onStart() {
-        if (mTuitionDetailPresenter == null) {
-            mTuitionDetailPresenter = new TuitionDetailPresenter(this);
-        }
-        super.onStart();
-    }
-
-    //create option menu to
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_options, menu);
-        return true;
-    }
-
-    //provides functionality when user clicks on option menu item
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.logout_item) {
-            mTuitionDetailPresenter.logoutUser();
-            startActivity(new Intent(this, LoginActivity.class));
-        }
-        return true;
-    }
-
-    @Override
-    public void onTuitionLoad(Tuition tuition) {
-        mTuition = tuition;
-        mTuitionDetailPresenter.loadTutor(tuition.getTutorId());
-        mTuitionDetailPresenter.loadRating(tuition.getTuitionId());
-    }
-
-    @Override
-    public void onTutorLoad(Tutor tutor) {
-        mTutor = tutor;
-        updateTutor();
-        updateUIControls();
-        mProgressBar.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onRatingLoad(Rating rating) {
-        mRating = rating;
-        updateRating();
-    }
-
-    @Override
-    public void onResult(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
-
-    private void getTuitionIntent() {
-        if (getIntent().hasExtra("tuitionId")) {
-            String tuitionId = getIntent().getStringExtra("tuitionId");
-            if (mTuitionDetailPresenter == null) {
-                mTuitionDetailPresenter = new TuitionDetailPresenter(this);
-            }
-            mTuitionDetailPresenter.loadTuition(tuitionId);
-        }else{
-            startActivity(new Intent(TuitionDetailActivity.this, TuitionsListActivity.class));
-        }
-    }
-
-    @Override
-    public void onRatingUpdate() {
-        mProgressBar.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onTuitionUpdate() {
-        mTuitionDetailPresenter.loadTuition(mTuition.getTuitionId());
-    }
-
-    @Override
-    public void onTuitionDelete() {
-        startActivity(new Intent(TuitionDetailActivity.this, TuitionsListActivity.class));
-    }
-
-    private void updateTutor() {
-        mTutorNameTextView.setText(mTutor.getTutorName());
-        if (mTuition.isAccepted()) {
-            mTuitionAcceptanceTextView.setText("Accepted");
-        } else {
-            mTuitionAcceptanceTextView.setText("Pending");
-            mAcceptTuitionButton.setEnabled(true);
-        }
-        if (mTuition.isActive()) {
-            mTuitionActiveTextView.setText("Active");
-        } else {
-            mTuitionActiveTextView.setText("InActive");
-        }
-    }
-
-    private void updateUIControls() {
-        String userType = LoggedInUser.getLoggedInUser().getUserType();
-        mCommentsView.setFocusable(false);
-        mTutorRatingTextView.setClickable(false);
-        //tuition request is sent but not accceptence is pending
-        if (TextUtils.equals(userType, "student")) {
-            if (!mTuition.isActive() && !mTuition.isAccepted()) {
-                //if tuition request is sent from tutor display accept tuition option to student
-                if (TextUtils.equals(mTuition.getSenderId(), mTuition.getTutorId())) {
-                    mAcceptTuitionButton.setVisibility(View.VISIBLE);
-                }
-                mDeleteTuitionButton.setVisibility(View.VISIBLE);
-            }
-            //tuition request is accepted
-            else if (mTuition.isActive() && mTuition.isAccepted()) {
-                mCommentsView.setFocusable(true);
-                mTutorRatingTextView.setClickable(true);
-                mUpdateRatingButton.setVisibility(View.VISIBLE);
-                mLeaveTuitionButton.setVisibility(View.VISIBLE);
-            }
-        } else if (TextUtils.equals(userType, "tutor")) {
-            //tuition request is sent but not accceptence is pending
-            if (!mTuition.isActive() && !mTuition.isAccepted()) {
-                //if tuition request is sent from student display accept tuition option to tutor
-                if (TextUtils.equals(mTuition.getSenderId(), mTuition.getStudentId())) {
-                    mAcceptTuitionButton.setVisibility(View.VISIBLE);
-                }
-                mDeleteTuitionButton.setVisibility(View.VISIBLE);
-            }
-            //tuition request is accepted
-            else if (mTuition.isActive() && mTuition.isAccepted()) {
-                mDeleteTuitionButton.setVisibility(View.VISIBLE);
-            }
-            //tuition request was accepted by student but student left tuition, tutor can re-activate tuition services
-            else if (!mTuition.isActive() && mTuition.isAccepted()) {
-                mActivateTuitionButton.setVisibility(View.VISIBLE);
-                mDeleteTuitionButton.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    private void updateRating() {
-        mTutorRatingTextView.setText(Integer.toString(mRating.getRating()));
-        mCommentsView.setText(mRating.getComments());
     }
 }

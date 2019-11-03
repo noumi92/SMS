@@ -29,7 +29,6 @@ import com.noumi.sms.ui.tutors.profile.TutorLocationPresenterInterface;
 import com.noumi.sms.ui.tutors.profile.TutorProfilePresenterInterface;
 
 public interface DatabaseInterface {
-    //TODO 1: segregate methods activity wise
     void signupStudent(Student student, String password, SignupPresenterInterface signupPresenter);
     void signupTutor(Tutor tutor, String password, SignupPresenterInterface signupPresenter);
     void LoginUser(String email, String password, String usertype, LoginPresenterInterface loginPresenter);
@@ -48,6 +47,7 @@ public interface DatabaseInterface {
     void loadStudent(String studentId, StudentProfilePresenterInterface studentProfilePresenterInterface);
     void loadStudent(String studentId, StudentDetailPresenterInterface studentDetailPresenter);
     void loadStudent(String studentId, TutorMapPresenterInterface tutorMapPresenter);
+    void loadStudent(String studentId, TuitionDetailPresenterInterface tuitionDetailPresenter);
     void loadTutor(String tutorId, TutorProfilePresenterInterface tutorProfilePresenterInterface);
     void loadTutor(String tutorId, TutorDetailPresenterInterface tutorDetailPresenterInterface);
     void addTuition(Tuition tuition, TutorDetailPresenterInterface tutorDetailPresenterInterface);

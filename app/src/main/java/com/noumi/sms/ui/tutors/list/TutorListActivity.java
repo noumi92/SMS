@@ -12,13 +12,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Gravity;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -30,57 +33,56 @@ import com.noumi.sms.data.model.Tutor;
 import com.noumi.sms.ui.login.LoginActivity;
 import com.noumi.sms.utils.NavigationUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TutorListActivity extends AppCompatActivity implements TutorListViewInterface{
-    private static final String FILTER_STATE_FLAG_KEY = "filter_selection";
-    private static final String SELECTED_CITY_KEY = "selected_city";
-    private static final String SELECTED_GENDER_KEY = "selected_gender";
     private String TAG = "com.noumi.sms.custom.log";
     private TutorListPresenterInterface mTutorListPresenter;
     private RecyclerView mTutorRecyclerView;
     private TutorAdapter mTutorAdapter;
     private RadioGroup mGenderRadioGroup;
+    private RadioButton mMaleRadioButton;
+    private RadioButton mFemaleRadioButton;
     private Spinner mCitySpinner;
+    private Spinner mDegreeNameSpinner;
+    private Spinner mSubjectSpinner;
+    private EditText mFeeView;
     private Button mApplyFilters;
     private Button mClearFilters;
     private DrawerLayout mDrawerLayout;
-    private int mFilterStateFlag;
-    private String mSelectedCity;
-    private String mSelectedGender;
     private ListDivider mListDivider;
     private NavigationView mNavigationView;
     private LinearLayout mProgressbar;
+    private int mFilterStateFlag;
+    private List<Tutor> mTutors;
+    private List<Tutor> mFilteredTutors;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_list);
-
-        //check instance state
-        if(savedInstanceState != null){
-            super.onRestoreInstanceState(savedInstanceState);
-            mFilterStateFlag = savedInstanceState.getInt(FILTER_STATE_FLAG_KEY);
-            mSelectedCity = savedInstanceState.getString(SELECTED_CITY_KEY);
-            mSelectedGender = savedInstanceState.getString(SELECTED_GENDER_KEY);
-            mTutorListPresenter.getFilteredTutors(mSelectedCity, mSelectedGender, mFilterStateFlag);
-        }
         //get references of views
         mTutorRecyclerView = (RecyclerView) findViewById(R.id.tutor_recycler_view);
         mGenderRadioGroup = (RadioGroup) findViewById(R.id.gender_radio_group);
+        mMaleRadioButton = (RadioButton) findViewById(R.id.male_filter);
+        mFemaleRadioButton = (RadioButton) findViewById(R.id.female_filter);
         mCitySpinner = (Spinner) findViewById(R.id.city_spinner);
+        mDegreeNameSpinner = (Spinner) findViewById(R.id.degree_name_spinner);
+        mSubjectSpinner = (Spinner) findViewById(R.id.subject_spinner) ;
+        mFeeView = (EditText) findViewById(R.id.fee_input);
         mApplyFilters = (Button) findViewById(R.id.button_apply_filters);
         mClearFilters = (Button) findViewById(R.id.button_clear_filters);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_menu_view);
         mProgressbar = (LinearLayout) findViewById(R.id.progressbar);
+        mFilteredTutors = new ArrayList<>();
         //setup adapter here
         mTutorRecyclerView.setHasFixedSize(true);
         mTutorRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         Drawable divider = ContextCompat.getDrawable(this, R.drawable.list_item_seperator);
         mListDivider = new ListDivider(divider);
         mTutorRecyclerView.addItemDecoration(mListDivider);
-        // 0  means no filter applied
-        mFilterStateFlag = 0;
         //display progressbar on startup while activity initializes contents
         mProgressbar.setVisibility(View.VISIBLE);
         //setting up toolbar
@@ -94,28 +96,6 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
         mApplyFilters.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mProgressbar.setVisibility(View.VISIBLE);
-                //get selection for gender
-                int genderRadioButtonId = mGenderRadioGroup.getCheckedRadioButtonId();
-                //get selection for city
-                mSelectedCity = mCitySpinner.getSelectedItem().toString();
-                //get selection of filtera and set filter type flags
-                //FILTER_FLAGS-> 1=city, 2=gender, 3=city&gender, 0=no filter applied
-                if(genderRadioButtonId != -1 && !mSelectedCity.isEmpty()){
-                    //this block runs when both gender and city filters are selected
-                    mFilterStateFlag = 3;
-                    RadioButton button = (RadioButton) findViewById(genderRadioButtonId);
-                    mSelectedGender = button.getText().toString();
-                }else if(!mSelectedCity.isEmpty()){
-                    //this block runs when only city filter is selected
-                    mFilterStateFlag = 1;
-                }else if(genderRadioButtonId != -1){
-                    //this block runs when onle gender filter is selected for data
-                    mFilterStateFlag = 2;
-                    RadioButton button = (RadioButton) findViewById(genderRadioButtonId);
-                    mSelectedGender = button.getText().toString();
-                }
-                mTutorListPresenter.getFilteredTutors(mSelectedCity, mSelectedGender, mFilterStateFlag);
                 //close filter navigation menu
                 mDrawerLayout.closeDrawers();
             }
@@ -124,11 +104,7 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
         mClearFilters.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mProgressbar.setVisibility(View.VISIBLE);
-                mGenderRadioGroup.clearCheck();
-                mCitySpinner.setSelected(false);
-                mTutorListPresenter.loadTutors();
-                mDrawerLayout.closeDrawer(Gravity.END);
+                startActivity(new Intent(TutorListActivity.this, TutorListActivity.class));
             }
         });
     }
@@ -138,40 +114,20 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
         if(mTutorListPresenter == null){
             mTutorListPresenter = new TutorListPresenter(TutorListActivity.this);
         }
-        //initial loading of all students
-        if(mFilterStateFlag == 0){
-            mTutorListPresenter.loadTutors();
-        }
+        mTutorListPresenter.loadTutors();
         super.onStart();
-    }
-
-    //save search preferences data
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(FILTER_STATE_FLAG_KEY, mFilterStateFlag);
-        outState.putString(SELECTED_CITY_KEY, mSelectedCity);
-        outState.putString(SELECTED_GENDER_KEY, mSelectedGender);
-        super.onSaveInstanceState(outState);
-    }
-    //call when restoring activity
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mFilterStateFlag = savedInstanceState.getInt(FILTER_STATE_FLAG_KEY);
-        mSelectedCity = savedInstanceState.getString(SELECTED_CITY_KEY);
-        mSelectedGender = savedInstanceState.getString(SELECTED_GENDER_KEY);
-        mTutorListPresenter.getFilteredTutors(mSelectedCity, mSelectedGender, mFilterStateFlag);
     }
     //this method is called when database handler completes data fetchinn
     @Override
     public void onLoadComplete(List<Tutor> tutors) {
-        Log.d(TAG, "data result count:" + tutors.size());
         if (mTutorAdapter == null) {
+            mTutors = tutors;
             mTutorAdapter = new TutorAdapter(this,tutors);
             mTutorRecyclerView.setAdapter(mTutorAdapter);
         } else {
             mTutorAdapter.notifyDataSetChanged();
         }
+        startFilterListeners();
         mProgressbar.setVisibility(View.GONE);
     }
     //display feedback to user actions
@@ -229,5 +185,103 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
                 mDivider.draw(c);
             }
         }
+    }
+    private void startFilterListeners() {
+        mGenderRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                String gender = "";
+                if(checkedId == mFemaleRadioButton.getId()){
+                    gender = "Female";
+                }else if(checkedId == mMaleRadioButton.getId()){
+                    gender = "Male";
+                }
+                if(mFilteredTutors.size() == 0 ){
+                    mFilteredTutors = mTutorListPresenter.filterTutorsByGender(mTutors, gender);
+                }else{
+                    mFilteredTutors = mTutorListPresenter.filterTutorsByGender(mFilteredTutors, gender);
+                }
+                mTutorAdapter.setTutors(mFilteredTutors);
+                mTutorAdapter.notifyDataSetChanged();
+            }
+        });
+        mCitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String city = mCitySpinner.getSelectedItem().toString();
+                if(mFilteredTutors.size() == 0 ){
+                    mFilteredTutors = mTutorListPresenter.filterTutorsByCity(mTutors, city);
+                }else{
+                    mFilteredTutors = mTutorListPresenter.filterTutorsByCity(mFilteredTutors, city);
+                }
+                mTutorAdapter.setTutors(mFilteredTutors);
+                mTutorAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        mDegreeNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String degreeName = mDegreeNameSpinner.getSelectedItem().toString();
+                if(mFilteredTutors.size() == 0 ){
+                    mFilteredTutors = mTutorListPresenter.filterTutorsByDegree(mTutors, degreeName);
+                }else{
+                    mFilteredTutors = mTutorListPresenter.filterTutorsByDegree(mFilteredTutors, degreeName);
+                }
+                mTutorAdapter.setTutors(mFilteredTutors);
+                mTutorAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        mSubjectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String subject = mSubjectSpinner.getSelectedItem().toString();
+                if(mFilteredTutors.size() == 0 ){
+                    mFilteredTutors = mTutorListPresenter.filterTutorsBySubject(mTutors, subject);
+                }else{
+                    mFilteredTutors = mTutorListPresenter.filterTutorsBySubject(mFilteredTutors, subject);
+                }
+                mTutorAdapter.setTutors(mFilteredTutors);
+                mTutorAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        mFeeView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!TextUtils.equals(mFeeView.getText(),"")) {
+                    int fee = Integer.valueOf(mFeeView.getText().toString());
+                    if(mFilteredTutors.size() == 0 ){
+                        mFilteredTutors = mTutorListPresenter.filterTutorsByFee(mTutors, fee);
+                    }else{
+                        mFilteredTutors = mTutorListPresenter.filterTutorsByFee(mFilteredTutors, fee);
+                    }
+                    mTutorAdapter.setTutors(mFilteredTutors);
+                    mTutorAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 }

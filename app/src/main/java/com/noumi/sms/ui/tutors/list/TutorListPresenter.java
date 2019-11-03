@@ -3,10 +3,13 @@ package com.noumi.sms.ui.tutors.list;
 //this class connects StudentListActivity to database and passes feedbacks from database to StudentListActivity to update views and
 //feedback to user
 
+import android.text.TextUtils;
+
 import com.noumi.sms.data.database.DatabaseHandler;
 import com.noumi.sms.data.database.DatabaseInterface;
 import com.noumi.sms.data.model.Tutor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TutorListPresenter implements TutorListPresenterInterface {
@@ -37,21 +40,61 @@ public class TutorListPresenter implements TutorListPresenterInterface {
     public void onQueryResult(String result) {
         mListViewInterface.onResult(result);
     }
-    //get student based on selected filters
+
     @Override
-    public void getFilteredTutors(String city, String gender, int filter) {
-        switch (filter){
-            case 1:
-                mDatabaseHandler.getTutorsByCity(city, this);
-                break;
-            case 2:
-                mDatabaseHandler.getTutorsByGender(gender, this);
-                break;
-            case 3:
-                mDatabaseHandler.getTutorsByCityAndGender(city, gender, this);
-                break;
-            default:
-                mDatabaseHandler.getTutors(this);
+    public List<Tutor> filterTutorsByCity(List<Tutor> tutors, String city) {
+        List<Tutor> filteredTutors = new ArrayList<>();
+        for (Tutor tutor : tutors){
+            if(TextUtils.equals(tutor.getTutorCity(), city)){
+                filteredTutors.add(tutor);
+            }
         }
+        return filteredTutors;
+    }
+
+    @Override
+    public List<Tutor> filterTutorsByGender(List<Tutor> tutors, String gender) {
+        List<Tutor> filteredTutors = new ArrayList<>();
+        for (Tutor tutor : tutors){
+            if(TextUtils.equals(tutor.getTutorGender(), gender)){
+                filteredTutors.add(tutor);
+            }
+        }
+        return filteredTutors;
+    }
+
+    @Override
+    public List<Tutor> filterTutorsByFee(List<Tutor> tutors, int fee) {
+        List<Tutor> filteredTutors = new ArrayList<>();
+        for (Tutor tutor : tutors){
+            if(tutor.getTutorFee() <= fee){
+                filteredTutors.add(tutor);
+            }
+        }
+        return filteredTutors;
+    }
+
+    @Override
+    public List<Tutor> filterTutorsBySubject(List<Tutor> tutors, String subject) {
+        List<Tutor> filteredTutors = new ArrayList<>();
+        for (Tutor tutor : tutors){
+            for(String tutorSubject: tutor.getTutorSubjects()) {
+                if (TextUtils.equals(tutor.getTutorGender(), subject)) {
+                    filteredTutors.add(tutor);
+                }
+            }
+        }
+        return filteredTutors;
+    }
+
+    @Override
+    public List<Tutor> filterTutorsByDegree(List<Tutor> tutors, String degreeName) {
+        List<Tutor> filteredTutors = new ArrayList<>();
+        for (Tutor tutor : tutors){
+            if(TextUtils.equals(tutor.getTutorDegreeName(), degreeName)){
+                filteredTutors.add(tutor);
+            }
+        }
+        return filteredTutors;
     }
 }

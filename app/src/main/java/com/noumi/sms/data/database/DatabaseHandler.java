@@ -56,9 +56,13 @@ public class DatabaseHandler implements DatabaseInterface {
     private FirebaseAuth mAuth;
     private FirebaseFirestore mDatabase;
     private FirebaseUser mUser;
-    private Tutor mTutor;
     private Tuition mTuition;
     private Chat mChat;
+    private Message mMessage;
+    private Rating mRating;
+    private Student mStudent;
+    private Tutor mTutor;
+    private LoggedInUser mLoggedInUser;
     private List<Student> mStudents;
     private List<Tutor> mTutors;
     private List<Tuition> mTuitions;
@@ -495,6 +499,25 @@ public class DatabaseHandler implements DatabaseInterface {
                             studentProfilePresenterInterface.onQueryResult("load student successful");
                         }else{
                             studentProfilePresenterInterface.onQueryResult(task.getException().getMessage());
+                        }
+                    }
+                });
+    }
+    public void loadStudent(String studentId, final TuitionDetailPresenterInterface tuitionDetailPresenter) {
+        mDatabase.collection("students").document(studentId).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot document = task.getResult();
+                            if(document.exists()){
+                                Student student = document.toObject(Student.class);
+                                LoggedInUser.getLoggedInUser().setUserName(student.getStudentName());
+                                tuitionDetailPresenter.onStudentLoad(student);
+                            }
+                            tuitionDetailPresenter.onQueryResult("load student successful");
+                        }else{
+                            tuitionDetailPresenter.onQueryResult(task.getException().getMessage());
                         }
                     }
                 });

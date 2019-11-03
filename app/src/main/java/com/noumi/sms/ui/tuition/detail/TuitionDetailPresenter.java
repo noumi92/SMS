@@ -3,6 +3,7 @@ package com.noumi.sms.ui.tuition.detail;
 import com.noumi.sms.data.database.DatabaseHandler;
 import com.noumi.sms.data.database.DatabaseInterface;
 import com.noumi.sms.data.model.Rating;
+import com.noumi.sms.data.model.Student;
 import com.noumi.sms.data.model.Tuition;
 import com.noumi.sms.data.model.Tutor;
 
@@ -46,6 +47,11 @@ public class TuitionDetailPresenter implements TuitionDetailPresenterInterface {
     }
 
     @Override
+    public void loadStudent(String studentId) {
+        mDatabaseHandler.loadStudent(studentId,  this);
+    }
+
+    @Override
     public void loadRating(String ratingId) {
         mDatabaseHandler.loadRating(ratingId, this);
     }
@@ -83,5 +89,10 @@ public class TuitionDetailPresenter implements TuitionDetailPresenterInterface {
     @Override
     public void onTuitionDelete() {
         mTuitionDetailView.onTuitionDelete();
+    }
+
+    @Override
+    public void onStudentLoad(Student student) {
+        mTuitionDetailView.onStudentLoad(student);
     }
 }

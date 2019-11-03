@@ -11,5 +11,9 @@ public interface TutorListPresenterInterface {
     void onDataLoadComplete(List<Tutor> tutors);
     void logoutUser();
     void onQueryResult(String result);
-    void getFilteredTutors(String city, String gender, int filter);
+    List<Tutor> filterTutorsByCity(List<Tutor> tutor, String city);
+    List<Tutor> filterTutorsByGender(List<Tutor> tutors, String gender);
+    List<Tutor> filterTutorsByFee(List<Tutor> tutors, int fee);
+    List<Tutor> filterTutorsBySubject(List<Tutor> tutors, String subject);
+    List<Tutor> filterTutorsByDegree(List<Tutor> tutors, String degreeName);
 }

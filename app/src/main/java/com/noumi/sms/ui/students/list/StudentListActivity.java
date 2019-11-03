@@ -31,9 +31,6 @@ import com.noumi.sms.utils.NavigationUtils;
 import java.util.List;
 
 public class StudentListActivity extends AppCompatActivity implements StudentListViewInterface{
-    private static final String FILTER_STATE_FLAG_KEY = "filter_selection";
-    private static final String SELECTED_CITY_KEY = "selected_city";
-    private static final String SELECTED_GENDER_KEY = "selected_gender";
     private String TAG = "com.noumi.sms.custom.log";
     private StudentListPresenterInterface mStudentListPresenter;
     private RecyclerView mStudentsRecyclerView;
