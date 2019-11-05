@@ -31,8 +31,6 @@
             android:text="@string/female_radio_button_label" />
     </RadioGroup>
 
-
-
     <TextView android:id="@+id/label_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,12 +38,17 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/city_spinner_label_text" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/row_primary_color"
+    android:orientation="vertical">
     <Spinner
         android:id="@+id/city_spinner"
-        style="@style/row_primary_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:entries="@array/students_cities" />
+</LinearLayout>
 
 
 
@@ -75,12 +78,17 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Select Subject" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/row_primary_color"
+        android:orientation="vertical">
     <Spinner
         android:id="@+id/subject_spinner"
-        style="@style/row_primary_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:entries="@array/degree_subjects" />
+    </LinearLayout>
 
     <TextView android:id="@+id/label_fee"
         android:layout_width="wrap_content"
@@ -89,13 +97,19 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Enter Per Hour Fee" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/row_primary_color"
+        android:orientation="vertical">
     <EditText
         android:id="@+id/fee_input"
-        style="@style/row_primary_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
+        android:background="@color/white"
         android:hint="Enter Fee" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -106,6 +120,7 @@
         android:id="@+id/button_clear_filters"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+            android:enabled="false"
             style="@style/row_primary_color.button"
         android:text="@string/clear_filters_button_label" />
 

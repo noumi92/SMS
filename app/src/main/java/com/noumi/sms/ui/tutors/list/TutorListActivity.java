@@ -54,7 +54,7 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
     private ListDivider mListDivider;
     private NavigationView mNavigationView;
     private LinearLayout mProgressbar;
-    private int mFilterStateFlag;
+    private boolean mFilterStateFlag;
     private List<Tutor> mTutors;
     private List<Tutor> mFilteredTutors;
 
@@ -77,6 +77,7 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
         mNavigationView = (NavigationView) findViewById(R.id.navigation_menu_view);
         mProgressbar = (LinearLayout) findViewById(R.id.progressbar);
         mFilteredTutors = new ArrayList<>();
+        mFilterStateFlag = false;
         //setup adapter here
         mTutorRecyclerView.setHasFixedSize(true);
         mTutorRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -196,11 +197,15 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
                 }else if(checkedId == mMaleRadioButton.getId()){
                     gender = "Male";
                 }
-                if(mFilteredTutors.size() == 0 ){
+                if(!mFilterStateFlag){
                     mFilteredTutors = mTutorListPresenter.filterTutorsByGender(mTutors, gender);
                 }else{
                     mFilteredTutors = mTutorListPresenter.filterTutorsByGender(mFilteredTutors, gender);
                 }
+                mFilterStateFlag = true;
+                mMaleRadioButton.setEnabled(false);
+                mFemaleRadioButton.setEnabled(false);
+                mClearFilters.setEnabled(true);
                 mTutorAdapter.setTutors(mFilteredTutors);
                 mTutorAdapter.notifyDataSetChanged();
             }
@@ -209,11 +214,14 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String city = mCitySpinner.getSelectedItem().toString();
-                if(mFilteredTutors.size() == 0 ){
+                if(!mFilterStateFlag ){
                     mFilteredTutors = mTutorListPresenter.filterTutorsByCity(mTutors, city);
                 }else{
                     mFilteredTutors = mTutorListPresenter.filterTutorsByCity(mFilteredTutors, city);
                 }
+                mFilterStateFlag = true;
+                mCitySpinner.setEnabled(false);
+                mClearFilters.setEnabled(true);
                 mTutorAdapter.setTutors(mFilteredTutors);
                 mTutorAdapter.notifyDataSetChanged();
             }
@@ -226,11 +234,14 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String degreeName = mDegreeNameSpinner.getSelectedItem().toString();
-                if(mFilteredTutors.size() == 0 ){
+                if(!mFilterStateFlag ){
                     mFilteredTutors = mTutorListPresenter.filterTutorsByDegree(mTutors, degreeName);
                 }else{
                     mFilteredTutors = mTutorListPresenter.filterTutorsByDegree(mFilteredTutors, degreeName);
                 }
+                mFilterStateFlag = true;
+                mDegreeNameSpinner.setEnabled(false);
+                mClearFilters.setEnabled(true);
                 mTutorAdapter.setTutors(mFilteredTutors);
                 mTutorAdapter.notifyDataSetChanged();
             }
@@ -244,11 +255,14 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String subject = mSubjectSpinner.getSelectedItem().toString();
-                if(mFilteredTutors.size() == 0 ){
+                if(!mFilterStateFlag ){
                     mFilteredTutors = mTutorListPresenter.filterTutorsBySubject(mTutors, subject);
                 }else{
                     mFilteredTutors = mTutorListPresenter.filterTutorsBySubject(mFilteredTutors, subject);
                 }
+                mSubjectSpinner.setEnabled(false);
+                mFilterStateFlag = true;
+                mClearFilters.setEnabled(true);
                 mTutorAdapter.setTutors(mFilteredTutors);
                 mTutorAdapter.notifyDataSetChanged();
             }
@@ -266,21 +280,24 @@ public class TutorListActivity extends AppCompatActivity implements TutorListVie
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!TextUtils.equals(mFeeView.getText(),"")) {
+                if (!TextUtils.equals(mFeeView.getText(),"") && count>2) {
                     int fee = Integer.valueOf(mFeeView.getText().toString());
-                    if(mFilteredTutors.size() == 0 ){
+                    if(!mFilterStateFlag){
                         mFilteredTutors = mTutorListPresenter.filterTutorsByFee(mTutors, fee);
                     }else{
                         mFilteredTutors = mTutorListPresenter.filterTutorsByFee(mFilteredTutors, fee);
                     }
+                    mFeeView.setEnabled(false);
+                    mFilterStateFlag = true;
+                    mClearFilters.setEnabled(true);
                     mTutorAdapter.setTutors(mFilteredTutors);
                     mTutorAdapter.notifyDataSetChanged();
                 }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }

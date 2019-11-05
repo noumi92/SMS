@@ -16,11 +16,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+
 import com.noumi.sms.R;
 import com.noumi.sms.data.model.LoggedInUser;
 import com.noumi.sms.data.model.Message;
 import com.noumi.sms.ui.login.LoginActivity;
-import com.noumi.sms.utils.NavigationUtils;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -65,7 +66,6 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomViewI
             mToolbar.setTitle("Chat Room");
             setSupportActionBar(mToolbar);
         }
-        NavigationUtils.startStudentNaigation(this, mNavigationView);
 
         getChatRoomIntent();
 
